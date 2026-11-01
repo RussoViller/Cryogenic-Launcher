@@ -2,9 +2,9 @@
 
 # ❄️ Cryogenic Launcher
 
-### Minecraft: Java Edition no Android — com uma experiência gelada, futurista e gamer.
+### A modern, futuristic and gamer-focused Minecraft launcher experience for Android.
 
-**r1.0.0 · Android · arm64-v8a**
+**Release:** `r1.0.0` · **Platform:** Android · **Package architecture:** `arm64-v8a`
 
 [RV WebPage](https://russoviller.github.io)
 
@@ -12,127 +12,132 @@
 
 ---
 
-## Sobre o projeto
+## About
 
-O **Cryogenic Launcher** é um launcher para Android desenvolvido sob a identidade de **RussoViller**. Seu objetivo é reunir recursos relacionados ao Minecraft: Java Edition em uma experiência visual moderna, com personalidade própria e uma interface inspirada em tecnologia, gelo e estética gamer.
+**Cryogenic Launcher** is an Android launcher project developed under the **RussoViller** identity. It aims to bring Minecraft: Java Edition-related features together in a modern interface with its own visual personality, inspired by ice, futuristic technology and gaming aesthetics.
 
-A identidade do Cryogenic combina painéis escuros, transparências, contornos luminosos, tons de azul e ciano e detalhes em turquesa. O resultado é uma interface que busca transmitir a sensação de um sistema futurista e congelado — sem abrir mão da organização e da praticidade.
+Its visual identity combines dark panels, translucent surfaces, glowing outlines, and shades of ice blue, cyan and turquoise. The goal is to create the feeling of a futuristic, frozen system while keeping navigation and features organized.
 
-> **Cryogenic Launcher é um projeto independente e não oficial.** Não é um produto oficial do Zalith Launcher 2, não é endossado por seus desenvolvedores e não deve ser confundido com ele.
+> **Cryogenic Launcher is an independent, unofficial project.** It is not an official Zalith Launcher 2 product, is not endorsed by the Zalith Launcher 2 developers, and must not be represented as the original project.
 
-## ✨ Destaques
+## ✨ Features
 
-- **Visual gelado e futurista:** interface própria com paleta fria, painéis translúcidos e detalhes luminosos.
-- **Experiência gamer:** navegação organizada e elementos visuais pensados para quem utiliza o Minecraft.
-- **Contas:** área para visualizar e gerenciar as contas adicionadas ao launcher.
-- **Skins:** visualização de personagem, skins salvas e opções relacionadas à personalização, conforme a integração disponível.
-- **Downloads:** seções dedicadas a Mods, Shaders, ModPacks, Texturas, Mundos e conteúdos relacionados ao Minecraft.
-- **Personalização de cursor:** opções de estilo para o mouse virtual, com orientações para configurar imagens e cursores.
-- **RV WebPage integrada:** acesso ao site do projeto por meio de uma área de navegação dentro do launcher.
-- **Gerenciador de arquivos:** acesso aos arquivos e diretórios utilizados pelo launcher.
-- **Configurações:** área centralizada para opções e personalizações do aplicativo.
+- **Frozen futuristic interface:** a custom visual direction featuring cool colors, translucent panels and luminous details.
+- **Gamer-oriented experience:** organized navigation and interface elements designed with Minecraft players in mind.
+- **Account management:** a dedicated area to view and manage accounts added to the launcher.
+- **Skin management:** character previews, saved skins and related customization options, subject to the integrations available in the release.
+- **Download center:** dedicated sections for Mods, Shaders, ModPacks, Textures, Worlds and other Minecraft-related content.
+- **Virtual cursor customization:** cursor style options and guidance for selecting images and configuring cursor behavior.
+- **Integrated RV WebPage:** access to the project's website through an area inside the launcher.
+- **File manager:** navigation through launcher directories and files.
+- **Settings:** a central area for application options and visual customization.
 
-*A disponibilidade de cada recurso pode depender da versão do aplicativo, da conexão com a internet, das permissões do Android e dos serviços externos utilizados.*
+*Feature availability may depend on the app version, internet access, Android permissions and external services.*
 
-## 🧊 Identidade visual
+## 🧊 Visual identity
 
-O Cryogenic foi pensado para ter uma identidade visual reconhecível:
+Cryogenic Launcher was designed around a recognizable visual language:
 
-| Elemento | Direção visual |
+| Element | Visual direction |
 |---|---|
-| Cores | Azul-gelo, ciano, turquesa e azul-marinho |
-| Superfícies | Painéis escuros, translúcidos e arredondados |
-| Destaques | Bordas luminosas e realces em degradê |
-| Atmosfera | Tecnológica, fria, futurista e gamer |
-| Navegação | Seções laterais e painéis organizados |
+| Colors | Ice blue, cyan, turquoise and deep navy |
+| Surfaces | Dark, translucent and rounded panels |
+| Highlights | Glowing borders and gradient accents |
+| Atmosphere | Futuristic, technological, icy and gamer-oriented |
+| Navigation | Organized side navigation and content panels |
 
-## 🖥️ Recursos apresentados na interface
+## 🖥️ Interface sections
 
-### Contas e personalização
-A tela de contas apresenta a conta conectada, seu estado e ações de gerenciamento. A área de guarda-roupa exibe a pré-visualização do personagem, skins salvas e opções de personalização.
+### Accounts and customization
 
-### Central de downloads
-A interface organiza os conteúdos em categorias como:
+The Accounts screen displays the connected account, its status and account-management actions. The wardrobe view includes a character preview, saved skins and customization options.
+
+### Download center
+
+The download interface organizes content into categories such as:
 
 - Mods
 - Shaders
 - ModPacks
-- Texturas
-- Mundos
-- Minecraft e conteúdos relacionados
+- Textures
+- Worlds
+- Minecraft and related content
 
-Também apresenta filtros e informações dos itens disponíveis.
+It also includes filters and item information.
 
-### Mouse virtual
-A tela de configuração permite escolher entre estilos de cursor, consultar exemplos e acessar instruções para selecionar uma imagem e definir o ponto de clique.
+### Virtual mouse cursor
+
+The cursor settings screen provides different cursor styles, visual examples and instructions for choosing an image and setting its click point.
 
 ### RV WebPage
-O launcher possui uma área integrada para acessar a página do projeto:
+
+The launcher includes an integrated area for accessing the project website:
 
 **https://russoviller.github.io**
 
-### Arquivos
-O gerenciador apresenta diretórios do launcher e permite navegar pelos arquivos disponíveis dentro dos limites de acesso concedidos pelo Android.
+### File manager
 
-## 🧬 Origem e créditos da base
+The file manager displays launcher directories and allows navigation through files accessible within the permissions granted by Android.
 
-O desenvolvimento do Cryogenic Launcher utilizou o código do **[Zalith Launcher 2](https://github.com/ZalithLauncher/ZalithLauncher2)** como base.
+## 🧬 Base project and acknowledgements
 
-O reconhecimento dessa origem é importante: o projeto não reivindica a autoria exclusiva de componentes herdados da base ou de bibliotecas de terceiros.
+Cryogenic Launcher uses code from **[Zalith Launcher 2](https://github.com/ZalithLauncher/ZalithLauncher2)** as a development base.
 
-Ao mesmo tempo, o Cryogenic possui **nome, identidade visual, apresentação e personalizações próprias**. Sua proposta visual e sua experiência de interface são distintas das do projeto original. Ele é distribuído como uma versão modificada, independente e não oficial, sem associação ou endosso dos responsáveis pelo Zalith Launcher 2.
+We acknowledge the original project and its contributors. Cryogenic Launcher does not claim exclusive authorship of inherited code, third-party libraries or components originating from other projects.
 
-O repositório do Zalith Launcher 2 declara o uso da licença **GNU General Public License v3.0 (GPL-3.0)** e apresenta condições adicionais para versões modificadas. Por isso:
+At the same time, Cryogenic Launcher has its **own name, visual identity, presentation and customizations**. Its interface direction and overall presentation are distinct from the original project. It is an independent, unofficial modified project and is not affiliated with or endorsed by the Zalith Launcher 2 developers.
 
-- Os avisos de autoria e licenciamento aplicáveis à base devem ser preservados.
-- As partes derivadas da base que estejam cobertas pela GPL-3.0 permanecem sujeitas aos termos dessa licença.
-- Quando houver distribuição de uma versão modificada abrangida pela GPL-3.0, o código-fonte correspondente deve ser disponibilizado conforme as exigências da GPL.
-- O Cryogenic deve permanecer claramente identificado como uma versão não oficial e não pode sugerir que é o launcher oficial do projeto original.
+The Zalith Launcher 2 repository identifies **GNU General Public License v3.0 (GPL-3.0)** as its license and includes additional conditions for modified versions. Accordingly:
 
-**Referências:**
-- [Zalith Launcher 2 — repositório oficial](https://github.com/ZalithLauncher/ZalithLauncher2)
-- [GPL-3.0 — texto da licença](https://www.gnu.org/licenses/gpl-3.0.html)
+- Applicable copyright notices and license notices from the upstream project must be retained.
+- Portions derived from Zalith Launcher 2 that are covered by GPL-3.0 remain subject to that license.
+- When distributing a modified version covered by GPL-3.0, the corresponding source code must be made available as required by the license.
+- Cryogenic Launcher must be clearly identified as an unofficial modified version and must not imply that it is the official Zalith Launcher 2 project.
 
-## 📱 Distribuição
+**References:**
+- [Zalith Launcher 2 — official repository](https://github.com/ZalithLauncher/ZalithLauncher2)
+- [GNU GPL-3.0 — license text](https://www.gnu.org/licenses/gpl-3.0.html)
 
-| Informação | Detalhe |
+## 📱 Release information
+
+| Item | Details |
 |---|---|
-| Aplicativo | Cryogenic Launcher |
-| Versão | r1.0.0 |
-| Pacote enviado | `CryogenicLauncher-r1.0.0-arm64-v8a.apk` |
-| Arquitetura indicada pelo pacote | ARM64 (`arm64-v8a`) |
-| Plataforma | Android |
-| Desenvolvedor / identidade do projeto | RussoViller |
-| Site | [russoviller.github.io](https://russoviller.github.io) |
+| Application | Cryogenic Launcher |
+| Version | `r1.0.0` |
+| APK filename | `CryogenicLauncher-r1.0.0-arm64-v8a.apk` |
+| Package architecture | ARM64 (`arm64-v8a`) |
+| Platform | Android |
+| Project identity | RussoViller |
+| Website | [russoviller.github.io](https://russoviller.github.io) |
 
-O APK disponibilizado nesta versão é direcionado à arquitetura ARM64. A compatibilidade com um dispositivo específico depende também da versão do Android e dos requisitos do aplicativo.
+This APK is built for ARM64 devices. Compatibility with a particular device also depends on the Android version and the application's requirements.
 
-## 📥 Instalação
+## 📥 Installation
 
-1. Baixe o arquivo APK disponibilizado pelo responsável pelo projeto.
-2. Abra o arquivo no dispositivo Android.
-3. Caso o Android solicite, autorize temporariamente a instalação de aplicativos daquela origem.
-4. Conclua a instalação e abra o Cryogenic Launcher.
+1. Download the APK provided by the project maintainer.
+2. Open the APK file on your Android device.
+3. If Android asks for permission, allow installation from that source.
+4. Complete the installation and launch Cryogenic Launcher.
 
-Instale APKs somente de fontes em que você confia.
+Only install APK files from sources you trust.
 
-## ⚖️ Licenciamento
+## ⚖️ Licensing
 
-O projeto utiliza componentes de terceiros e código baseado no Zalith Launcher 2. Portanto, **não existe uma única licença proprietária que substitua as licenças desses componentes**.
+Cryogenic Launcher includes third-party components and code based on Zalith Launcher 2. **A single proprietary license cannot replace the licenses that apply to those components.**
 
-- **Código herdado ou derivado coberto pela GPL-3.0:** permanece sob GPL-3.0 e seus termos aplicáveis.
-- **Bibliotecas e componentes de terceiros:** permanecem sob suas respectivas licenças.
-- **Elementos originais do Cryogenic:** marca, nome, logotipo, artes, identidade visual e materiais originais são protegidos pela licença `RVCLapk1.0`, quando efetivamente pertencentes ao projeto e não sujeitos a outra licença.
+- **Inherited or derivative code covered by GPL-3.0:** remains under GPL-3.0 and its applicable terms.
+- **Third-party libraries and components:** remain under their respective licenses.
+- **Original Cryogenic materials:** the name, branding, logo, original artwork, visual identity and original project materials are covered by `RVCLapk1.0.md` only to the extent that they are owned by this project and are not subject to another license.
 
-Consulte [`RVCLapk1.0.md`](RVCLapk1.0.md) para as condições aplicáveis aos elementos originais do Cryogenic.
+See [`RVCLapk1.0.md`](RVCLapk1.0.md) for the terms covering original Cryogenic materials.
 
-## ⚠️ Avisos
+## ⚠️ Notices
 
-- Cryogenic Launcher é um projeto independente e não oficial.
-- Minecraft é uma marca de seus respectivos titulares. Este projeto não declara afiliação oficial com Mojang ou Microsoft.
-- Zalith Launcher 2 é um projeto de terceiros. Os créditos e direitos de seus autores permanecem reconhecidos.
-- Recursos que dependem de serviços externos podem mudar ou deixar de funcionar sem aviso prévio.
-- Não inclua credenciais, tokens ou informações privadas em capturas de tela, relatórios ou publicações públicas.
+- Cryogenic Launcher is an independent and unofficial project.
+- Minecraft is a trademark of its respective owners. This project does not claim official affiliation with Mojang or Microsoft.
+- Zalith Launcher 2 is a third-party project. Its authorship and rights remain acknowledged.
+- Features relying on external services may change or become unavailable.
+- Do not publish passwords, access tokens or other private credentials in screenshots, logs or public posts.
 
 ---
 
@@ -142,7 +147,7 @@ Consulte [`RVCLapk1.0.md`](RVCLapk1.0.md) para as condições aplicáveis aos el
 
 *Freeze the limits. Play beyond.*
 
-Desenvolvido sob a identidade de **RussoViller**.
+Developed under the **RussoViller** identity.
 
 [RV WebPage](https://russoviller.github.io)
 
