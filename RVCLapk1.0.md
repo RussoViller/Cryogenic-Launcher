@@ -1,107 +1,120 @@
-# RVCLapk1.0
-## Licença dos Elementos Originais do Cryogenic Launcher
 
-**Versão:** 1.0  
-**Projeto:** Cryogenic Launcher  
-**Identidade / titular dos elementos originais:** RussoViller  
-**Data:** 31 de outubro de 2026
+# RVCLapk1.0
+## License for Original Cryogenic Launcher Materials
+
+**Version:** 1.0  
+**Project:** Cryogenic Launcher  
+**Project Owner:** RussoViller  
+**Date:** October 31, 2026
 
 ---
 
-## 1. Objetivo e alcance
+## 1. Purpose and Scope
 
-Esta licença estabelece as condições de uso dos elementos originais do **Cryogenic Launcher** que pertençam ao projeto e que não estejam sujeitos a licenças de terceiros.
+This license protects the original materials of Cryogenic Launcher that are owned by the project and are not subject to third-party licenses.
 
-Entre esses elementos, quando efetivamente criados e titularizados pelo projeto, podem estar:
+Protected materials may include:
 
-- Nome, marca, logotipo e identidade visual Cryogenic Launcher;
-- Artes, ilustrações, ícones, imagens e materiais gráficos originais;
-- Textos, descrições, documentação e materiais promocionais originais;
-- Layouts, composições visuais e elementos de interface originais;
-- Código original criado independentemente pelo responsável pelo projeto e que não esteja abrangido por licenças de terceiros ou pela GPL-3.0.
+- Cryogenic Launcher name, brand and logo.
+- Original visual identity and interface designs.
+- Original artwork, illustrations and icons.
+- Original images, graphics and promotional materials.
+- Original documentation and written content.
+- Independently developed code not covered by third-party licenses.
 
-Esta licença **não substitui, limita ou revoga** licenças de software livre ou de terceiros aplicáveis a partes do aplicativo.
+This license does not override any third-party software license.
 
-## 2. Direitos reservados
+## 2. Restrictions
 
-Salvo autorização expressa e por escrito do titular, não é concedida permissão para:
+Without express written permission from the project owner, you may not:
 
-1. Copiar, republicar ou redistribuir os elementos originais protegidos por esta licença como se fossem próprios.
-2. Reproduzir ou utilizar a marca, o logotipo ou a identidade visual do Cryogenic para criar uma distribuição que sugira ser oficial ou autorizada.
-3. Utilizar artes, imagens, ícones, textos ou materiais originais do projeto em outro aplicativo, produto ou divulgação sem autorização.
-4. Remover avisos de autoria, créditos ou identificações de titularidade referentes aos elementos originais protegidos por esta licença.
-5. Comercializar, sublicenciar ou disponibilizar os elementos originais protegidos por esta licença sem autorização escrita.
-6. Apresentar uma cópia, redistribuição ou adaptação não autorizada dos elementos protegidos como uma criação original própria.
-7. Fazer uso dos elementos protegidos de modo a causar confusão sobre a autoria, a origem ou a aprovação do projeto.
+1. Copy or redistribute protected original materials as your own.
+2. Steal or reproduce the Cryogenic Launcher branding.
+3. Reuse original artwork, graphics, icons or interface designs in another project.
+4. Remove copyright notices or ownership credits.
+5. Sell or commercially redistribute protected original materials.
+6. Claim ownership of original Cryogenic Launcher materials.
+7. Distribute unauthorized copies of protected project assets.
+8. Impersonate the official Cryogenic Launcher project.
+9. Use protected branding to mislead users about the origin or authorization of an application.
 
-## 3. Código-fonte e componentes derivados do Zalith Launcher 2
+## 3. Zalith Launcher 2 Acknowledgement
 
-O Cryogenic Launcher utilizou o **Zalith Launcher 2** como base de desenvolvimento.
+Cryogenic Launcher uses code from **Zalith Launcher 2** as its development base.
 
-O projeto Zalith Launcher 2 declara sua distribuição sob a **GNU General Public License v3.0 (GPL-3.0)** e informa condições adicionais para versões modificadas.
+We acknowledge the original developers and contributors.
 
-Consequentemente:
+Official repository:
 
-- Código do Zalith Launcher 2 e modificações derivadas que estejam abrangidos pela GPL-3.0 não são relicenciados por este documento.
-- A GPL-3.0 continua concedendo os direitos que ela estabelece, inclusive os direitos de estudar, modificar e redistribuir o código abrangido, desde que suas condições sejam cumpridas.
-- Quando a GPL-3.0 exigir disponibilização do código-fonte correspondente, essa obrigação deverá ser cumprida.
-- Avisos de direitos autorais, textos de licença e condições adicionais válidas da base devem ser preservados.
-- Esta licença não pode ser usada para impedir direitos concedidos pela GPL-3.0.
+https://github.com/ZalithLauncher/ZalithLauncher2
 
-Referências:
-- Repositório: https://github.com/ZalithLauncher/ZalithLauncher2
-- Texto da GPL-3.0: https://www.gnu.org/licenses/gpl-3.0.html
+The original project uses the GNU General Public License v3.0 (GPL-3.0), with additional conditions for modified versions.
 
-## 4. Bibliotecas e materiais de terceiros
+Therefore:
 
-Bibliotecas, mecanismos, recursos, marcas, serviços, imagens, fontes e outros materiais pertencentes a terceiros continuam sujeitos aos respectivos titulares e licenças.
+- Code covered by GPL-3.0 remains governed by GPL-3.0.
+- This license does not remove GPL rights.
+- Corresponding source code must be provided whenever required by GPL-3.0.
+- Original copyright and license notices must be preserved.
+- Cryogenic Launcher must be identified as an unofficial modified project.
+- This license cannot prohibit activities permitted by GPL-3.0.
 
-Nenhuma disposição desta licença concede propriedade sobre esses materiais ou autoriza o descumprimento de suas licenças.
+Official GPL-3.0:
 
-O responsável pela distribuição deve manter os créditos, avisos e documentos de licença exigidos pelos componentes utilizados.
+https://www.gnu.org/licenses/gpl-3.0.html
 
-## 5. Permissões e autorizações
+## 4. Third-Party Components
 
-Qualquer autorização de uso dos elementos originais protegidos por esta licença deve ser concedida expressamente pelo titular ou por representante autorizado, preferencialmente por escrito.
+All third-party libraries, assets, trademarks, services and components remain the property of their respective owners.
 
-A ausência de resposta não deve ser interpretada como autorização.
+They are governed by their own licenses and copyright terms.
 
-Uma autorização específica não representa uma licença geral para outros usos.
+Nothing in this document transfers ownership of third-party materials.
 
-## 6. Violações
+## 5. Permission Requirements
 
-O uso dos elementos originais protegidos em desacordo com esta licença poderá resultar na solicitação de interrupção do uso, remoção de cópias não autorizadas e adoção das medidas legais cabíveis, respeitados os direitos e limitações previstos na legislação aplicável.
+Permission to use protected original Cryogenic Launcher materials must be explicitly granted by the project owner or an authorized representative.
 
-Esta seção não se aplica a atos que sejam expressamente permitidos por licenças de terceiros, incluindo a GPL-3.0.
+Silence does not constitute permission.
 
-## 7. Ausência de transferência de propriedade
+Any granted permission applies only to the specific use authorized.
 
-A disponibilização do APK ou de materiais do Cryogenic Launcher não significa venda ou transferência dos direitos de propriedade intelectual sobre os elementos originais protegidos.
+## 6. Violations
 
-O usuário recebe somente as permissões expressamente concedidas por esta licença e pelas demais licenças aplicáveis.
+Unauthorized use of original materials protected by this license may result in requests for removal, termination of unauthorized use and other legal measures available under applicable law.
 
-## 8. Isenção de garantias
+This section does not restrict rights granted by applicable third-party licenses, including GPL-3.0.
 
-Na máxima extensão permitida pela legislação aplicável, os elementos originais abrangidos por esta licença são disponibilizados sem garantias adicionais de funcionamento, adequação a uma finalidade específica ou disponibilidade contínua.
+## 7. Ownership
 
-Esta cláusula não elimina direitos obrigatórios previstos na legislação aplicável nem altera as garantias ou obrigações de licenças de terceiros.
+Downloading, installing or using Cryogenic Launcher does not transfer ownership of its original protected materials.
 
-## 9. Prevalência das licenças aplicáveis
+Users receive only the rights expressly granted by applicable licenses.
 
-Se alguma disposição desta licença entrar em conflito com uma licença de software de terceiros aplicável a determinado componente, prevalecerá a licença desse componente quanto a ele.
+## 8. Disclaimer
 
-Se alguma disposição for considerada inválida, as demais continuarão em vigor na máxima extensão permitida.
+Original materials covered by this license are provided without additional warranties to the maximum extent permitted by applicable law.
 
-## 10. Contato e autorização
+Nothing in this section removes mandatory legal rights or changes third-party license obligations.
 
-Para solicitar autorização referente aos elementos originais do Cryogenic Launcher, entre em contato pelos canais oficiais publicados na RV WebPage:
+## 9. License Priority
+
+If this license conflicts with a third-party license covering a particular component, the third-party license takes precedence for that component.
+
+If any provision is found invalid, the remaining provisions remain effective to the maximum extent permitted by law.
+
+## 10. Contact
+
+For authorization requests concerning original Cryogenic Launcher materials, visit:
 
 https://russoviller.github.io
 
 ---
 
-**RVCLapk1.0 — Licença dos Elementos Originais do Cryogenic Launcher**
+**RVCLapk1.0**
 
-© 2026 RussoViller. Direitos reservados sobre os elementos originais abrangidos por esta licença.
+© 2026 RussoViller.
 
-**Importante:** este documento é um modelo de licença e não constitui aconselhamento jurídico. A aplicação efetiva depende da titularidade de cada elemento, das licenças de terceiros e da legislação aplicável.
+All rights reserved for original materials covered by this license.
+
+This document is a license template and does not constitute legal advice.
