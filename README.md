@@ -4,7 +4,7 @@
 
 ### A modern, futuristic and gamer-focused Minecraft launcher experience for Android.
 
-**Release:** `r1.0.0` · **Platform:** Android · **Package architecture:** `arm64-v8a`
+**Release:** `r1.2.0` · **Platform:** Android · **Package architecture:** `arm64-v8a`
 
 [RussoViller WebPage](https://russoviller.github.io/RussoViller-WebPage/index.html#inicio)
 
