@@ -103,7 +103,7 @@ The Zalith Launcher 2 repository identifies **GNU General Public License v3.0 (G
 | Item | Details |
 |---|---|
 | Application | Cryogenic Launcher |
-| Version | `r1.0.0` |
+| Version | `r1.2.0` |
 | APK filename | `CryogenicLauncher-r1.0.0-arm64-v8a.apk` |
 | Package architecture | ARM64 (`arm64-v8a`) |
 | Platform | Android |
@@ -143,7 +143,7 @@ See [`RVCLapk1.0.md`](RVCLapk1.0.md) for the terms covering original Cryogenic m
 
 <div align="center">
 
-**Cryogenic Launcher r1.0.0**
+**Cryogenic Launcher r1.2.0**
 
 *Freeze the limits. Play beyond.*
 
