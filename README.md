@@ -6,7 +6,7 @@
 
 **Release:** `r1.5.0` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
 
-[RussoViller WebPage!](https://russoviller.github.io/RussoViller-WebPage/index.html#inicio)
+[RussoViller WebPage](https://russoviller.github.io/RussoViller-WebPage/index.html#inicio)
 
 </div>
 
