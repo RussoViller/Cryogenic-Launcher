@@ -4,7 +4,7 @@
 
 ### A modern, futuristic and gamer-focused Minecraft launcher experience for Android.
 
-**Release:** `r1.5.0` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
+**Release:** `r1.5.1` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
 
 [RussoViller WebPage](https://russoviller.github.io/RussoViller-WebPage/index.html#inicio)
 
@@ -103,8 +103,8 @@ The Zalith Launcher 2 repository identifies **GNU General Public License v3.0 (G
 | Item | Details |
 |---|---|
 | Application | Cryogenic Launcher |
-| Version | `r1.5.0` |
-| APK filename | `CryogenicLauncher-r1.5.0-arm64-v8a.apk/CryogenicLauncher-r1.5.0-armeabi-v7a.apk` |
+| Version | `r1.5.1` |
+| APK filename | `CryogenicLauncher-r1.5.1-arm64-v8a.apk/CryogenicLauncher-r1.5.1-armeabi-v7a.apk` |
 | Package architecture | ARM64/ARM32 (`arm64-v8a/armeabi-v7a`) |
 | Platform | Android |
 | Project identity | RussoViller |
@@ -143,7 +143,7 @@ See [`RVCLapk1.0.md`](RVCLapk1.0.md) for the terms covering original Cryogenic m
 
 <div align="center">
 
-**Cryogenic Launcher r1.5.0**
+**Cryogenic Launcher r1.5.1**
 
 *Freeze the limits. Play beyond.*
 
