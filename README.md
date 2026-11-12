@@ -14,10 +14,12 @@
 
 ## About
 
-**Cryogenic Launcher** is an Android launcher project developed under the **RussoViller** identity. It aims to bring Minecraft: Java Edition-related features together in a modern interface with its own visual personality, inspired by ice, futuristic technology and gaming aesthetics.
+**Cryogenic Launcher** is an Android launcher **created by RussoViller**. It aims to bring Minecraft: Java Edition-related features together in a modern interface with its own visual personality, inspired by ice, futuristic technology and gaming aesthetics.
 
 Its visual identity combines dark panels, translucent surfaces, glowing outlines, and shades of ice blue, cyan and turquoise. The goal is to create the feeling of a futuristic, frozen system while keeping navigation and features organized.
 
+> **Cryogenic Launcher — created by RussoViller.** Any copy, modified or not, must keep the creator's credits, and no one may claim to be its creator or owner (see [RVCLapk1.1](RVCLapk1.0.md)).
+>
 > **Cryogenic Launcher is an independent, unofficial project.** It is not an official Zalith Launcher 2 product, is not endorsed by the Zalith Launcher 2 developers, and must not be represented as the original project.
 
 ## ✨ Features
@@ -129,7 +131,14 @@ Cryogenic Launcher includes third-party components and code based on Zalith Laun
 - **Third-party libraries and components:** remain under their respective licenses.
 - **Original Cryogenic materials:** the name, branding, logo, original artwork, visual identity and original project materials are covered by `RVCLapk1.0.md` only to the extent that they are owned by this project and are not subject to another license.
 
-See [`RVCLapk1.0.md`](RVCLapk1.0.md) for the terms covering original Cryogenic materials.
+See [`RVCLapk1.0.md`](RVCLapk1.0.md) (**RVCLapk1.1**) for the full terms.
+
+### Attribution required (GPL-3.0, Section 7)
+
+- Every copy, modified or not, must keep visible in the app: **"Cryogenic Launcher — created by RussoViller"**, the official repository link and the creator credits.
+- No one may claim to be the creator or owner of Cryogenic Launcher or present a copy as the official release. Modified versions must state: **"Based on Cryogenic Launcher by RussoViller."**
+- Republishing the Launcher under another name while removing these credits is prohibited and terminates the right to distribute it.
+- Official APKs are signed with RussoViller's certificate (SHA-256 `c73a7377aa07507b2f215291c91f0e2f88e16e3b88219affcef56518ac30aa56`). Copies signed with another certificate show an **unofficial copy** warning inside the Launcher.
 
 ## ⚠️ Notices
 
