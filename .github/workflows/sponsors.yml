@@ -1,0 +1,39 @@
+# Atualiza a lista de patrocinadores do afdian usada pelo Cryogenic Launcher.
+# Roda às 00:00, 08:00 e 16:00 (horário de Brasília/Fortaleza, UTC-3).
+name: Patrocinadores do afdian
+
+on:
+  schedule:
+    - cron: "0 3,11,19 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: afdian-sponsors
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Buscar patrocinadores
+        env:
+          AFDIAN_TOKEN: ${{ secrets.AFDIAN_TOKEN }}
+          AFDIAN_USER_ID: 2b17f17c158d11f18ea952540025c377
+        run: python3 .github/scripts/afdian_sponsors.py sponsors/sponsors.json
+
+      - name: Salvar no repositório
+        run: |
+          if [ -z "$(git status --porcelain sponsors/)" ]; then
+            echo "Nada mudou."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sponsors/sponsors.json
+          git commit -m "Atualiza patrocinadores"
+          git push
