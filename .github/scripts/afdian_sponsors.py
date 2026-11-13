@@ -3,7 +3,8 @@
 Busca os patrocinadores do afdian e grava sponsors/sponsors.json para o Cryogenic Launcher.
 
 O token fica só no Secret AFDIAN_TOKEN do repositório; o JSON publicado tem apenas
-nome, foto e datas de quem está dentro dos últimos 30 dias (sem valores nem mensagens).
+nome, foto, datas e valor total patrocinado de quem está dentro dos últimos 30 dias
+(sem mensagens nem dados de pedido).
 """
 import hashlib
 import json
@@ -67,12 +68,17 @@ def main():
         if paid <= 0 or paid + WINDOW <= now:
             continue
         uid = str(user.get("user_id") or "")
+        try:
+            amount = "%.2f" % float(item.get("all_sum_amount") or 0)
+        except (TypeError, ValueError):
+            amount = "0.00"
         sponsors.append({
             "id": hashlib.sha1(uid.encode()).hexdigest()[:12] if uid else "",
             "name": str(user.get("name") or "").strip()[:40],
             "avatar": str(user.get("avatar") or ""),
             "since": paid,
             "until": paid + WINDOW,
+            "amount": amount,  # total patrocinado no afdian, em CNY (¥)
         })
     sponsors.sort(key=lambda s: s["since"])  # do primeiro ao último
 
@@ -81,6 +87,7 @@ def main():
         "updated": now,
         "latest": max((s["since"] for s in sponsors), default=0),
         "count": len(sponsors),
+        "currency": "CNY",
         "sponsors": sponsors,
     }
 
