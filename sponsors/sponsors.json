@@ -1,15 +1,17 @@
 {
   "version": 1,
-  "updated": 1794566566,
+  "updated": 1794588059,
   "latest": 1794537278,
   "count": 1,
+  "currency": "CNY",
   "sponsors": [
     {
       "id": "347ddd11cc13",
       "name": "爱发电用户_07e6a",
       "avatar": "https://pic1.afdiancdn.com/default/avatar/avatar-purple.png?imageView2/1/",
       "since": 1794537278,
-      "until": 1797129278
+      "until": 1797129278,
+      "amount": "10.00"
     }
   ]
 }
