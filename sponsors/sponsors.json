@@ -1,7 +1,15 @@
 {
   "version": 1,
-  "updated": 1794498003,
-  "latest": 0,
-  "count": 0,
-  "sponsors": []
+  "updated": 1794566566,
+  "latest": 1794537278,
+  "count": 1,
+  "sponsors": [
+    {
+      "id": "347ddd11cc13",
+      "name": "爱发电用户_07e6a",
+      "avatar": "https://pic1.afdiancdn.com/default/avatar/avatar-purple.png?imageView2/1/",
+      "since": 1794537278,
+      "until": 1797129278
+    }
+  ]
 }
