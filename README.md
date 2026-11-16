@@ -4,7 +4,7 @@
 
 ### A modern, futuristic and gamer-focused Minecraft launcher experience for Android.
 
-**Release:** `r1.5.5` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
+**Release:** `r1.6.0` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
 
 [RussoViller WebPage](https://russoviller.github.io/RussoViller-WebPage/index.html#inicio)
 
@@ -31,7 +31,9 @@ Its visual identity combines dark panels, translucent surfaces, glowing outlines
 - **Download center:** dedicated sections for Mods, Shaders, ModPacks, Textures, Worlds and other Minecraft-related content.
 - **Virtual cursor customization:** cursor style options and guidance for selecting images and configuring cursor behavior.
 - **Integrated RV WebPage:** access to the project's website through an area inside the launcher.
-- **File manager:** navigation through launcher directories and files.
+- **In-game menu:** music player (with a floating player) and installation of textures and shaders from CurseForge or Modrinth without leaving the game.
+- **Renderers:** includes the LTW renderer among the available options.
+- **File manager:** navigation through launcher directories and files, with up to 5 favorite folders.
 - **Settings:** a central area for application options and visual customization.
 
 *Feature availability may depend on the app version, internet access, Android permissions and external services.*
@@ -105,14 +107,14 @@ The Zalith Launcher 2 repository identifies **GNU General Public License v3.0 (G
 | Item | Details |
 |---|---|
 | Application | Cryogenic Launcher |
-| Version | `r1.5.5` |
-| APK filename | `CryogenicLauncher-r1.5.5-arm64-v8a.apk/CryogenicLauncher-r1.5.5-armeabi-v7a.apk` |
+| Version | `r1.6.0` |
+| APK filename | `CryogenicLauncher-r1.6.0-arm64-v8a.apk/CryogenicLauncher-r1.6.0-armeabi-v7a.apk` |
 | Package architecture | ARM64/ARM32 (`arm64-v8a/armeabi-v7a`) |
 | Platform | Android |
 | Project identity | RussoViller |
 | Website | [russoviller.github.io](https://russoviller.github.io) |
 
-This APK is built for ARM64 devices. Compatibility with a particular device also depends on the Android version and the application's requirements.
+These APKs are built for ARM64 and ARM32 devices. Compatibility with a particular device also depends on the Android version and the application's requirements.
 
 ## 📥 Installation
 
@@ -152,7 +154,7 @@ See [`RVCLapk1.0.md`](RVCLapk1.0.md) (**RVCLapk1.1**) for the full terms.
 
 <div align="center">
 
-**Cryogenic Launcher r1.5.5**
+**Cryogenic Launcher r1.6.0**
 
 *Freeze the limits. Play beyond.*
 
