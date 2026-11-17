@@ -87,18 +87,15 @@ The file manager displays launcher directories and allows navigation through fil
 
 ## 🧬 Base project and acknowledgements
 
-Cryogenic Launcher uses code from **[Zalith Launcher 2](https://github.com/ZalithLauncher/ZalithLauncher2)** as a development base.
+Cryogenic Launcher is **RussoViller's own project**, with its own name, visual identity, interface, features and direction. It started from the code of **[Zalith Launcher 2](https://github.com/ZalithLauncher/ZalithLauncher2)** as a development base, and the parts of the code that come from it are credited to their original authors.
 
-We acknowledge the original project and its contributors. Cryogenic Launcher does not claim exclusive authorship of inherited code, third-party libraries or components originating from other projects.
+Cryogenic Launcher is not the official Zalith Launcher 2 project and is not affiliated with or endorsed by its developers.
 
-At the same time, Cryogenic Launcher has its **own name, visual identity, presentation and customizations**. Its interface direction and overall presentation are distinct from the original project. It is an independent project by RussoViller, built as a modified version of Zalith Launcher 2 (and therefore unofficial in relation to Zalith Launcher 2), and is not affiliated with or endorsed by the Zalith Launcher 2 developers.
+**License of the inherited code:** the parts derived from Zalith Launcher 2 follow its license, **GNU GPL-3.0**, including the additional terms published by its authors. In practice this means:
 
-The Zalith Launcher 2 repository identifies **GNU General Public License v3.0 (GPL-3.0)** as its license and includes additional conditions for modified versions. Accordingly:
-
-- Applicable copyright notices and license notices from the upstream project must be retained.
-- Portions derived from Zalith Launcher 2 that are covered by GPL-3.0 remain subject to that license.
-- When distributing a modified version covered by GPL-3.0, the corresponding source code must be made available as required by the license.
-- Cryogenic Launcher must be clearly identified as an unofficial modified version and must not imply that it is the official Zalith Launcher 2 project.
+- The original copyright and license notices in the inherited code are kept.
+- The source code of each release is made available.
+- The app keeps a different name from the original and shows, in the app, that it is a modified version, as the Zalith Launcher 2 terms require.
 
 **References:**
 - [Zalith Launcher 2 — official repository](https://github.com/ZalithLauncher/ZalithLauncher2)
