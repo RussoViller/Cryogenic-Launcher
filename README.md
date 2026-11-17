@@ -20,7 +20,7 @@ Its visual identity combines dark panels, translucent surfaces, glowing outlines
 
 > **Cryogenic Launcher — created by RussoViller.** Any copy, modified or not, must keep the creator's credits, and no one may claim to be its creator or owner (see [RVCLapk1.1](RVCLapk1.0.md)).
 >
-> **Cryogenic Launcher is an independent, unofficial project.** It is not an official Zalith Launcher 2 product, is not endorsed by the Zalith Launcher 2 developers, and must not be represented as the original project.
+> **Cryogenic Launcher is an independent project, and its official version is developed and published by RussoViller.** It is not an official Zalith Launcher 2 product, is not endorsed by the Zalith Launcher 2 developers, and must not be represented as the original project.
 
 ## ✨ Features
 
@@ -91,7 +91,7 @@ Cryogenic Launcher uses code from **[Zalith Launcher 2](https://github.com/Zalit
 
 We acknowledge the original project and its contributors. Cryogenic Launcher does not claim exclusive authorship of inherited code, third-party libraries or components originating from other projects.
 
-At the same time, Cryogenic Launcher has its **own name, visual identity, presentation and customizations**. Its interface direction and overall presentation are distinct from the original project. It is an independent, unofficial modified project and is not affiliated with or endorsed by the Zalith Launcher 2 developers.
+At the same time, Cryogenic Launcher has its **own name, visual identity, presentation and customizations**. Its interface direction and overall presentation are distinct from the original project. It is an independent project by RussoViller, built as a modified version of Zalith Launcher 2 (and therefore unofficial in relation to Zalith Launcher 2), and is not affiliated with or endorsed by the Zalith Launcher 2 developers.
 
 The Zalith Launcher 2 repository identifies **GNU General Public License v3.0 (GPL-3.0)** as its license and includes additional conditions for modified versions. Accordingly:
 
@@ -146,7 +146,7 @@ See [`RVCLapk1.0.md`](RVCLapk1.0.md) (**RVCLapk1.1**) for the full terms.
 
 ## ⚠️ Notices
 
-- Cryogenic Launcher is an independent and unofficial project.
+- Cryogenic Launcher is an independent project, officially developed and published by RussoViller.
 - Minecraft is a trademark of its respective owners. This project does not claim official affiliation with Mojang or Microsoft.
 - Zalith Launcher 2 is a third-party project. Its authorship and rights remain acknowledged.
 - Features relying on external services may change or become unavailable.
