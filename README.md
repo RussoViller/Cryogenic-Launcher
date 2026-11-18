@@ -4,7 +4,7 @@
 
 ### A modern, futuristic and gamer-focused Minecraft launcher experience for Android.
 
-**Release:** `r1.6.5` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
+**Release:** `r1.6.6` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
 
 [RussoViller WebPage](https://russoviller.github.io/RussoViller-WebPage/index.html#inicio)
 
@@ -33,7 +33,7 @@ Its visual identity combines dark panels, translucent surfaces, glowing outlines
 - **Virtual cursor customization:** cursor style options and guidance for selecting images and configuring cursor behavior.
 - **Integrated RV WebPage:** access to the project's website through an area inside the launcher.
 - **In-game menu:** music player (with a floating player) and installation of textures and shaders from CurseForge or Modrinth without leaving the game.
-- **Renderers:** includes the LTW renderer among the available options.
+- **Renderers:** includes the LTW and MobileGlues renderers among the available options, with MobileGlues settings inside the launcher.
 - **Streamer mode:** widgets, images and GIFs, and texts placed over the game.
 - **File manager:** navigation through launcher directories and files, with up to 5 favorite folders.
 - **Settings:** a central area for application options and visual customization.
@@ -106,8 +106,8 @@ Cryogenic Launcher is not the official Zalith Launcher 2 project and is not affi
 | Item | Details |
 |---|---|
 | Application | Cryogenic Launcher |
-| Version | `r1.6.5` |
-| APK filename | `CryogenicLauncher-r1.6.5-arm64-v8a.apk/CryogenicLauncher-r1.6.5-armeabi-v7a.apk` |
+| Version | `r1.6.6` |
+| APK filename | `CryogenicLauncher-r1.6.6-arm64-v8a.apk/CryogenicLauncher-r1.6.6-armeabi-v7a.apk` |
 | Package architecture | ARM64/ARM32 (`arm64-v8a/armeabi-v7a`) |
 | Platform | Android |
 | Project identity | RussoViller |
@@ -153,7 +153,7 @@ See [`RVCLapk1.0.md`](RVCLapk1.0.md) (**RVCLapk1.1**) for the full terms.
 
 <div align="center">
 
-**Cryogenic Launcher r1.6.5**
+**Cryogenic Launcher r1.6.6**
 
 *Freeze the limits. Play beyond.*
 
