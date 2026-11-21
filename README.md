@@ -4,7 +4,7 @@
 
 ### A modern, futuristic and gamer-focused Minecraft launcher experience for Android.
 
-**Release:** `r1.6.8` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
+**Release:** `r1.7.1` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
 
 [RussoViller WebPage](https://russoviller.github.io/RussoViller-WebPage/index.html#inicio)
 
@@ -106,14 +106,15 @@ Cryogenic Launcher is not the official Zalith Launcher 2 project and is not affi
 | Item | Details |
 |---|---|
 | Application | Cryogenic Launcher |
-| Version | `r1.6.8` |
-| APK filename | `CryogenicLauncher-r1.6.8-arm64-v8a.apk/CryogenicLauncher-r1.6.8-armeabi-v7a.apk` |
+| Version | `r1.7.1` |
+| APK filename | `CryogenicLauncher-r1.7.1-arm64-v8a.apk/CryogenicLauncher-r1.7.1-armeabi-v7a.apk` |
+| APK filename (IS) | `CryogenicLauncher-r1.7.1-arm64-v8a-IS.apk/CryogenicLauncher-r1.7.1-armeabi-v7a-IS.apk` |
 | Package architecture | ARM64/ARM32 (`arm64-v8a/armeabi-v7a`) |
 | Platform | Android |
 | Project identity | RussoViller |
 | Website | [russoviller.github.io](https://russoviller.github.io) |
 
-These APKs are built for ARM64 and ARM32 devices. Compatibility with a particular device also depends on the Android version and the application's requirements.
+These APKs are built for ARM64 and ARM32 devices. The **IS** (Internal Storage) APKs keep the game files in the `CryogenicLauncher` folder of internal storage and install alongside the regular version. Compatibility with a particular device also depends on the Android version and the application's requirements.
 
 ## 📥 Installation
 
@@ -153,7 +154,7 @@ See [`RVCLapk1.0.md`](RVCLapk1.0.md) (**RVCLapk1.1**) for the full terms.
 
 <div align="center">
 
-**Cryogenic Launcher r1.6.8**
+**Cryogenic Launcher r1.7.1**
 
 *Freeze the limits. Play beyond.*
 
