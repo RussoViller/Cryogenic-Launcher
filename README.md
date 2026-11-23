@@ -4,7 +4,7 @@
 
 ### A modern, futuristic and gamer-focused Minecraft launcher experience for Android.
 
-**Release:** `r1.7.1` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
+**Release:** `r1.7.2` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
 
 [RussoViller WebPage](https://russoviller.github.io/RussoViller-WebPage/index.html#inicio)
 
@@ -36,6 +36,9 @@ Its visual identity combines dark panels, translucent surfaces, glowing outlines
 - **Renderers:** includes the LTW and MobileGlues renderers among the available options, with MobileGlues settings inside the launcher.
 - **Streamer mode:** widgets, images and GIFs, and texts placed over the game.
 - **File manager:** navigation through launcher directories and files, with up to 5 favorite folders.
+- **DelChunk:** a map of your worlds to select and delete chunks, with backup before saving.
+- **ChunkBase:** a biome and structure map generated from the world seed, with biome and structure catalogs and a cave biome view.
+- **Gamepad:** support for wired and Bluetooth controllers, with full button remapping.
 - **Settings:** a central area for application options and visual customization.
 
 *Feature availability may depend on the app version, internet access, Android permissions and external services.*
@@ -97,8 +100,11 @@ Cryogenic Launcher is not the official Zalith Launcher 2 project and is not affi
 - The source code of each release is made available.
 - The app keeps a different name from the original and shows, in the app, that it is a modified version, as the Zalith Launcher 2 terms require.
 
+The ChunkBase tab uses **[cubiomes](https://github.com/Cubitect/cubiomes)** (MIT License) for biome and structure generation.
+
 **References:**
 - [Zalith Launcher 2 — official repository](https://github.com/ZalithLauncher/ZalithLauncher2)
+- [cubiomes — official repository](https://github.com/Cubitect/cubiomes)
 - [GNU GPL-3.0 — license text](https://www.gnu.org/licenses/gpl-3.0.html)
 
 ## 📱 Release information
@@ -106,9 +112,9 @@ Cryogenic Launcher is not the official Zalith Launcher 2 project and is not affi
 | Item | Details |
 |---|---|
 | Application | Cryogenic Launcher |
-| Version | `r1.7.1` |
-| APK filename | `CryogenicLauncher-r1.7.1-arm64-v8a.apk/CryogenicLauncher-r1.7.1-armeabi-v7a.apk` |
-| APK filename (IS) | `CryogenicLauncher-r1.7.1-arm64-v8a-IS.apk/CryogenicLauncher-r1.7.1-armeabi-v7a-IS.apk` |
+| Version | `r1.7.2` |
+| APK filename | `CryogenicLauncher-r1.7.2-arm64-v8a.apk/CryogenicLauncher-r1.7.2-armeabi-v7a.apk` |
+| APK filename (IS) | `CryogenicLauncher-r1.7.2-arm64-v8a-IS.apk/CryogenicLauncher-r1.7.2-armeabi-v7a-IS.apk` |
 | Package architecture | ARM64/ARM32 (`arm64-v8a/armeabi-v7a`) |
 | Platform | Android |
 | Project identity | RussoViller |
@@ -154,7 +160,7 @@ See [`RVCLapk1.0.md`](RVCLapk1.0.md) (**RVCLapk1.1**) for the full terms.
 
 <div align="center">
 
-**Cryogenic Launcher r1.7.1**
+**Cryogenic Launcher r1.7.2**
 
 *Freeze the limits. Play beyond.*
 
