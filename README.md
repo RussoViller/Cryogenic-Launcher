@@ -4,7 +4,7 @@
 
 ### A modern, futuristic and gamer-focused Minecraft launcher experience for Android.
 
-**Release:** `r1.7.2` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
+**Release:** `r1.7.3` · **Platform:** Android · **Package architecture:** `arm64-v8a / armeabi-v7a`
 
 [RussoViller WebPage](https://russoviller.github.io/RussoViller-WebPage/index.html#inicio)
 
@@ -32,13 +32,15 @@ Its visual identity combines dark panels, translucent surfaces, glowing outlines
 - **Download center:** dedicated sections for Mods, Shaders, ModPacks, Textures, Worlds and other Minecraft-related content.
 - **Virtual cursor customization:** cursor style options and guidance for selecting images and configuring cursor behavior.
 - **Integrated RV WebPage:** access to the project's website through an area inside the launcher.
-- **In-game menu:** music player (with a floating player) and installation of textures and shaders from CurseForge or Modrinth without leaving the game.
+- **In-game menu:** music player (with a floating player), ChunkBase map, and installation of textures and shaders from CurseForge or Modrinth without leaving the game.
 - **Renderers:** includes the LTW and MobileGlues renderers among the available options, with MobileGlues settings inside the launcher.
 - **Streamer mode:** widgets, images and GIFs, and texts placed over the game.
 - **File manager:** navigation through launcher directories and files, with up to 5 favorite folders.
 - **DelChunk:** a map of your worlds to select and delete chunks, with backup before saving.
 - **ChunkBase:** a biome and structure map generated from the world seed, with biome and structure catalogs and a cave biome view.
 - **Gamepad:** support for wired and Bluetooth controllers, with full button remapping.
+- **Performance options:** high-performance CPU cores (with a dedicated core for the render thread), forced maximum refresh rate and a direct game surface (SurfaceView).
+- **Mod compatibility:** sound for mods that use Java Sound and the Android file picker for mods that open file dialogs.
 - **Settings:** a central area for application options and visual customization.
 
 *Feature availability may depend on the app version, internet access, Android permissions and external services.*
@@ -112,9 +114,9 @@ The ChunkBase tab uses **[cubiomes](https://github.com/Cubitect/cubiomes)** (MIT
 | Item | Details |
 |---|---|
 | Application | Cryogenic Launcher |
-| Version | `r1.7.2` |
-| APK filename | `CryogenicLauncher-r1.7.2-arm64-v8a.apk/CryogenicLauncher-r1.7.2-armeabi-v7a.apk` |
-| APK filename (IS) | `CryogenicLauncher-r1.7.2-arm64-v8a-IS.apk/CryogenicLauncher-r1.7.2-armeabi-v7a-IS.apk` |
+| Version | `r1.7.3` |
+| APK filename | `CryogenicLauncher-r1.7.3-arm64-v8a.apk/CryogenicLauncher-r1.7.3-armeabi-v7a.apk` |
+| APK filename (IS) | `CryogenicLauncher-r1.7.3-arm64-v8a-IS.apk/CryogenicLauncher-r1.7.3-armeabi-v7a-IS.apk` |
 | Package architecture | ARM64/ARM32 (`arm64-v8a/armeabi-v7a`) |
 | Platform | Android |
 | Project identity | RussoViller |
@@ -160,7 +162,7 @@ See [`RVCLapk1.0.md`](RVCLapk1.0.md) (**RVCLapk1.1**) for the full terms.
 
 <div align="center">
 
-**Cryogenic Launcher r1.7.2**
+**Cryogenic Launcher r1.7.3**
 
 *Freeze the limits. Play beyond.*
 
