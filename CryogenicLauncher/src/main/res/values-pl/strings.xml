@@ -1597,7 +1597,7 @@
     <string name="cryo_web_home">Start</string>
     <string name="cryo_web_downloads">Pobrane</string>
     <string name="cryo_web_arrows">Płytki animowane</string>
-    <string name="cryo_web_wallpapers">Papiery ścienne</string>
+    <string name="cryo_web_wallpapers">Tapety</string>
     <string name="cryo_web_hud">ZL2 HUD</string>
     <string name="cryo_web_launchers">Rozbudowy</string>
     <string name="cryo_web_github">GitHub</string>
@@ -1759,7 +1759,7 @@
     <string name="cryo_hero_wallpaper_state_default">Wykorzystanie domyślnego obrazu Cryogenic</string>
     <string name="cryo_hero_wallpaper_state_video">Aktualne tapety: wideo (mute)</string>
     <string name="cryo_hero_wallpaper_restore">Użyj domyślnie</string>
-    <string name="cryo_hero_wallpaper_opacity">Opacyjność papieru ściennego</string>
+    <string name="cryo_hero_wallpaper_opacity">Przezroczystość tapety</string>
     <string name="cryo_discord_title">Pokaż aktywność w Discord</string>
     <string name="cryo_discord_summary">Wyświetla się w profilu Discord, gdy jesteś w Launcher lub grasz, z wersją i ładunkiem. Korzysta z aplikacji Discord zainstalowanej na tym telefonie, bez zapytania o logowanie lub hasło.</string>
     <string name="cryo_discord_not_installed">Aplikacja Discord nie została znaleziona w tym telefonie. Zainstaluj Discord w celu wyświetlania swojej aktywności.</string>
@@ -1822,7 +1822,7 @@
     <string name="cryo_fm_wallpaper_state_video">Aktualne tapety: animowane (video / Live Photo)</string>
     <string name="cryo_fm_wallpaper_pick">Wybrać tapetę</string>
     <string name="cryo_fm_wallpaper_remove">Usuń</string>
-    <string name="cryo_fm_wallpaper_volume">Volumen papieru ściennego</string>
+    <string name="cryo_fm_wallpaper_volume">Głośność tapety</string>
     <string name="cryo_fm_background_opacity">Przeciwkość tła zarządcy plików</string>
     <string name="cryo_tiktok_title">Profile TikTok</string>
     <string name="cryo_tiktok_russo">TikToks RussoViller\'s:</string>
@@ -2035,7 +2035,7 @@
     <string name="cryo_presets_rename">Zmień nazwę</string>
     <string name="cryo_presets_delete">Usuń</string>
     <string name="cryo_presets_delete_confirm">Usunięcie ustawienia \"%1$s\"? Nie można tego odwrócić.</string>
-    <string name="cryo_presets_wallpapers">Papiery ścienne</string>
+    <string name="cryo_presets_wallpapers">Tapety</string>
     <string name="cryo_presets_slot_background">Tło</string>
     <string name="cryo_presets_slot_hero">Główna karta</string>
     <string name="cryo_presets_slot_portrait">9:16</string>

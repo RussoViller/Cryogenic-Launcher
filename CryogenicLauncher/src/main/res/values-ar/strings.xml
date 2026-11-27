@@ -1597,7 +1597,7 @@
     <string name="cryo_web_home">الرئيسية</string>
     <string name="cryo_web_downloads">التنزيلات</string>
     <string name="cryo_web_arrows">السهم المتحركة</string>
-    <string name="cryo_web_wallpapers">الأوراق الحائطية</string>
+    <string name="cryo_web_wallpapers">الخلفيات</string>
     <string name="cryo_web_hud">ZL2 هود</string>
     <string name="cryo_web_launchers">الإطلاق</string>
     <string name="cryo_web_github">GitHub</string>
@@ -2012,7 +2012,7 @@
     <string name="cryo_theme_desert">الصحراء</string>
     <string name="cryo_theme_gold">الذهب</string>
     <string name="cryo_theme_sakura">ساكورا</string>
-    <string name="cryo_extras_title">العملات الإضافية</string>
+    <string name="cryo_extras_title">الوظائف الإضافية</string>
     <string name="cryo_extras_presets_summary">حفظ موضوع + خلفيات</string>
     <string name="cryo_extras_more_soon">المزيد من الوظائف قادمة قريبا</string>
     <string name="cryo_presets_title">الإعدادات المسبقة</string>
@@ -2035,7 +2035,7 @@
     <string name="cryo_presets_rename">إعادة تسمية</string>
     <string name="cryo_presets_delete">حذف</string>
     <string name="cryo_presets_delete_confirm">إزالة الإعداد المسبق \"%1$s\"؟ هذا لا يمكن إلغاءه</string>
-    <string name="cryo_presets_wallpapers">الأوراق الحائطية</string>
+    <string name="cryo_presets_wallpapers">الخلفيات</string>
     <string name="cryo_presets_slot_background">الخلفية</string>
     <string name="cryo_presets_slot_hero">البطاقة الرئيسية</string>
     <string name="cryo_presets_slot_portrait">9:16</string>

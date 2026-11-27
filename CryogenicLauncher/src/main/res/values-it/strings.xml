@@ -1597,7 +1597,7 @@
     <string name="cryo_web_home">Home</string>
     <string name="cryo_web_downloads">Download</string>
     <string name="cryo_web_arrows">Arche animate</string>
-    <string name="cryo_web_wallpapers">Papelli da parati</string>
+    <string name="cryo_web_wallpapers">Sfondi</string>
     <string name="cryo_web_hud">ZL2 HUD</string>
     <string name="cryo_web_launchers">Lanciatori</string>
     <string name="cryo_web_github">GitHub</string>
@@ -2035,7 +2035,7 @@
     <string name="cryo_presets_rename">Rinomina</string>
     <string name="cryo_presets_delete">Elimina</string>
     <string name="cryo_presets_delete_confirm">Cancellare il predefinito \"%1$s\"? Questo non può essere annullato.</string>
-    <string name="cryo_presets_wallpapers">Papelli da parati</string>
+    <string name="cryo_presets_wallpapers">Sfondi</string>
     <string name="cryo_presets_slot_background">Sfondo</string>
     <string name="cryo_presets_slot_hero">Carta principale</string>
     <string name="cryo_presets_slot_portrait">9:16</string>

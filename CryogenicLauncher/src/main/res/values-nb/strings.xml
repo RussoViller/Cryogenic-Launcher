@@ -1597,7 +1597,7 @@
     <string name="cryo_web_home">Hjem</string>
     <string name="cryo_web_downloads">Nedlastinger</string>
     <string name="cryo_web_arrows">Animerte piler</string>
-    <string name="cryo_web_wallpapers">Tappepapirer</string>
+    <string name="cryo_web_wallpapers">Bakgrunnsbilder</string>
     <string name="cryo_web_hud">ZL2 HUD</string>
     <string name="cryo_web_launchers">Launcher</string>
     <string name="cryo_web_github">GitHub</string>
@@ -2035,7 +2035,7 @@
     <string name="cryo_presets_rename">Gi nytt navn</string>
     <string name="cryo_presets_delete">Slett</string>
     <string name="cryo_presets_delete_confirm">Slett forhåndsinnstilling \"%1$s\"? Dette kan ikke gjøres tilbake.</string>
-    <string name="cryo_presets_wallpapers">Tappepapirer</string>
+    <string name="cryo_presets_wallpapers">Bakgrunnsbilder</string>
     <string name="cryo_presets_slot_background">Bakgrunn</string>
     <string name="cryo_presets_slot_hero">Hovekort</string>
     <string name="cryo_presets_slot_portrait">9:16</string>

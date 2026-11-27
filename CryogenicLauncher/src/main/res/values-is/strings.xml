@@ -1597,7 +1597,7 @@
     <string name="cryo_web_home">Heim</string>
     <string name="cryo_web_downloads">Niðurhal</string>
     <string name="cryo_web_arrows">Líffandi pílur</string>
-    <string name="cryo_web_wallpapers">Myndbönd</string>
+    <string name="cryo_web_wallpapers">Bakgrunnsmyndir</string>
     <string name="cryo_web_hud">FÓLKI</string>
     <string name="cryo_web_launchers">Lansers</string>
     <string name="cryo_web_github">GitHub</string>
@@ -2035,7 +2035,7 @@
     <string name="cryo_presets_rename">Endurnefna</string>
     <string name="cryo_presets_delete">Eyða</string>
     <string name="cryo_presets_delete_confirm">Slökkva fyrirsettinu \"%1$s\"? Þetta er ekki hægt að snúa þessu frá sér.</string>
-    <string name="cryo_presets_wallpapers">Myndbönd</string>
+    <string name="cryo_presets_wallpapers">Bakgrunnsmyndir</string>
     <string name="cryo_presets_slot_background">Bakgrunnur</string>
     <string name="cryo_presets_slot_hero">Mein kort</string>
     <string name="cryo_presets_slot_portrait">9:16</string>

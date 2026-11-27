@@ -1597,7 +1597,7 @@
     <string name="cryo_web_home">Koti</string>
     <string name="cryo_web_downloads">Lataukset</string>
     <string name="cryo_web_arrows">Elokuvatut nuot</string>
-    <string name="cryo_web_wallpapers">Säätiedot</string>
+    <string name="cryo_web_wallpapers">Taustakuvat</string>
     <string name="cryo_web_hud">ZL2 HUD</string>
     <string name="cryo_web_launchers">Laukaisevat</string>
     <string name="cryo_web_github">GitHub</string>
@@ -2035,7 +2035,7 @@
     <string name="cryo_presets_rename">Nimeä uudelleen</string>
     <string name="cryo_presets_delete">Poista</string>
     <string name="cryo_presets_delete_confirm">Poistaa ennalta asetettu \"%1$s\"? Tätä ei voi peruuttaa.</string>
-    <string name="cryo_presets_wallpapers">Säätiedot</string>
+    <string name="cryo_presets_wallpapers">Taustakuvat</string>
     <string name="cryo_presets_slot_background">Tausta</string>
     <string name="cryo_presets_slot_hero">Pääkortti</string>
     <string name="cryo_presets_slot_portrait">9:16</string>

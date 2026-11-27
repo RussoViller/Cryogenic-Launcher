@@ -1597,7 +1597,7 @@
     <string name="cryo_web_home">Start</string>
     <string name="cryo_web_downloads">Downloads</string>
     <string name="cryo_web_arrows">Geanimeerde pijlen</string>
-    <string name="cryo_web_wallpapers">Beeldpapieren</string>
+    <string name="cryo_web_wallpapers">Achtergronden</string>
     <string name="cryo_web_hud">ZL2 HUD</string>
     <string name="cryo_web_launchers">Launchers</string>
     <string name="cryo_web_github">GitHub</string>
@@ -2035,7 +2035,7 @@
     <string name="cryo_presets_rename">Hernoemen</string>
     <string name="cryo_presets_delete">Verwijderen</string>
     <string name="cryo_presets_delete_confirm">Verwijder de vooraf ingestelde \"%1$s\"? Dit kan niet ongedaan worden gemaakt.</string>
-    <string name="cryo_presets_wallpapers">Beeldpapieren</string>
+    <string name="cryo_presets_wallpapers">Achtergronden</string>
     <string name="cryo_presets_slot_background">Achtergrond</string>
     <string name="cryo_presets_slot_hero">Hoofdkort</string>
     <string name="cryo_presets_slot_portrait">9:16</string>
