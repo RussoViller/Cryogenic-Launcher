@@ -2103,7 +2103,7 @@
     <string name="cryo_donate_afdian_summary">خارج البرازيل، وخاصة في آسيا؟ ادعمنا عبر afdian باستخدام Alipay أو WeChat Pay.</string>
     <string name="cryo_donate_afdian_step1">اختر خطة أو اكتب مبلغًا في الصفحة المجاورة.</string>
     <string name="cryo_donate_afdian_step2">ادفع باستخدام Alipay أو WeChat Pay.</string>
-    <string name="cryo_donate_afdian_step3">سيظهر اسمك في الداعمين الحاليين خلال 8 ساعات.</string>
+    <string name="cryo_donate_afdian_step3">سيظهر اسمك في الداعمين الحاليين خلال 3 أيام.</string>
     <string name="cryo_donate_afdian_note">يبقى كل دعم في قائمة داعمي المشغّل لمدة 30 يومًا. شكرًا لك!</string>
     <string name="cryo_sponsors_title">الداعمون الحاليون</string>
     <string name="cryo_sponsors_count">داعمون نشطون</string>
@@ -2112,7 +2112,7 @@
     <string name="cryo_sponsors_offline">تعذّر تحميل القائمة الآن.</string>
     <string name="cryo_sponsors_loading">جارٍ التحميل…</string>
     <string name="cryo_sponsors_until">حتى %1$s</string>
-    <string name="cryo_sponsors_next">يتحدّث كل 8 ساعات · التالي في %1$s</string>
+    <string name="cryo_sponsors_next">يتحدّث كل 3 أيام · التالي في %1$s</string>
     <string name="cryo_sponsors_support">ادعم</string>
     <string name="cryo_sponsors_close">إغلاق</string>
     <string name="cryo_sponsors_view">عرض</string>

@@ -2103,7 +2103,7 @@
     <string name="cryo_donate_afdian_summary">Brasilian ulkopuolella, varsinkin Aasiassa? Tue afdianin kautta Alipaylla tai WeChat Paylla.</string>
     <string name="cryo_donate_afdian_step1">Valitse tilaus tai kirjoita summa viereiselle sivulle.</string>
     <string name="cryo_donate_afdian_step2">Maksa Alipaylla tai WeChat Paylla.</string>
-    <string name="cryo_donate_afdian_step3">Nimesi näkyy Nykyiset tukijat -kohdassa 8 tunnin kuluessa.</string>
+    <string name="cryo_donate_afdian_step3">Nimesi näkyy Nykyiset tukijat -kohdassa 3 päivän kuluessa.</string>
     <string name="cryo_donate_afdian_note">Jokainen tuki pysyy Launcherin tukijalistalla 30 päivää. Kiitos!</string>
     <string name="cryo_sponsors_title">Nykyiset tukijat</string>
     <string name="cryo_sponsors_count">aktiivista tukijaa</string>
@@ -2112,7 +2112,7 @@
     <string name="cryo_sponsors_offline">Listaa ei voitu ladata juuri nyt.</string>
     <string name="cryo_sponsors_loading">Ladataan…</string>
     <string name="cryo_sponsors_until">%1$s asti</string>
-    <string name="cryo_sponsors_next">Päivittyy 8 tunnin välein · seuraava klo %1$s</string>
+    <string name="cryo_sponsors_next">Päivittyy 3 päivän välein · seuraava %1$s</string>
     <string name="cryo_sponsors_support">Tue</string>
     <string name="cryo_sponsors_close">Sulje</string>
     <string name="cryo_sponsors_view">Näytä</string>

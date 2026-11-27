@@ -2102,7 +2102,7 @@
     <string name="cryo_donate_afdian_summary">在巴西以外，尤其是亚洲？可以通过爱发电使用支付宝或微信支付赞助。</string>
     <string name="cryo_donate_afdian_step1">在旁边的页面选择方案或输入金额。</string>
     <string name="cryo_donate_afdian_step2">使用支付宝或微信支付付款。</string>
-    <string name="cryo_donate_afdian_step3">你的名字会在 8 小时内出现在“当前赞助者”中。</string>
+    <string name="cryo_donate_afdian_step3">你的名字会在 3 天内出现在“当前赞助者”中。</string>
     <string name="cryo_donate_afdian_note">每次赞助都会在启动器的赞助者名单中保留 30 天。谢谢你！</string>
     <string name="cryo_sponsors_title">当前赞助者</string>
     <string name="cryo_sponsors_count">位赞助者</string>
@@ -2111,7 +2111,7 @@
     <string name="cryo_sponsors_offline">暂时无法加载名单。</string>
     <string name="cryo_sponsors_loading">加载中…</string>
     <string name="cryo_sponsors_until">至 %1$s</string>
-    <string name="cryo_sponsors_next">每 8 小时更新 · 下次 %1$s</string>
+    <string name="cryo_sponsors_next">每 3 天更新 · 下次 %1$s</string>
     <string name="cryo_sponsors_support">支持</string>
     <string name="cryo_sponsors_close">关闭</string>
     <string name="cryo_sponsors_view">查看</string>

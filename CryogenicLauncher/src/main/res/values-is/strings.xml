@@ -2103,7 +2103,7 @@
     <string name="cryo_donate_afdian_summary">Utan Brasilíu, sérstaklega í Asíu? Styrktu í gegnum afdian með Alipay eða WeChat Pay.</string>
     <string name="cryo_donate_afdian_step1">Veldu áskrift eða sláðu inn upphæð á síðunni við hliðina.</string>
     <string name="cryo_donate_afdian_step2">Borgaðu með Alipay eða WeChat Pay.</string>
-    <string name="cryo_donate_afdian_step3">Nafnið þitt birtist undir Núverandi styrktaraðilar innan 8 klukkustunda.</string>
+    <string name="cryo_donate_afdian_step3">Nafnið þitt birtist undir Núverandi styrktaraðilar innan 3 daga.</string>
     <string name="cryo_donate_afdian_note">Hver styrkur er 30 daga á styrktaraðilalista Launcher. Takk fyrir!</string>
     <string name="cryo_sponsors_title">Núverandi styrktaraðilar</string>
     <string name="cryo_sponsors_count">virkir styrktaraðilar</string>
@@ -2112,7 +2112,7 @@
     <string name="cryo_sponsors_offline">Ekki tókst að hlaða listanum núna.</string>
     <string name="cryo_sponsors_loading">Hleður…</string>
     <string name="cryo_sponsors_until">Til %1$s</string>
-    <string name="cryo_sponsors_next">Uppfærist á 8 klukkustunda fresti · næst kl. %1$s</string>
+    <string name="cryo_sponsors_next">Uppfærist á 3 daga fresti · næst %1$s</string>
     <string name="cryo_sponsors_support">Styrkja</string>
     <string name="cryo_sponsors_close">Loka</string>
     <string name="cryo_sponsors_view">Skoða</string>

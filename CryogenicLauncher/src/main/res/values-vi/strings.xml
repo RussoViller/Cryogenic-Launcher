@@ -2102,7 +2102,7 @@
     <string name="cryo_donate_afdian_summary">Ở ngoài Brazil, nhất là ở châu Á? Hãy ủng hộ qua afdian bằng Alipay hoặc WeChat Pay.</string>
     <string name="cryo_donate_afdian_step1">Chọn một gói hoặc nhập số tiền ở trang bên cạnh.</string>
     <string name="cryo_donate_afdian_step2">Thanh toán bằng Alipay hoặc WeChat Pay.</string>
-    <string name="cryo_donate_afdian_step3">Tên của bạn sẽ xuất hiện trong Nhà tài trợ hiện tại trong vòng 8 giờ.</string>
+    <string name="cryo_donate_afdian_step3">Tên của bạn sẽ xuất hiện trong Nhà tài trợ hiện tại trong vòng 3 ngày.</string>
     <string name="cryo_donate_afdian_note">Mỗi lần tài trợ sẽ nằm trong danh sách nhà tài trợ của Launcher trong 30 ngày. Cảm ơn bạn!</string>
     <string name="cryo_sponsors_title">Nhà tài trợ hiện tại</string>
     <string name="cryo_sponsors_count">nhà tài trợ đang hoạt động</string>
@@ -2111,7 +2111,7 @@
     <string name="cryo_sponsors_offline">Không thể tải danh sách lúc này.</string>
     <string name="cryo_sponsors_loading">Đang tải…</string>
     <string name="cryo_sponsors_until">Đến %1$s</string>
-    <string name="cryo_sponsors_next">Cập nhật mỗi 8 giờ · lần tới lúc %1$s</string>
+    <string name="cryo_sponsors_next">Cập nhật mỗi 3 ngày · lần tới %1$s</string>
     <string name="cryo_sponsors_support">Ủng hộ</string>
     <string name="cryo_sponsors_close">Đóng</string>
     <string name="cryo_sponsors_view">Xem</string>

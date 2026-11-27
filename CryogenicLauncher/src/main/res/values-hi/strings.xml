@@ -2103,7 +2103,7 @@
     <string name="cryo_donate_afdian_summary">ब्राज़ील से बाहर हैं, खासकर एशिया में? afdian पर Alipay या WeChat Pay से समर्थन करें।</string>
     <string name="cryo_donate_afdian_step1">बगल वाले पेज पर कोई प्लान चुनें या राशि लिखें।</string>
     <string name="cryo_donate_afdian_step2">Alipay या WeChat Pay से भुगतान करें।</string>
-    <string name="cryo_donate_afdian_step3">आपका नाम 8 घंटे के अंदर मौजूदा प्रायोजक में दिखेगा।</string>
+    <string name="cryo_donate_afdian_step3">आपका नाम 3 दिनों के अंदर मौजूदा प्रायोजक में दिखेगा।</string>
     <string name="cryo_donate_afdian_note">हर समर्थन 30 दिनों तक लॉन्चर की प्रायोजक सूची में रहता है। धन्यवाद!</string>
     <string name="cryo_sponsors_title">मौजूदा प्रायोजक</string>
     <string name="cryo_sponsors_count">सक्रिय प्रायोजक</string>
@@ -2112,7 +2112,7 @@
     <string name="cryo_sponsors_offline">अभी सूची लोड नहीं हो सकी।</string>
     <string name="cryo_sponsors_loading">लोड हो रहा है…</string>
     <string name="cryo_sponsors_until">%1$s तक</string>
-    <string name="cryo_sponsors_next">हर 8 घंटे में अपडेट · अगला %1$s पर</string>
+    <string name="cryo_sponsors_next">हर 3 दिन में अपडेट · अगला %1$s पर</string>
     <string name="cryo_sponsors_support">समर्थन करें</string>
     <string name="cryo_sponsors_close">बंद करें</string>
     <string name="cryo_sponsors_view">देखें</string>

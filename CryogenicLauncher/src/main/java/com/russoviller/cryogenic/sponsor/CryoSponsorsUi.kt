@@ -164,7 +164,7 @@ fun CryoSponsorsDialog(onDismiss: () -> Unit, onSupport: () -> Unit) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 val next = remember(data) {
-                    DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(CryoSponsors.nextUpdate()))
+                    DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(Date(CryoSponsors.nextUpdate()))
                 }
                 Text(
                     modifier = Modifier.weight(1f),

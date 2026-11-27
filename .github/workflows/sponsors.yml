@@ -1,10 +1,13 @@
 # Atualiza a lista de patrocinadores do afdian usada pelo Cryogenic Launcher.
-# Roda às 00:00, 08:00 e 16:00 (horário de Brasília/Fortaleza, UTC-3).
+# Roda a cada 3 dias (72 horas), às 00:00 (horário de Brasília/Fortaleza, UTC-3).
+# O cron roda todo dia, mas só atualiza nos dias em que (dias desde 01/01/1970, em UTC-3) % 3 == 0:
+# assim o intervalo é sempre 72 h, mesmo na virada do mês. O Launcher usa a mesma regra
+# (CryoSponsors.kt) para saber quando buscar a lista nova. Rodando à mão, atualiza na hora.
 name: Patrocinadores do afdian
 
 on:
   schedule:
-    - cron: "0 3,11,19 * * *"
+    - cron: "0 3 * * *"
   workflow_dispatch:
 
 permissions:
@@ -18,15 +21,29 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
+      - name: Dia de atualizar?
+        id: due
+        run: |
+          day=$(( ($(date -u +%s) - 3 * 3600) / 86400 ))
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ $(( day % 3 )) -eq 0 ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Hoje não (próxima atualização em $(( 3 - day % 3 )) dia(s))."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - uses: actions/checkout@v4
+        if: steps.due.outputs.run == 'true'
 
       - name: Buscar patrocinadores
+        if: steps.due.outputs.run == 'true'
         env:
           AFDIAN_TOKEN: ${{ secrets.AFDIAN_TOKEN }}
           AFDIAN_USER_ID: 2b17f17c158d11f18ea952540025c377
         run: python3 .github/scripts/afdian_sponsors.py sponsors/sponsors.json
 
       - name: Salvar no repositório
+        if: steps.due.outputs.run == 'true'
         run: |
           if [ -z "$(git status --porcelain sponsors/)" ]; then
             echo "Nada mudou."

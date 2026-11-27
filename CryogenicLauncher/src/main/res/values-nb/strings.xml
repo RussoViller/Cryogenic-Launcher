@@ -2103,7 +2103,7 @@
     <string name="cryo_donate_afdian_summary">Utenfor Brasil, særlig i Asia? Støtt via afdian med Alipay eller WeChat Pay.</string>
     <string name="cryo_donate_afdian_step1">Velg en plan eller skriv inn et beløp på siden ved siden av.</string>
     <string name="cryo_donate_afdian_step2">Betal med Alipay eller WeChat Pay.</string>
-    <string name="cryo_donate_afdian_step3">Navnet ditt vises under Nåværende sponsorer innen 8 timer.</string>
+    <string name="cryo_donate_afdian_step3">Navnet ditt vises under Nåværende sponsorer innen 3 dager.</string>
     <string name="cryo_donate_afdian_note">Hver støtte blir værende 30 dager på Launcherens sponsorliste. Takk!</string>
     <string name="cryo_sponsors_title">Nåværende sponsorer</string>
     <string name="cryo_sponsors_count">aktive sponsorer</string>
@@ -2112,7 +2112,7 @@
     <string name="cryo_sponsors_offline">Kunne ikke laste inn listen nå.</string>
     <string name="cryo_sponsors_loading">Laster inn…</string>
     <string name="cryo_sponsors_until">Til %1$s</string>
-    <string name="cryo_sponsors_next">Oppdateres hver 8. time · neste kl. %1$s</string>
+    <string name="cryo_sponsors_next">Oppdateres hver 3. dag · neste %1$s</string>
     <string name="cryo_sponsors_support">Støtt</string>
     <string name="cryo_sponsors_close">Lukk</string>
     <string name="cryo_sponsors_view">Vis</string>

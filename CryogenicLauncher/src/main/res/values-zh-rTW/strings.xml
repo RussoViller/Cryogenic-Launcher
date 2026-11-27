@@ -2102,7 +2102,7 @@
     <string name="cryo_donate_afdian_summary">在巴西以外，尤其是亞洲？可以透過愛發電使用支付寶或微信支付贊助。</string>
     <string name="cryo_donate_afdian_step1">在旁邊的頁面選擇方案或輸入金額。</string>
     <string name="cryo_donate_afdian_step2">使用支付寶或微信支付付款。</string>
-    <string name="cryo_donate_afdian_step3">你的名字會在 8 小時內出現在「目前的贊助者」中。</string>
+    <string name="cryo_donate_afdian_step3">你的名字會在 3 天內出現在「目前的贊助者」中。</string>
     <string name="cryo_donate_afdian_note">每次贊助都會在啟動器的贊助者名單中保留 30 天。謝謝你！</string>
     <string name="cryo_sponsors_title">目前的贊助者</string>
     <string name="cryo_sponsors_count">位贊助者</string>
@@ -2111,7 +2111,7 @@
     <string name="cryo_sponsors_offline">目前無法載入名單。</string>
     <string name="cryo_sponsors_loading">載入中…</string>
     <string name="cryo_sponsors_until">至 %1$s</string>
-    <string name="cryo_sponsors_next">每 8 小時更新 · 下次 %1$s</string>
+    <string name="cryo_sponsors_next">每 3 天更新 · 下次 %1$s</string>
     <string name="cryo_sponsors_support">支持</string>
     <string name="cryo_sponsors_close">關閉</string>
     <string name="cryo_sponsors_view">查看</string>

@@ -2103,7 +2103,7 @@
     <string name="cryo_donate_afdian_summary">Jesteś poza Brazylią, zwłaszcza w Azji? Wesprzyj przez afdian za pomocą Alipay lub WeChat Pay.</string>
     <string name="cryo_donate_afdian_step1">Wybierz plan lub wpisz kwotę na stronie obok.</string>
     <string name="cryo_donate_afdian_step2">Zapłać przez Alipay lub WeChat Pay.</string>
-    <string name="cryo_donate_afdian_step3">Twoje imię pojawi się w sekcji Obecni sponsorzy w ciągu 8 godzin.</string>
+    <string name="cryo_donate_afdian_step3">Twoje imię pojawi się w sekcji Obecni sponsorzy w ciągu 3 dni.</string>
     <string name="cryo_donate_afdian_note">Każde wsparcie zostaje na liście sponsorów Launchera przez 30 dni. Dziękujemy!</string>
     <string name="cryo_sponsors_title">Obecni sponsorzy</string>
     <string name="cryo_sponsors_count">aktywni sponsorzy</string>
@@ -2112,7 +2112,7 @@
     <string name="cryo_sponsors_offline">Nie udało się teraz wczytać listy.</string>
     <string name="cryo_sponsors_loading">Wczytywanie…</string>
     <string name="cryo_sponsors_until">Do %1$s</string>
-    <string name="cryo_sponsors_next">Aktualizacja co 8 godzin · następna o %1$s</string>
+    <string name="cryo_sponsors_next">Aktualizacja co 3 dni · następna %1$s</string>
     <string name="cryo_sponsors_support">Wesprzyj</string>
     <string name="cryo_sponsors_close">Zamknij</string>
     <string name="cryo_sponsors_view">Zobacz</string>

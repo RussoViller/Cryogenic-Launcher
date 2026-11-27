@@ -61,9 +61,10 @@ private data class SponsorCache(val fetchedAt: Long = 0L, val data: CryoSponsorD
 /**
  * Patrocinadores atuais do afdian.
  *
- * O token do afdian fica só no GitHub (Secret do repositório): um Action roda às 00:00, 08:00 e
- * 16:00 (UTC-3) e publica um JSON apenas com nome, foto e datas. O Launcher só lê esse JSON,
- * uma vez por janela de 8 horas (com 30 min de folga para o Action terminar).
+ * O token do afdian fica só no GitHub (Secret do repositório): um Action roda a cada 3 dias
+ * (72 h, às 00:00 em UTC-3, nos dias com dia-desde-1970 múltiplo de 3) e publica um JSON apenas com
+ * nome, foto e datas. O Launcher só lê esse JSON, uma vez por janela de 72 horas (com folga para o
+ * Action, que o GitHub pode atrasar, terminar).
  */
 object CryoSponsors {
     private const val TAG = "CryoSponsors"
@@ -75,10 +76,11 @@ object CryoSponsors {
     )
 
     private const val HOUR = 3_600_000L
-    private const val SLOT = 8 * HOUR
-    /** Horário de referência do Action: UTC-3 (00:00 / 08:00 / 16:00). */
+    /** 3 dias (72 h): tem que bater com .github/workflows/sponsors.yml. */
+    private const val SLOT = 72 * HOUR
+    /** Horário de referência do Action: UTC-3 (00:00). */
     private const val ZONE_OFFSET = -3 * HOUR
-    private const val GRACE = 30 * 60_000L
+    private const val GRACE = 3 * HOUR
     private const val MANUAL_COOLDOWN = 60_000L
 
     private val json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
@@ -108,13 +110,13 @@ object CryoSponsors {
     private var lastManual = 0L
     private var cacheLoaded = false
 
-    /** Início da janela de 8 h atual (00:00/08:00/16:00 em UTC-3), em ms UTC. */
+    /** Início da janela de 72 h atual (00:00 em UTC-3), em ms UTC. */
     fun slotStart(nowMs: Long = System.currentTimeMillis()): Long {
         val local = nowMs + ZONE_OFFSET
         return Math.floorDiv(local, SLOT) * SLOT - ZONE_OFFSET
     }
 
-    /** Próximo horário de atualização (00:00/08:00/16:00 em UTC-3), em ms UTC. */
+    /** Próximo horário de atualização (00:00 em UTC-3, a cada 3 dias), em ms UTC. */
     fun nextUpdate(nowMs: Long = System.currentTimeMillis()): Long = slotStart(nowMs) + SLOT
 
     /** Último ponto em que o JSON já deveria estar atualizado. */

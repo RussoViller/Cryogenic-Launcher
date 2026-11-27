@@ -2103,7 +2103,7 @@
     <string name="cryo_donate_afdian_summary">Utanför Brasilien, särskilt i Asien? Stöd via afdian med Alipay eller WeChat Pay.</string>
     <string name="cryo_donate_afdian_step1">Välj en plan eller skriv ett belopp på sidan bredvid.</string>
     <string name="cryo_donate_afdian_step2">Betala med Alipay eller WeChat Pay.</string>
-    <string name="cryo_donate_afdian_step3">Ditt namn syns under Nuvarande sponsorer inom 8 timmar.</string>
+    <string name="cryo_donate_afdian_step3">Ditt namn syns under Nuvarande sponsorer inom 3 dagar.</string>
     <string name="cryo_donate_afdian_note">Varje stöd ligger kvar 30 dagar på Launcherns sponsorlista. Tack!</string>
     <string name="cryo_sponsors_title">Nuvarande sponsorer</string>
     <string name="cryo_sponsors_count">aktiva sponsorer</string>
@@ -2112,7 +2112,7 @@
     <string name="cryo_sponsors_offline">Det gick inte att läsa in listan just nu.</string>
     <string name="cryo_sponsors_loading">Läser in…</string>
     <string name="cryo_sponsors_until">Till %1$s</string>
-    <string name="cryo_sponsors_next">Uppdateras var 8:e timme · nästa kl. %1$s</string>
+    <string name="cryo_sponsors_next">Uppdateras var 3:e dag · nästa %1$s</string>
     <string name="cryo_sponsors_support">Stöd</string>
     <string name="cryo_sponsors_close">Stäng</string>
     <string name="cryo_sponsors_view">Visa</string>

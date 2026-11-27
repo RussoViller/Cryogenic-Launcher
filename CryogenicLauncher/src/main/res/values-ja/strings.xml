@@ -2102,7 +2102,7 @@
     <string name="cryo_donate_afdian_summary">ブラジル国外、特にアジアの方は afdian から Alipay や WeChat Pay で支援できます。</string>
     <string name="cryo_donate_afdian_step1">横のページでプランを選ぶか金額を入力してください。</string>
     <string name="cryo_donate_afdian_step2">Alipay または WeChat Pay で支払います。</string>
-    <string name="cryo_donate_afdian_step3">8時間以内に「現在のスポンサー」に名前が表示されます。</string>
+    <string name="cryo_donate_afdian_step3">3日以内に「現在のスポンサー」に名前が表示されます。</string>
     <string name="cryo_donate_afdian_note">支援は30日間、Launcher のスポンサー一覧に表示されます。ありがとうございます！</string>
     <string name="cryo_sponsors_title">現在のスポンサー</string>
     <string name="cryo_sponsors_count">人のスポンサー</string>
@@ -2111,7 +2111,7 @@
     <string name="cryo_sponsors_offline">今は一覧を読み込めませんでした。</string>
     <string name="cryo_sponsors_loading">読み込み中…</string>
     <string name="cryo_sponsors_until">%1$s まで</string>
-    <string name="cryo_sponsors_next">8時間ごとに更新 · 次回 %1$s</string>
+    <string name="cryo_sponsors_next">3日ごとに更新 · 次回 %1$s</string>
     <string name="cryo_sponsors_support">支援する</string>
     <string name="cryo_sponsors_close">閉じる</string>
     <string name="cryo_sponsors_view">表示</string>

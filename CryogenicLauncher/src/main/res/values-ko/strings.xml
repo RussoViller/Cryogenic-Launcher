@@ -2103,7 +2103,7 @@
     <string name="cryo_donate_afdian_summary">브라질 밖, 특히 아시아에 계신가요? afdian에서 Alipay나 WeChat Pay로 후원할 수 있어요.</string>
     <string name="cryo_donate_afdian_step1">옆 페이지에서 플랜을 고르거나 금액을 입력하세요.</string>
     <string name="cryo_donate_afdian_step2">Alipay 또는 WeChat Pay로 결제하세요.</string>
-    <string name="cryo_donate_afdian_step3">8시간 안에 \'현재 후원자\'에 이름이 표시됩니다.</string>
+    <string name="cryo_donate_afdian_step3">3일 안에 \'현재 후원자\'에 이름이 표시됩니다.</string>
     <string name="cryo_donate_afdian_note">후원은 런처 후원자 목록에 30일 동안 남습니다. 감사합니다!</string>
     <string name="cryo_sponsors_title">현재 후원자</string>
     <string name="cryo_sponsors_count">명의 후원자</string>
@@ -2112,7 +2112,7 @@
     <string name="cryo_sponsors_offline">지금은 목록을 불러올 수 없습니다.</string>
     <string name="cryo_sponsors_loading">불러오는 중…</string>
     <string name="cryo_sponsors_until">%1$s까지</string>
-    <string name="cryo_sponsors_next">8시간마다 업데이트 · 다음 %1$s</string>
+    <string name="cryo_sponsors_next">3일마다 업데이트 · 다음 %1$s</string>
     <string name="cryo_sponsors_support">후원하기</string>
     <string name="cryo_sponsors_close">닫기</string>
     <string name="cryo_sponsors_view">보기</string>
