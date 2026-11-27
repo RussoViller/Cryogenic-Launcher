@@ -1,0 +1,8 @@
+HSPLcom/russoviller/cryogenic/ui/**->**(**)**
+HSPLcom/russoviller/cryogenic/filemanager/**->**(**)**
+HSPLcom/russoviller/cryogenic/setting/**->**(**)**
+HSPLcom/russoviller/cryogenic/viewmodel/**->**(**)**
+Lcom/russoviller/cryogenic/ui/**
+Lcom/russoviller/cryogenic/filemanager/**
+Lcom/russoviller/cryogenic/setting/**
+Lcom/russoviller/cryogenic/viewmodel/**

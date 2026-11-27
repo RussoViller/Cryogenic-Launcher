@@ -1,0 +1,9 @@
+{
+  "id": "russoviller.example",
+  "name": "Example Tools",
+  "version": "1.0.0",
+  "author": "RussoViller",
+  "description": "Mod de exemplo: arquivos, mundos e controles no estilo do Launcher.",
+  "main": "com.russoviller.cmodexample.ExampleMod",
+  "apiVersion": 1
+}

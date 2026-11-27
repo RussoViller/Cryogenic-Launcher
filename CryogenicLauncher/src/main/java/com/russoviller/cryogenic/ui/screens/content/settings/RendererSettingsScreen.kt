@@ -1,0 +1,458 @@
+/*
+ * Zalith Launcher 2
+ * Copyright (C) 2025-2026 MovTery <movtery228@qq.com> and contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
+ */
+
+package com.russoviller.cryogenic.ui.screens.content.settings
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.russoviller.cryogenic.R
+import com.russoviller.cryogenic.game.plugin.driver.Driver
+import com.russoviller.cryogenic.game.plugin.driver.DriverPluginManager
+import com.russoviller.cryogenic.game.renderer.ConfigurableRenderer
+import com.russoviller.cryogenic.game.renderer.RendererInterface
+import com.russoviller.cryogenic.game.renderer.Renderers
+import com.russoviller.cryogenic.game.version.installed.GraphicsApi
+import com.russoviller.cryogenic.path.URL_CLOUD_DRIVE_DRIVER_PLUGINS
+import com.russoviller.cryogenic.path.URL_CLOUD_RENDERER_PLUGINS
+import com.russoviller.cryogenic.path.URL_GITHUB_DRIVER_PLUGINS
+import com.russoviller.cryogenic.path.URL_GITHUB_RENDERER_PLUGINS
+import com.russoviller.cryogenic.setting.AllSettings
+import com.russoviller.cryogenic.setting.enums.ResolutionRule
+import com.russoviller.cryogenic.setting.unit.floatRange
+import com.russoviller.cryogenic.ui.base.BaseScreen
+import com.russoviller.cryogenic.ui.components.AnimatedColumn
+import com.russoviller.cryogenic.ui.components.IntInputField
+import com.russoviller.cryogenic.ui.components.SimpleAlertDialog
+import com.russoviller.cryogenic.ui.components.TitleAndSummary
+import com.russoviller.cryogenic.ui.components.animated
+import com.russoviller.cryogenic.ui.components.verticalScrollWithBar
+import com.russoviller.cryogenic.ui.screens.NestedNavKey
+import com.russoviller.cryogenic.ui.screens.NormalNavKey
+import com.russoviller.cryogenic.ui.screens.TitledNavKey
+import com.russoviller.cryogenic.ui.screens.content.settings.layouts.CardPosition
+import com.russoviller.cryogenic.ui.screens.content.settings.layouts.IntSliderSettingsCard
+import com.russoviller.cryogenic.ui.screens.content.settings.layouts.ListSettingsCard
+import com.russoviller.cryogenic.ui.screens.content.settings.layouts.SettingsCard
+import com.russoviller.cryogenic.ui.screens.content.settings.layouts.SettingsCardColumn
+import com.russoviller.cryogenic.ui.screens.content.settings.layouts.SwitchSettingsCard
+import com.russoviller.cryogenic.utils.animation.getAnimateTween
+import com.russoviller.cryogenic.utils.customResolutionRange
+import com.russoviller.cryogenic.utils.device.checkVulkanSupport
+import com.russoviller.cryogenic.utils.ensureCustomResolutionInitialized
+import com.russoviller.cryogenic.utils.getRealScreenSize
+import com.russoviller.cryogenic.utils.isAdrenoGPU
+import com.russoviller.cryogenic.viewmodel.EventViewModel
+import com.russoviller.cryogenic.viewmodel.sendDLPlugin
+
+@Composable
+fun RendererSettingsScreen(
+    key: NestedNavKey.Settings,
+    settingsScreenKey: TitledNavKey?,
+    mainScreenKey: TitledNavKey?,
+    eventViewModel: EventViewModel,
+) {
+    BaseScreen(
+        Triple(key, mainScreenKey, false),
+        Triple(NormalNavKey.Settings.Renderer, settingsScreenKey, false)
+    ) { isVisible ->
+        AnimatedColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScrollWithBar(state = rememberScrollState())
+                .padding(all = 12.dp),
+            isVisible = isVisible
+        ) {
+            AnimatedItem { ctx ->
+                SettingsCardColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animated(ctx)
+                ) {
+                    val currentRendererId = AllSettings.renderer.state
+                    val configurableRenderer = remember(currentRendererId) {
+                        Renderers.getRenderers()
+                            .filterIsInstance<ConfigurableRenderer>()
+                            .find { it.getUniqueIdentifier() == currentRendererId }
+                            ?.takeIf { it.configSpec.entries.isNotEmpty() }
+                    }
+                    var showConfigDialog by remember { mutableStateOf(false) }
+
+                    ListSettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Top,
+                        unit = AllSettings.renderer,
+                        autoCollapse = false,
+                        items = Renderers.getRenderers(),
+                        title = stringResource(R.string.settings_renderer_global_renderer_title),
+                        summary = stringResource(R.string.settings_renderer_global_renderer_summary),
+                        getItemText = { it.getRendererName() },
+                        getItemId = { it.getUniqueIdentifier() },
+                        getItemSummary = {
+                            RendererSummaryLayout(it)
+                        },
+                        trailingIcon = {
+                            if (configurableRenderer != null) {
+                                IconButton(
+                                    onClick = { showConfigDialog = true }
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_settings_filled),
+                                        contentDescription = stringResource(R.string.settings_renderer_config_title)
+                                    )
+                                }
+                            }
+                            IconButton(
+                                onClick = {
+                                    eventViewModel.sendDLPlugin(
+                                        githubLink = URL_GITHUB_RENDERER_PLUGINS,
+                                        cloudDrives = listOf(
+                                            EventViewModel.Event.DownloadPlugins.CloudDrive(
+                                                language = "zh",
+                                                link = URL_CLOUD_RENDERER_PLUGINS
+                                            )
+                                        )
+                                    )
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_download_2_filled),
+                                    contentDescription = stringResource(R.string.generic_download)
+                                )
+                            }
+                        }
+                    )
+
+                    if (showConfigDialog && configurableRenderer != null) {
+                        RendererConfigDialog(
+                            renderer = configurableRenderer,
+                            onDismissRequest = { showConfigDialog = false }
+                        )
+                    }
+
+                    ListSettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Middle,
+                        unit = AllSettings.vulkanDriver,
+                        autoCollapse = false,
+                        items = DriverPluginManager.getDriverList(),
+                        title = stringResource(R.string.settings_renderer_global_vulkan_driver_title),
+                        getItemText = { it.name },
+                        getItemId = { it.id },
+                        getItemSummary = {
+                            DriverSummaryLayout(it)
+                        },
+                        trailingIcon = {
+                            IconButton(
+                                onClick = {
+                                    eventViewModel.sendDLPlugin(
+                                        githubLink = URL_GITHUB_DRIVER_PLUGINS,
+                                        cloudDrives = listOf(
+                                            EventViewModel.Event.DownloadPlugins.CloudDrive(
+                                                language = "zh",
+                                                link = URL_CLOUD_DRIVE_DRIVER_PLUGINS
+                                            )
+                                        )
+                                    )
+                                }
+                            ) {
+                                Icon(
+                                    painter = painterResource(R.drawable.ic_download_2_filled),
+                                    contentDescription = stringResource(R.string.generic_download)
+                                )
+                            }
+                        }
+                    )
+
+                    ListSettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Bottom,
+                        unit = AllSettings.graphicsApi,
+                        items = GraphicsApi.entries,
+                        title = stringResource(R.string.settings_game_graphics_api_title),
+                        summary = stringResource(R.string.settings_game_graphics_api_summary),
+                        getItemText = {
+                            when (it) {
+                                GraphicsApi.DEFAULT -> stringResource(R.string.settings_game_graphics_api_default)
+                                GraphicsApi.DEFAULT_OPENGL -> stringResource(R.string.settings_game_graphics_api_default_opengl)
+                                else -> it.displayName
+                            }
+                        }
+                    )
+                }
+            }
+
+            AnimatedItem { ctx ->
+                SettingsCardColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animated(ctx)
+                ) {
+                    val context = LocalContext.current
+
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        // 百分比分辨率
+                        run {
+                            IntSliderSettingsCard(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 2.dp),
+                                position = CardPosition.Middle,
+                                unit = AllSettings.resolutionRatio,
+                                title = stringResource(R.string.settings_renderer_resolution_scale_title),
+                                summary = stringResource(R.string.settings_renderer_resolution_scale_summary),
+                                valueRange = AllSettings.resolutionRatio.floatRange,
+                                suffix = "%",
+                                fineTuningControl = true
+                            )
+                        }
+
+                    }
+
+                    SwitchSettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Bottom,
+                        unit = AllSettings.gameFullScreen,
+                        title = stringResource(R.string.settings_renderer_full_screen_title),
+                        summary = stringResource(R.string.settings_renderer_full_screen_summary)
+                    )
+                }
+            }
+
+            AnimatedItem { ctx ->
+                SettingsCardColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animated(ctx)
+                ) {
+                    SwitchSettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Top,
+                        unit = AllSettings.sustainedPerformance,
+                        title = stringResource(R.string.settings_renderer_sustained_performance_title),
+                        summary = stringResource(R.string.settings_renderer_sustained_performance_summary)
+                    )
+
+                    ListSettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Middle,
+                        unit = AllSettings.cpuAffinityMode,
+                        items = com.russoviller.cryogenic.game.cpu.CpuAffinityMode.entries,
+                        title = stringResource(R.string.cryo_settings_cpu_affinity_title),
+                        summary = stringResource(R.string.cryo_settings_cpu_affinity_summary),
+                        getItemText = { mode ->
+                            stringResource(
+                                when (mode) {
+                                    com.russoviller.cryogenic.game.cpu.CpuAffinityMode.OFF -> R.string.cryo_settings_cpu_affinity_off
+                                    com.russoviller.cryogenic.game.cpu.CpuAffinityMode.PERFORMANCE -> R.string.cryo_settings_cpu_affinity_performance
+                                    com.russoviller.cryogenic.game.cpu.CpuAffinityMode.MAX -> R.string.cryo_settings_cpu_affinity_max
+                                }
+                            )
+                        },
+                        getItemSummary = { mode ->
+                            Text(
+                                text = stringResource(
+                                    when (mode) {
+                                        com.russoviller.cryogenic.game.cpu.CpuAffinityMode.OFF -> R.string.cryo_settings_cpu_affinity_off_summary
+                                        com.russoviller.cryogenic.game.cpu.CpuAffinityMode.PERFORMANCE -> R.string.cryo_settings_cpu_affinity_performance_summary
+                                        com.russoviller.cryogenic.game.cpu.CpuAffinityMode.MAX -> R.string.cryo_settings_cpu_affinity_max_summary
+                                    }
+                                ),
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    )
+
+                    SwitchSettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Middle,
+                        unit = AllSettings.requestMaxRefreshRate,
+                        title = stringResource(R.string.cryo_settings_max_refresh_title),
+                        summary = stringResource(R.string.cryo_settings_max_refresh_summary)
+                    )
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                        SwitchSettingsCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            position = CardPosition.Middle,
+                            unit = AllSettings.gameSurfaceView,
+                            title = stringResource(R.string.cryo_settings_surface_view_title),
+                            summary = stringResource(R.string.cryo_settings_surface_view_summary)
+                        )
+                    }
+
+                    if (checkVulkanSupport(LocalContext.current.packageManager)) {
+                        var adrenoGPUAlert by remember { mutableStateOf(false) }
+
+                        SwitchSettingsCard(
+                            modifier = Modifier.fillMaxWidth(),
+                            position = CardPosition.Middle,
+                            unit = AllSettings.zinkPreferSystemDriver,
+                            title = stringResource(R.string.settings_renderer_vulkan_driver_system_title),
+                            summary = stringResource(R.string.settings_renderer_vulkan_driver_system_summary),
+                            onCheckedChange = { checked ->
+                                if (checked && isAdrenoGPU()) adrenoGPUAlert = true
+                            }
+                        )
+
+                        if (adrenoGPUAlert) {
+                            SimpleAlertDialog(
+                                title = stringResource(R.string.generic_warning),
+                                text = stringResource(R.string.settings_renderer_zink_driver_adreno),
+                                onConfirm = {
+                                    AllSettings.zinkPreferSystemDriver.save(true)
+                                    adrenoGPUAlert = false
+                                },
+                                onDismiss = {
+                                    AllSettings.zinkPreferSystemDriver.save(false)
+                                    adrenoGPUAlert = false
+                                }
+                            )
+                        }
+                    }
+
+                    SwitchSettingsCard(
+                        modifier = Modifier.fillMaxWidth(),
+                        position = CardPosition.Bottom,
+                        unit = AllSettings.dumpShaders,
+                        title = stringResource(R.string.settings_renderer_shader_dump_title),
+                        summary = stringResource(R.string.settings_renderer_shader_dump_summary)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RendererSummaryLayout(renderer: RendererInterface) {
+    FlowRow(
+        modifier = Modifier.alpha(0.7f),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        with(renderer) {
+            getRendererSummary()?.let { summary ->
+                Text(text = summary, style = MaterialTheme.typography.labelSmall)
+            }
+
+            val minVer = getDisplayMinMCVersion()
+            val maxVer = getDisplayMaxMCVersion()
+
+            if (minVer != null || maxVer != null) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(text = stringResource(R.string.renderer_version_support), style = MaterialTheme.typography.labelSmall)
+
+                    minVer?.let {
+                        Text(text = ">= $it", style = MaterialTheme.typography.labelSmall)
+                    }
+
+                    maxVer?.let {
+                        Text(text = "<= $it", style = MaterialTheme.typography.labelSmall)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DriverSummaryLayout(driver: Driver) {
+    with(driver) {
+        summary?.let { text ->
+            Text(
+                modifier = Modifier.alpha(0.7f),
+                text = text, style = MaterialTheme.typography.labelSmall
+            )
+        }
+    }
+}
+
+@Composable
+private fun CustomResolutionSettingsCard(
+    modifier: Modifier = Modifier,
+    position: CardPosition = CardPosition.Middle
+) {
+    val context = LocalContext.current
+    val screenSize = remember(context) { getRealScreenSize(context) }
+
+    SettingsCard(
+        modifier = modifier,
+        position = position
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            TitleAndSummary(
+                title = stringResource(R.string.settings_renderer_resolution_scale_title),
+                summary = stringResource(R.string.settings_renderer_resolution_custom_summary)
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                IntInputField(
+                    modifier = Modifier.weight(1f),
+                    value = AllSettings.customResolutionWidth.state,
+                    permitted = customResolutionRange(screenSize.width),
+                    label = stringResource(R.string.settings_renderer_resolution_custom_width),
+                    onValueChange = { AllSettings.customResolutionWidth.save(it) }
+                )
+                IntInputField(
+                    modifier = Modifier.weight(1f),
+                    value = AllSettings.customResolutionHeight.state,
+                    permitted = customResolutionRange(screenSize.height),
+                    label = stringResource(R.string.settings_renderer_resolution_custom_height),
+                    onValueChange = { AllSettings.customResolutionHeight.save(it) }
+                )
+            }
+        }
+    }
+}

@@ -1,0 +1,8 @@
+cubiomes (https://github.com/Cubitect/cubiomes) commit e61f90580cbdd883214a8054670dacae655e59c0 — MIT License (ver LICENSE).
+
+Alterações do Cryogenic Launcher (2026-11):
+- versões MC_1_21_5, MC_26_2 e MC_26_3 e biomas sulfur_caves e dappled_forest (biomes.h, biomes.c, util.c);
+- da 1.21.5 em diante o bioma do Overworld vem da busca exata do ponto mais perto (cryo_climate.c,
+  tables/climate_cryo.h, gerado dos relatórios biome_parameters oficiais), conferida com mundos gerados
+  pelo servidor oficial 1.21.11, 26.1 e 26.3;
+- mansão também na pale_garden da 1.21.5 em diante (finders.c).

@@ -133,6 +133,17 @@ These APKs are built for ARM64 and ARM32 devices. The **IS** (Internal Storage) 
 
 Only install APK files from sources you trust.
 
+## 🧩 Source code and CryoMods
+
+The full launcher source code is in this repository. Build instructions are in [`BUILDING.md`](BUILDING.md).
+
+**Launcher Mods (.cmod)** add new features to the launcher itself (not to Minecraft). Install them in **Settings › Launcher › Launcher Mods** and use them from the **CryoMods** page.
+
+- [`CryoMod-Tutorial.txt`](CryoMod-Tutorial.txt): step-by-step guide (in Portuguese), API reference and tips, including how to ask an AI to write a mod.
+- [`CryoMod-Example.cmod`](CryoMod-Example.cmod): a ready example to install and study.
+- [`cmod-sdk`](cmod-sdk): build script and the example source.
+- API: [`CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api`](CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api).
+
 ## ⚖️ Licensing
 
 Cryogenic Launcher includes third-party components and code based on Zalith Launcher 2. **A single proprietary license cannot replace the licenses that apply to those components.**

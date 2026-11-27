@@ -1,0 +1,31 @@
+Cryogenic Launcher — created by RussoViller
+https://github.com/RussoViller/Cryogenic-Launcher
+Copyright (C) 2026 RussoViller
+
+This program is licensed under the GNU General Public License v3.0 (see LICENSE)
+with the additional terms of RVCLapk1.1 (see CryogenicLauncher/src/main/assets/legal/RVCL.md),
+given under Section 7 of GPL-3.0. In short:
+
+  - Every copy, modified or not, must keep visible in the app:
+      "Cryogenic Launcher — created by RussoViller"
+      https://github.com/RussoViller/Cryogenic-Launcher
+    and the original creator credits.            (GPL-3.0 §7b)
+  - No one may claim to be the creator or owner of Cryogenic Launcher or present a
+    copy as the official release. Modified versions must state:
+      "Based on Cryogenic Launcher by RussoViller."  (GPL-3.0 §7c)
+  - Republishing under another name while removing these credits is prohibited.
+  - Violating these terms terminates the rights to distribute and modify
+    the program (GPL-3.0 §8).
+
+Official releases are signed with RussoViller's certificate:
+  SHA-256 c73a7377aa07507b2f215291c91f0e2f88e16e3b88219affcef56518ac30aa56
+
+Cryogenic Launcher uses code from Zalith Launcher 2 (Copyright (C) 2025-2026 MovTery and
+contributors, GPL-3.0, https://github.com/ZalithLauncher/ZalithLauncher2) as its base and is
+identified as an unofficial modified version of it, as its license terms require. It is not
+affiliated with or endorsed by the Zalith Launcher 2 developers. Code from other projects
+keeps its own copyright notices and licenses.
+
+The ChunkBase tab uses cubiomes (Copyright (c) 2020 Cubitect, MIT License,
+https://github.com/Cubitect/cubiomes), included in CryogenicLauncher/src/main/jni/cryoseed/cubiomes
+with its LICENSE file.
