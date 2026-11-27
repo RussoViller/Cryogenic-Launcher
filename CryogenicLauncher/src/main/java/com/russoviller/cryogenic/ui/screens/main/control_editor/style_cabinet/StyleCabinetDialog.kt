@@ -43,8 +43,8 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import com.russoviller.cryogenic.ui.components.CryoDropdownMenu as DropdownMenu
+import com.russoviller.cryogenic.ui.components.CryoDropdownMenuItem as DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -329,6 +329,7 @@ private fun CabinetStyleGridItem(
                 }
             )
             DropdownMenuItem(
+                destructive = true,
                 text = {
                     Text(text = stringResource(R.string.generic_delete))
                 },

@@ -48,8 +48,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import com.russoviller.cryogenic.ui.components.CryoDropdownMenu as DropdownMenu
+import com.russoviller.cryogenic.ui.components.CryoDropdownMenuItem as DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -770,6 +770,7 @@ private fun ShadersOperationMenu(
                 }
             )
             DropdownMenuItem(
+                destructive = true,
                 text = { Text(text = stringResource(R.string.generic_delete)) },
                 leadingIcon = {
                     Icon(

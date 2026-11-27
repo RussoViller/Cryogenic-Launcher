@@ -38,7 +38,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DropdownMenuItem
+import com.russoviller.cryogenic.ui.components.CryoDropdownMenuItem as DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenu
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -520,7 +520,12 @@ fun <T> ExposedDropdown(
 
         ExposedDropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
+            shape = androidx.compose.foundation.shape.RoundedCornerShape(18.dp),
+            containerColor = com.russoviller.cryogenic.ui.components.CryoGlassColors.Deep.copy(alpha = 0.97f),
+            border = androidx.compose.foundation.BorderStroke(1.dp, com.russoviller.cryogenic.ui.components.CryoGlassColors.Ice.copy(alpha = 0.55f)),
+            shadowElevation = 0.dp,
+            tonalElevation = 0.dp
         ) {
             options.forEach { option ->
                 DropdownMenuItem(

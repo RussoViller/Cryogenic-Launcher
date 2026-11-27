@@ -55,8 +55,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import com.russoviller.cryogenic.ui.components.CryoDropdownMenu as DropdownMenu
+import com.russoviller.cryogenic.ui.components.CryoDropdownMenuItem as DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -1017,6 +1017,7 @@ private fun ServerItem(
 
                         //删除服务器
                         DropdownMenuItem(
+                destructive = true,
                             enabled = !isSavingServer,
                             text = { Text(text = stringResource(R.string.servers_list_delete_server)) },
                             leadingIcon = {

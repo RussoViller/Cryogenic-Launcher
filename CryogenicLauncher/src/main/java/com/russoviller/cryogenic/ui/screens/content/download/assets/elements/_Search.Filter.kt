@@ -59,7 +59,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Checkbox
-import androidx.compose.material3.DropdownMenuItem
+import com.russoviller.cryogenic.ui.components.CryoDropdownMenuItem as DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenu
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -352,7 +352,11 @@ private fun <E> SuggestionsText(
             shape = RoundedCornerShape(
                 topStart = 0.dp, topEnd = 0.dp,
                 bottomStart = 16.0.dp, bottomEnd = 16.0.dp,
-            )
+            ),
+            containerColor = com.russoviller.cryogenic.ui.components.CryoGlassColors.Deep.copy(alpha = 0.97f),
+            border = androidx.compose.foundation.BorderStroke(1.dp, com.russoviller.cryogenic.ui.components.CryoGlassColors.Ice.copy(alpha = 0.55f)),
+            shadowElevation = 0.dp,
+            tonalElevation = 0.dp
         ) {
             suggestions.forEach { item ->
                 DropdownMenuItem(

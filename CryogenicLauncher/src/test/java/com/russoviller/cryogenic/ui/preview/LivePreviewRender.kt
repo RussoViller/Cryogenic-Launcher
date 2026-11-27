@@ -148,6 +148,37 @@ class LivePreviewRender {
     }
 
     @Test
+    fun optionsMenu() {
+        assumeTrue(dir() != null)
+        shot("options_menu.png") {
+            Box(Modifier.fillMaxSize().padding(24.dp)) {
+                com.russoviller.cryogenic.ui.components.CryoMenuPanel {
+                    fun item(text: String, icon: Int, enabled: Boolean = true, destructive: Boolean = false): @Composable () -> Unit = {
+                        com.russoviller.cryogenic.ui.components.CryoDropdownMenuItem(
+                            text = { androidx.compose.material3.Text(text) },
+                            onClick = {},
+                            enabled = enabled,
+                            destructive = destructive,
+                            leadingIcon = {
+                                androidx.compose.material3.Icon(
+                                    modifier = Modifier.padding(0.dp).then(Modifier),
+                                    painter = androidx.compose.ui.res.painterResource(icon),
+                                    contentDescription = null
+                                )
+                            }
+                        )
+                    }
+                    item("Quick play", com.russoviller.cryogenic.R.drawable.ic_play_arrow_filled)()
+                    item("Rename", com.russoviller.cryogenic.R.drawable.ic_edit_filled)()
+                    item("Backup save", com.russoviller.cryogenic.R.drawable.ic_save_filled, enabled = false)()
+                    com.russoviller.cryogenic.ui.components.CryoMenuDivider()
+                    item("Delete", com.russoviller.cryogenic.R.drawable.ic_delete_filled, destructive = true)()
+                }
+            }
+        }
+    }
+
+    @Test
     fun launcherModsEmpty() {
         assumeTrue(dir() != null)
         com.russoviller.cryogenic.path.PathManager.DIR_FILES_PRIVATE = java.nio.file.Files.createTempDirectory("cmodprev").toFile()

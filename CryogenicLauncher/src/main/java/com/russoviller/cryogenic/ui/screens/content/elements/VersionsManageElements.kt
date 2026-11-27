@@ -57,8 +57,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import com.russoviller.cryogenic.ui.components.CryoDropdownMenu as DropdownMenu
+import com.russoviller.cryogenic.ui.components.CryoDropdownMenuItem as DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -239,6 +239,7 @@ fun GamePathItemLayout(
                     }
                 )
                 DropdownMenuItem(
+                destructive = true,
                     enabled = notDefault,
                     text = { Text(text = stringResource(R.string.generic_delete)) },
                     leadingIcon = {
