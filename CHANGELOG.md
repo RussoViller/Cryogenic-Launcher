@@ -33,6 +33,8 @@ Adjustments:
   - Sponsors list updates every 3 days
 - Languages:
   - Missing translations completed in all languages
+- Interface:
+  - New design for option menus
 
 # ❄️ Cryogenic Launcher — r1.7.3
 
