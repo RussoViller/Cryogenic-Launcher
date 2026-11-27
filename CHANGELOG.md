@@ -29,6 +29,10 @@ Adjustments:
   - Wallpaper reload works in Rest Mode
 - Quick shortcuts:
   - New shortcuts
+- Sponsors:
+  - Sponsors list updates every 3 days
+- Languages:
+  - Missing translations completed in all languages
 
 # ❄️ Cryogenic Launcher — r1.7.3
 
