@@ -2001,7 +2001,7 @@
     <string name="cryo_idle_limits">O tempo máximo é de 1 hora (01:00:00). O mínimo é de 3 minutos (00:03:00), que é o padrão.</string>
     <string name="cryo_idle_minus">-1 min</string>
     <string name="cryo_idle_plus">+1 min</string>
-    <string name="cryo_idle_max">Max</string>
+    <string name="cryo_idle_max">Máx.</string>
     <string name="cryo_idle_disable">Desativar o Modo Descanso automático</string>
     <string name="cryo_idle_enable">Ativar o Modo Descanso automático</string>
     <string name="cryo_idle_enabled_note">Depois desse tempo sem tocar na tela inicial, o Launcher entra em descanso sozinho.</string>
@@ -2142,7 +2142,7 @@
     <string name="cryo_trans_intensity_title">Intensidade</string>
     <string name="cryo_trans_intensity_summary">Força do movimento das animações</string>
     <string name="cryo_trans_default">Padrão</string>
-    <string name="cryo_trans_fade">Fade-in</string>
+    <string name="cryo_trans_fade">Esmaecer</string>
     <string name="cryo_trans_slide_up">Deslizar para cima</string>
     <string name="cryo_trans_slide_down">Deslizar para baixo</string>
     <string name="cryo_trans_slide_left">Deslizar para a esquerda</string>
