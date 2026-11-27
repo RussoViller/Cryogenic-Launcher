@@ -1,39 +1,39 @@
-# Cryogenic Launcher — código-fonte e compilação
+# Cryogenic Launcher — source code and building
 
-Launcher de Minecraft: Java Edition para Android. Autor principal: RussoViller.
+Minecraft: Java Edition launcher for Android. Main author: RussoViller.
 
-## Autoria, licença e origem
+## Authorship, license and origin
 
-O **Cryogenic Launcher foi criado por RussoViller**, com nome, identidade visual, telas e funções próprias. Repositório oficial: https://github.com/RussoViller/Cryogenic-Launcher
+**Cryogenic Launcher was created by RussoViller**, with its own name, visual identity, screens and features. Official repository: https://github.com/RussoViller/Cryogenic-Launcher
 
-O Launcher usa o código do [Zalith Launcher 2](https://github.com/ZalithLauncher/ZalithLauncher2) (Copyright © 2025-2026 MovTery e colaboradores, [GNU GPL v3](LICENSE)) como base, além de código e ideias de outros projetos citados nos créditos. Por isso, conforme os termos do Zalith Launcher 2, é identificado como uma versão modificada não oficial dele. Não é afiliado aos desenvolvedores do Zalith Launcher 2 nem endossado por eles.
+The launcher uses the code of [Zalith Launcher 2](https://github.com/ZalithLauncher/ZalithLauncher2) (Copyright © 2025-2026 MovTery and contributors, [GNU GPL v3](LICENSE)) as its base, plus code and ideas from other projects listed in the credits. Because of that, following the Zalith Launcher 2 terms, it is identified as an unofficial modified version of it. It is not affiliated with or endorsed by the Zalith Launcher 2 developers.
 
-Termos que valem para qualquer cópia (GPL v3, seção 7; detalhes em `NOTICE` e na licença RVCLapk1.1, em `CryogenicLauncher/src/main/assets/legal/RVCL.md`):
+Terms that apply to every copy (GPL v3, section 7; details in `NOTICE` and in the RVCLapk1.1 license, at `CryogenicLauncher/src/main/assets/legal/RVCL.md`):
 
-1. Toda cópia, modificada ou não, deve manter visível no app: **"Cryogenic Launcher — created by RussoViller"**, o link do repositório oficial e os créditos do criador.
-2. Ninguém pode se dizer criador ou dono do Cryogenic Launcher nem apresentar uma cópia como a oficial. Versões modificadas devem informar: **"Based on Cryogenic Launcher by RussoViller."**
-3. Republicar com outro nome apagando esses créditos é proibido.
-4. Os termos do Zalith Launcher 2 também continuam valendo: nome diferente do original, aviso de versão modificada não oficial e manutenção dos avisos de copyright.
+1. Every copy, modified or not, must keep visible in the app: **"Cryogenic Launcher — created by RussoViller"**, the official repository link and the creator credits.
+2. No one may claim to be the creator or owner of Cryogenic Launcher or present a copy as the official one. Modified versions must state: **"Based on Cryogenic Launcher by RussoViller."**
+3. Republishing under another name while removing these credits is prohibited.
+4. The Zalith Launcher 2 terms still apply: a name different from the original, a notice that it is an unofficial modified version, and keeping the copyright notices.
 
-## Compilação
+## Building
 
-Requer:
+Requirements:
 - JDK 21
-- Android SDK (platform 37.2, build-tools 37) e NDK 25.2.9519653
-- Rust com `cargo-ndk` e os alvos `aarch64-linux-android` e `armv7-linux-androideabi` (módulo PetLib)
+- Android SDK (platform 37.2, build-tools 37) and NDK 25.2.9519653
+- Rust with `cargo-ndk` and the `aarch64-linux-android` and `armv7-linux-androideabi` targets (PetLib module)
 
 ```bash
-# APK arm64-v8a
+# arm64-v8a APK
 ./gradlew :CryogenicLauncher:assembleRelease -Darch=arm64
-# APK armeabi-v7a
+# armeabi-v7a APK
 ./gradlew :CryogenicLauncher:assembleRelease -Darch=arm
-# versão "IS" (arquivos do jogo no armazenamento interno)
+# "IS" version (game files in internal storage)
 ./gradlew :CryogenicLauncher:assembleRelease -Darch=arm64 -Dstorage=is
 ```
 
-- Sem o keystore oficial (`CryogenicLauncher/cryogenic_launcher.jks`, que não está no repositório), o APK sai sem a assinatura oficial: assine com a sua própria chave.
-- Login com conta Microsoft: defina a variável de ambiente `OAUTH_CLIENT_ID` (ou o arquivo `.oauth_client_id.txt` na raiz).
+- Without the official keystore (`CryogenicLauncher/cryogenic_launcher.jks`, not included in the repository), the APK is not signed with the official signature: sign it with your own key.
+- Microsoft account login: set the `OAUTH_CLIENT_ID` environment variable (or a `.oauth_client_id.txt` file in the root).
 
-## Mods do Launcher (.cmod)
+## Launcher Mods (.cmod)
 
-Para criar mods para o próprio launcher, veja [`CryoMod-Tutorial.txt`](CryoMod-Tutorial.txt), a pasta [`cmod-sdk`](cmod-sdk) e o exemplo pronto [`CryoMod-Example.cmod`](CryoMod-Example.cmod).
+To make mods for the launcher itself, see [`CryoMod-Tutorial.txt`](CryoMod-Tutorial.txt), the [`cmod-sdk`](cmod-sdk) folder and the ready-made example [`CryoMod-Example.cmod`](CryoMod-Example.cmod).

@@ -1,328 +1,331 @@
 =====================================================================
-  CRYOMOD TUTORIAL — Como criar Mods do Launcher (.cmod)
+  CRYOMOD TUTORIAL — How to make Launcher Mods (.cmod)
   Cryogenic Launcher (r1.8.0+) · CryoMod API v1
 =====================================================================
 
-Um .cmod é um mod para o PRÓPRIO Cryogenic Launcher (não é mod do
-Minecraft). Ele adiciona UMA função nova ao launcher: um conversor de
-mapa Bedrock -> Java, um organizador de mundos, um baixador de algo,
-uma calculadora de farms... o limite é a criatividade.
+A .cmod is a mod for the Cryogenic Launcher ITSELF (not a Minecraft
+mod). It adds ONE new feature to the launcher: a Bedrock -> Java map
+converter, a world organizer, a downloader, a farm calculator... the
+only limit is your creativity.
 
-No launcher:
-  - Instalar:  Configurações > Launcher > Mods do Launcher > Importar .cmod
-  - Ativar/desativar/apagar: na mesma janela (toque no mod na lista).
-  - Usar: botão "CryoMods" na barra lateral (mesma área do WebPage e
-    da Doação). A função do mod aparece na lista da esquerda; dá para
-    pesquisar pelo nome na barra de pesquisa lá em cima.
-  - Os mods ativos são guardados no "Salvar Configurações".
+In the launcher:
+  - Install: Settings > Launcher > Launcher Mods > Import .cmod
+  - Enable/disable/delete: in the same window (tap the mod in the list).
+  - Use: the "CryoMods" button in the sidebar (same area as WebPage
+    and Donation). The mod's feature shows up in the list on the left;
+    you can find it by name with the search bar at the top.
+  - Enabled mods are kept by "Save Settings".
 
-Para testar agora: instale o arquivo CryoMod-Example.cmod que está na
-raiz deste repositório, ative e abra a página CryoMods.
-
----------------------------------------------------------------------
- 1. O QUE VOCÊ PRECISA
----------------------------------------------------------------------
-
-  - JDK 17 ou mais novo (javac e jar).
-  - Android SDK com uma "platform" (android.jar) e "build-tools" (d8).
-    O jeito mais fácil é instalar o Android Studio, ou só as
-    command-line tools do Android.
-  - Este repositório baixado (o script de build usa a API que está
-    em CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api).
-  - Linux, macOS ou Windows com Git Bash/WSL (o build.sh é bash).
-    No celular dá para usar o Termux (pkg install openjdk-17 + um
-    Android SDK com d8).
-
-Linguagem: Java (recomendado) ou Kotlin. O mod é compilado para
-classes.dex, o mesmo formato dos apps Android.
+To try it right now: install CryoMod-Example.cmod (in the root of this
+repository), enable it and open the CryoMods page.
 
 ---------------------------------------------------------------------
- 2. COMEÇAR RÁPIDO (copiando o exemplo)
+ 1. WHAT YOU NEED
 ---------------------------------------------------------------------
 
-  1) Copie a pasta  cmod-sdk/example  para  cmod-sdk/meumod
-  2) Edite  cmod-sdk/meumod/cmod.json  (veja a seção 3)
-  3) Troque o pacote/classe em  cmod-sdk/meumod/src/...
-     (o caminho das pastas tem que bater com o "package" do Java)
-  4) Troque o icon.png (quadrado, 128x128 é um bom tamanho)
-  5) Compile:
+  - JDK 17 or newer (javac and jar).
+  - Android SDK with a "platform" (android.jar) and "build-tools" (d8).
+    The easiest way is to install Android Studio, or just the Android
+    command-line tools.
+  - This repository (the build script uses the API in
+    CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api).
+  - Linux, macOS, or Windows with Git Bash/WSL (build.sh is bash).
+    On a phone you can use Termux (pkg install openjdk-17 + an
+    Android SDK with d8).
+
+Language: Java (recommended) or Kotlin. The mod is compiled to
+classes.dex, the same format Android apps use.
+
+---------------------------------------------------------------------
+ 2. QUICK START (copying the example)
+---------------------------------------------------------------------
+
+  1) Copy the folder  cmod-sdk/example  to  cmod-sdk/mymod
+  2) Edit  cmod-sdk/mymod/cmod.json  (see section 3)
+  3) Rename the package/class in  cmod-sdk/mymod/src/...
+     (the folder path must match the Java "package")
+  4) Replace icon.png (square, 128x128 is a good size)
+  5) Build:
         cd cmod-sdk
-        ANDROID_HOME=/caminho/do/android-sdk ./build.sh meumod
-     Resultado: cmod-sdk/out/<id>.cmod
-  6) Mande o .cmod para o celular e importe no launcher.
+        ANDROID_HOME=/path/to/android-sdk ./build.sh mymod
+     Output: cmod-sdk/out/<id>.cmod
+  6) Send the .cmod to your phone and import it in the launcher.
 
 ---------------------------------------------------------------------
- 3. ESTRUTURA DO ARQUIVO .cmod
+ 3. .cmod FILE STRUCTURE
 ---------------------------------------------------------------------
 
-O .cmod é um ZIP com:
+A .cmod is a ZIP containing:
 
-  cmod.json      (obrigatório) dados do mod
-  classes.dex    (obrigatório) código compilado
-  classes2.dex.. (opcional)    se o código for grande
-  icon.png       (opcional)    ícone do mod
-  assets/        (opcional)    seus arquivos extras (textos, imagens,
-                               tabelas, modelos...). Ficam em
-                               api.getModDirectory()/assets/
+  cmod.json      (required) mod info
+  classes.dex    (required) compiled code
+  classes2.dex.. (optional) if the code is large
+  icon.png       (optional) mod icon
+  assets/        (optional) your extra files (texts, images, tables,
+                            models...). They end up in
+                            api.getModDirectory()/assets/
 
-Qualquer outro arquivo do zip é ignorado. Tamanho máximo: 64 MB.
+Any other file in the zip is ignored. Maximum size: 64 MB.
 
 cmod.json:
 
   {
-    "id": "seunome.meumod",
-    "name": "Meu Mod",
+    "id": "yourname.mymod",
+    "name": "My Mod",
     "version": "1.0.0",
-    "author": "Seu Nome",
-    "description": "O que o mod faz, em uma frase.",
-    "main": "com.seunome.meumod.MeuMod",
+    "author": "Your Name",
+    "description": "What the mod does, in one sentence.",
+    "main": "com.yourname.mymod.MyMod",
     "apiVersion": 1
   }
 
-  id          2 a 64 caracteres: letras, números, _ . -
-              Use algo único (ex.: seunome.nomedomod). Importar outro
-              .cmod com o mesmo id ATUALIZA o mod instalado.
-  main        Classe principal (pacote + nome). Precisa implementar
-              CryoMod e ter construtor público sem parâmetros.
-  apiVersion  Versão da API que o mod usa. Se for maior que a do
-              launcher, o mod não liga (aparece "Falhou ao iniciar").
+  id          2 to 64 characters: letters, numbers, _ . -
+              Use something unique (e.g. yourname.modname). Importing
+              another .cmod with the same id UPDATES the installed mod.
+  main        Main class (package + name). It must implement CryoMod
+              and have a public no-argument constructor.
+  apiVersion  API version the mod uses. If it is higher than the
+              launcher's, the mod won't start ("Failed to start").
 
 ---------------------------------------------------------------------
- 4. A REGRA PRINCIPAL: UMA FUNÇÃO POR MOD
+ 4. THE MAIN RULE: ONE FEATURE PER MOD
 ---------------------------------------------------------------------
 
-Cada mod adiciona UMA função (um botão na página CryoMods).
+Each mod adds ONE feature (one button on the CryoMods page).
 
-  api.addButton(...)  com um id novo      -> cria a função
-  api.addButton(...)  com o MESMO id      -> atualiza (título, ícone...)
-  api.addButton(...)  com OUTRO id        -> IllegalStateException
+  api.addButton(...)  with a new id        -> creates the feature
+  api.addButton(...)  with the SAME id     -> updates it (title, icon...)
+  api.addButton(...)  with ANOTHER id      -> IllegalStateException
 
-Quer várias ferramentas? Coloque tudo dentro da tela da sua função
-(abas, cartões, botões). Ou faça mods separados.
+Want several tools? Put them all inside your feature's screen (tabs,
+cards, buttons). Or make separate mods.
 
 ---------------------------------------------------------------------
- 5. O CÓDIGO MÍNIMO
+ 5. MINIMAL CODE
 ---------------------------------------------------------------------
 
-  package com.seunome.meumod;
+  package com.yourname.mymod;
 
   import com.russoviller.cryogenic.cmod.api.*;
   import android.widget.LinearLayout;
 
-  public final class MeuMod implements CryoMod {
+  public final class MyMod implements CryoMod {
 
       @Override
       public void onEnable(CryoModApi api) {
           api.addButton(new CryoModButton(
-                  "meumod",                 // id da função
-                  "Meu Mod",                // nome na lista
-                  "O que ele faz",          // texto pequeno (pode ser null)
-                  null,                     // ícone (null = icon.png do mod)
-                  screen -> {               // ao tocar no botão
+                  "mymod",                  // feature id
+                  "My Mod",                 // name in the list
+                  "What it does",           // small text (can be null)
+                  null,                     // icon (null = the mod's icon.png)
+                  screen -> {               // when the button is tapped
                       CryoModUi ui = screen.getUi();
                       LinearLayout page = ui.column();
-                      page.addView(ui.title("Olá!"));
-                      page.addView(ui.button("Clique aqui",
-                              v -> api.toast("Funcionou!")));
+                      page.addView(ui.title("Hello!"));
+                      page.addView(ui.button("Tap here",
+                              v -> api.toast("It works!")));
                       screen.setContent(ui.scroll(page));
                   }));
       }
 
       @Override
       public void onDisable() {
-          // pare threads/timers seus aqui. O botão sai sozinho.
+          // stop your own threads/timers here. The button is removed
+          // automatically.
       }
   }
 
-Ciclo de vida:
-  onEnable  -> quando o mod é ativado e toda vez que o launcher abre
-               com ele ativo. Rode rápido (nada pesado aqui).
-  onDisable -> quando o usuário desativa ou apaga o mod.
-  Ao tocar no botão -> action.onClick(screen) roda na thread principal.
+Lifecycle:
+  onEnable  -> when the mod is enabled, and every time the launcher
+               opens with it enabled. Keep it fast (nothing heavy here).
+  onDisable -> when the user disables or deletes the mod.
+  On button tap -> action.onClick(screen) runs on the main thread.
 
 ---------------------------------------------------------------------
- 6. A API (com.russoviller.cryogenic.cmod.api)
+ 6. THE API (com.russoviller.cryogenic.cmod.api)
 ---------------------------------------------------------------------
 
-CryoModApi (recebida no onEnable):
-  getApiVersion()        versão da API do launcher instalado
-  getLauncherVersion()   ex.: "r1.8.0"
-  getContext()           Context da aplicação
-  getModId()             o "id" do cmod.json
-  getModDirectory()      pasta do mod instalado (só leitura; assets/ aqui)
-  getDataDirectory()     pasta para SALVAR dados do mod (configs,
-                         cache...). É apagada junto com o mod.
-  getGameDirectory()     pasta .minecraft atual do launcher
+CryoModApi (received in onEnable):
+  getApiVersion()        API version of the installed launcher
+  getLauncherVersion()   e.g. "r1.8.0"
+  getContext()           application Context
+  getModId()             the "id" from cmod.json
+  getModDirectory()      installed mod folder (read-only; assets/ here)
+  getDataDirectory()     folder to SAVE your mod's data (configs,
+                         cache...). Deleted together with the mod.
+  getGameDirectory()     the launcher's current .minecraft folder
                          (versions, saves, mods, resourcepacks...).
-                         Pode ser null.
-  addButton(button)      cria/atualiza a função do mod
-  removeButton(id)       remove a função
-  toast(texto)           mensagem rápida na tela (qualquer thread)
-  log(texto)             escreve no log do launcher (tag CryoMod/<id>)
-  runOnUiThread(r)       roda na thread principal
-  runInBackground(r)     roda numa thread de fundo
+                         Can be null.
+  addButton(button)      creates/updates the mod's feature
+  removeButton(id)       removes the feature
+  toast(text)            short on-screen message (any thread)
+  log(text)              writes to the launcher log (tag CryoMod/<id>)
+  runOnUiThread(r)       runs on the main thread
+  runInBackground(r)     runs on a background thread
 
-CryoModScreen (recebida ao tocar no botão):
-  getActivity()          Activity do launcher (Views, diálogos,
+CryoModScreen (received when the button is tapped):
+  getActivity()          the launcher's Activity (Views, dialogs,
                          ContentResolver...)
-  setContent(view)       mostra a sua View na área do mod
-  setTitle(texto)        muda o título da área
-  setHeaderVisible(b)    false = esconde a barra de título/fechar e a
-                         sua View ocupa a área inteira (interface 100%
-                         sua; chame screen.close() no seu botão)
-  close()                fecha a área do mod
-  getUi()                peças de interface no estilo do launcher
-  pickFile(mimes, cb)    escolher arquivo  -> cb.onResult(Uri ou null)
-  createFile(nome, mime, cb)  criar arquivo para salvar -> Uri
-  pickFolder(cb)         escolher pasta (Uri de árvore do SAF)
+  setContent(view)       shows your View in the mod area
+  setTitle(text)         changes the area title
+  setHeaderVisible(b)    false = hides the title/close bar and your
+                         View fills the whole area (100% your own UI;
+                         call screen.close() from your own button)
+  close()                closes the mod area
+  getUi()                UI pieces in the launcher's style
+  pickFile(mimes, cb)    pick a file  -> cb.onResult(Uri or null)
+  createFile(name, mime, cb)  create a file to save to -> Uri
+  pickFolder(cb)         pick a folder (SAF tree Uri)
 
 CryoModButton(id, title, description, icon, action)
-  icon é um Bitmap (pode ser null). action = screen -> { ... }
+  icon is a Bitmap (can be null). action = screen -> { ... }
 
 ---------------------------------------------------------------------
- 7. INTERFACE: ESTILO DO LAUNCHER OU DO SEU JEITO
+ 7. UI: LAUNCHER STYLE OR YOUR OWN
 ---------------------------------------------------------------------
 
-A interface do mod é feita com Views normais do Android (TextView,
-Button, LinearLayout, ImageView, WebView, Canvas...). Você tem duas
-opções, e pode misturar as duas:
+The mod's UI is made with regular Android Views (TextView, Button,
+LinearLayout, ImageView, WebView, Canvas...). You have two options,
+and you can mix them:
 
- A) Estilo do launcher (screen.getUi()):
-    As cores seguem o TEMA DE CORES que o usuário escolheu no launcher
-    (azul, verde, rosa...). Peças prontas:
+ A) Launcher style (screen.getUi()):
+    Colors follow the COLOR THEME the user picked in the launcher
+    (blue, green, pink...). Ready-made pieces:
 
       ui.column() / ui.row() / ui.card() / ui.scroll(view)
       ui.title(t) / ui.text(t) / ui.caption(t)
-      ui.button(t, click)           botão principal (degradê do tema)
-      ui.secondaryButton(t, click)  botão de vidro com borda
-      ui.input(dica)                campo de texto
-      ui.switchButton(t, ligado, listener)
-      ui.slider(max, valor, listener)
-      ui.progress(indeterminado)
+      ui.button(t, click)           main button (theme gradient)
+      ui.secondaryButton(t, click)  glass button with a border
+      ui.input(hint)                text field
+      ui.switchButton(t, checked, listener)
+      ui.slider(max, value, listener)
+      ui.progress(indeterminate)
       ui.divider() / ui.space(dp)
-      ui.glassBackground(raioDp) / ui.gradientBackground(raioDp)
+      ui.glassBackground(radiusDp) / ui.gradientBackground(radiusDp)
       ui.getAccentColor(), getAuroraColor(), getBackgroundColor(),
       getSurfaceColor(), getTextColor(), getSecondaryTextColor(),
-      getGradientColors(), dp(valor)
+      getGradientColors(), dp(value)
 
-    Tudo que o ui cria é View comum: dá para mudar tamanho, margem,
-    fonte, cor etc. depois.
+    Everything ui creates is a regular View: you can change size,
+    margins, font, color etc. afterwards.
 
- B) Do seu jeito:
-    Monte qualquer View/layout que quiser e passe no
-    screen.setContent(view). Para usar a área inteira:
-    screen.setHeaderVisible(false). Dá até para desenhar tudo numa
-    View própria (onDraw) ou usar um layout XML inflado à mão.
+ B) Your own way:
+    Build any View/layout you want and pass it to
+    screen.setContent(view). To use the whole area:
+    screen.setHeaderVisible(false). You can even draw everything in
+    your own View (onDraw) or inflate a layout by hand.
 
-  Obs.: Jetpack Compose NÃO está disponível para mods (as classes do
-  Compose dentro do launcher são otimizadas/renomeadas). Use Views.
+  Note: Jetpack Compose is NOT available to mods (the Compose classes
+  inside the launcher are optimized/renamed). Use Views.
 
 ---------------------------------------------------------------------
- 8. ARQUIVOS, PASTAS E THREADS (IMPORTANTE)
+ 8. FILES, FOLDERS AND THREADS (IMPORTANT)
 ---------------------------------------------------------------------
 
-  - NUNCA faça trabalho pesado na thread principal (ler/escrever
-    arquivo grande, rede, converter mapa). Use:
+  - NEVER do heavy work on the main thread (reading/writing big
+    files, network, converting a map). Use:
         api.runInBackground(() -> {
-            ... trabalho pesado ...
-            api.runOnUiThread(() -> textView.setText("Pronto!"));
+            ... heavy work ...
+            api.runOnUiThread(() -> textView.setText("Done!"));
         });
-  - Só mexa em View na thread principal (runOnUiThread).
-  - Arquivos escolhidos pelo usuário chegam como Uri (content://).
-    Leia com:
+  - Only touch Views on the main thread (runOnUiThread).
+  - Files picked by the user arrive as a Uri (content://).
+    Read with:
         getActivity().getContentResolver().openInputStream(uri)
-    Escreva com:
+    Write with:
         getActivity().getContentResolver().openOutputStream(uri)
-  - Pasta escolhida (pickFolder): use DocumentsContract para listar e
-    criar arquivos dentro dela.
-  - A pasta do jogo (getGameDirectory) é um File normal: dá para ler
-    e escrever direto (ex.: new File(game, "saves")).
-  - Dados do seu mod: api.getDataDirectory().
+  - Picked folder (pickFolder): use DocumentsContract to list and
+    create files inside it.
+  - The game folder (getGameDirectory) is a regular File: you can read
+    and write it directly (e.g. new File(game, "saves")).
+  - Your mod's data: api.getDataDirectory().
 
 ---------------------------------------------------------------------
- 9. ERROS
+ 9. ERRORS
 ---------------------------------------------------------------------
 
-  - Se o onEnable lançar exceção, o mod aparece como "Falhou ao
-    iniciar" na lista, com a mensagem do erro. O launcher não fecha.
-  - Exceções no clique da função, nos callbacks de arquivo e nos
-    listeners das peças do screen.getUi() (button, switchButton,
-    slider) são capturadas: aparece uma mensagem na tela e o erro vai
-    para o log. O launcher não fecha.
-  - Listeners que VOCÊ cria nas suas próprias Views (setOnClickListener
-    direto numa View sua, Threads suas) NÃO são protegidos: um erro
-    ali pode fechar o launcher. Use try/catch neles.
-  - Use api.log("...") e veja o log do launcher para depurar.
+  - If onEnable throws an exception, the mod shows "Failed to start"
+    in the list, with the error message. The launcher doesn't close.
+  - Exceptions in the feature tap, in file callbacks and in the
+    listeners of the screen.getUi() pieces (button, switchButton,
+    slider) are caught: a message appears on screen and the error
+    goes to the log. The launcher doesn't close.
+  - Listeners YOU attach to your own Views (setOnClickListener
+    directly on a View of yours, your own Threads) are NOT protected:
+    an error there can close the launcher. Use try/catch in them.
+  - Use api.log("...") and check the launcher log to debug.
 
 ---------------------------------------------------------------------
-10. BIBLIOTECAS
+10. LIBRARIES
 ---------------------------------------------------------------------
 
-  - O launcher entrega para o mod: Android, Java (java.*, javax.*),
-    org.json e a CryoMod API.
-  - Qualquer outra biblioteca (ex.: Kotlin, Gson, OkHttp) você coloca
-    DENTRO do seu .cmod: junte os .jar na compilação e no d8. O mod
-    carrega primeiro as classes dele, então não briga com as do
-    launcher.
-  - Kotlin: compile com kotlinc para .jar, junte o kotlin-stdlib.jar
-    e passe tudo no d8 (o build.sh compila só Java; adapte se usar
-    Kotlin).
+  - The launcher gives the mod: Android, Java (java.*, javax.*),
+    org.json and the CryoMod API.
+  - Any other library (e.g. Kotlin, Gson, OkHttp) goes INSIDE your
+    .cmod: add the .jar files to the compilation and to d8. The mod
+    loads its own classes first, so they don't clash with the
+    launcher's.
+  - Kotlin: compile with kotlinc to a .jar, add kotlin-stdlib.jar and
+    pass everything to d8 (build.sh only compiles Java; adapt it if
+    you use Kotlin).
 
 ---------------------------------------------------------------------
-11. SEGURANÇA E BOAS PRÁTICAS
+11. SAFETY AND GOOD PRACTICES
 ---------------------------------------------------------------------
 
-  - Um .cmod roda código dentro do launcher, com as mesmas permissões
-    dele. Só instale mods de quem você confia, e não faça mods que
-    roubem dados, contas ou arquivos: o launcher mostra esse aviso
-    para todo mundo.
-  - Não mexa em arquivos do usuário sem ele pedir (mostre o que vai
-    fazer e peça confirmação antes de apagar/sobrescrever algo).
-  - Faça backup antes de converter/alterar mundos.
-  - Mantenha o "id" fixo entre versões para o mod atualizar certinho.
-  - Mude o "version" a cada lançamento.
+  - A .cmod runs code inside the launcher, with the same permissions
+    as the launcher. Only install mods from people you trust, and
+    don't make mods that steal data, accounts or files: the launcher
+    shows this warning to everyone.
+  - Don't touch the user's files without them asking (show what you
+    are going to do and ask for confirmation before deleting or
+    overwriting anything).
+  - Back up before converting/changing worlds.
+  - Keep the "id" the same between versions so the mod updates
+    correctly.
+  - Change "version" on every release.
 
 ---------------------------------------------------------------------
-12. USANDO UMA IA PARA CRIAR O MOD
+12. USING AN AI TO MAKE THE MOD
 ---------------------------------------------------------------------
 
-Mande para a IA:
-  1) Este arquivo (CryoMod-Tutorial.txt)
-  2) Os 5 arquivos da API:
+Send the AI:
+  1) This file (CryoMod-Tutorial.txt)
+  2) The 5 API files:
        CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api/
        (CryoMod.java, CryoModApi.java, CryoModButton.java,
         CryoModScreen.java, CryoModUi.java)
-  3) O exemplo: cmod-sdk/example/src/.../ExampleMod.java e cmod.json
+  3) The example: cmod-sdk/example/src/.../ExampleMod.java and cmod.json
 
-E um pedido parecido com:
+And a request like:
 
-  "Crie um Mod do Launcher (.cmod) para o Cryogenic Launcher usando a
-   CryoMod API v1 dos arquivos anexados. Java 8, só Views do Android
-   (sem Compose), UMA função só (um addButton). Trabalho pesado em
-   api.runInBackground. Use screen.getUi() para a interface no estilo
-   do launcher. O mod deve: <descreva o que você quer>. Me dê o
-   cmod.json e os arquivos .java na estrutura de pastas certa para eu
-   compilar com o cmod-sdk/build.sh."
+  "Create a Launcher Mod (.cmod) for Cryogenic Launcher using the
+   CryoMod API v1 from the attached files. Java 8, Android Views only
+   (no Compose), ONE feature only (one addButton). Heavy work in
+   api.runInBackground. Use screen.getUi() for a launcher-style UI.
+   The mod must: <describe what you want>. Give me the cmod.json and
+   the .java files in the right folder structure so I can build it
+   with cmod-sdk/build.sh."
 
-Depois compile com o build.sh (seção 2) e teste no launcher.
+Then build it with build.sh (section 2) and test it in the launcher.
 
 ---------------------------------------------------------------------
-13. COMPILANDO SEM O build.sh (manual)
+13. BUILDING WITHOUT build.sh (manual)
 ---------------------------------------------------------------------
 
-  # 1) API (só para compilar; NÃO vai dentro do .cmod)
+  # 1) API (only to compile against; it does NOT go inside the .cmod)
   javac -source 8 -target 8 -cp $ANDROID_JAR -d api_classes \
-        <pasta da api>/*.java
-  # 2) seu código
+        <api folder>/*.java
+  # 2) your code
   javac -source 8 -target 8 -encoding UTF-8 \
         -cp $ANDROID_JAR:api_classes -d classes $(find src -name '*.java')
   jar cf mod.jar -C classes .
   # 3) dex
   d8 --release --min-api 26 --lib $ANDROID_JAR \
      --classpath api_classes --output dex mod.jar
-  # 4) empacotar (zip com cmod.json, classes.dex, icon.png, assets/)
+  # 4) package (zip with cmod.json, classes.dex, icon.png, assets/)
   cp cmod.json icon.png dex/
-  (cd dex && zip -r ../meumod.cmod .)
+  (cd dex && zip -r ../mymod.cmod .)
 
 =====================================================================
  Cryogenic Launcher — created by RussoViller

@@ -139,7 +139,7 @@ The full launcher source code is in this repository. Build instructions are in [
 
 **Launcher Mods (.cmod)** add new features to the launcher itself (not to Minecraft). Install them in **Settings › Launcher › Launcher Mods** and use them from the **CryoMods** page.
 
-- [`CryoMod-Tutorial.txt`](CryoMod-Tutorial.txt): step-by-step guide (in Portuguese), API reference and tips, including how to ask an AI to write a mod.
+- [`CryoMod-Tutorial.txt`](CryoMod-Tutorial.txt): step-by-step guide, API reference and tips, including how to ask an AI to write a mod.
 - [`CryoMod-Example.cmod`](CryoMod-Example.cmod): a ready example to install and study.
 - [`cmod-sdk`](cmod-sdk): build script and the example source.
 - API: [`CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api`](CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api).

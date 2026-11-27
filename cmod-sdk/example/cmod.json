@@ -3,7 +3,7 @@
   "name": "Example Tools",
   "version": "1.0.0",
   "author": "RussoViller",
-  "description": "Mod de exemplo: arquivos, mundos e controles no estilo do Launcher.",
+  "description": "Example mod: files, worlds and controls in the launcher's style.",
   "main": "com.russoviller.cmodexample.ExampleMod",
   "apiVersion": 1
 }

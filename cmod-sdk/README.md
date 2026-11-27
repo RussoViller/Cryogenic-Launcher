@@ -1,19 +1,19 @@
-# CryoMod SDK — Mods do Launcher (.cmod)
+# CryoMod SDK — Launcher Mods (.cmod)
 
-Ferramentas para criar Mods do Launcher (.cmod) para o Cryogenic Launcher.
-O guia completo está em [`CryoMod-Tutorial.txt`](../CryoMod-Tutorial.txt), na raiz do repositório.
+Tools to make Launcher Mods (.cmod) for Cryogenic Launcher.
+The full guide is [`CryoMod-Tutorial.txt`](../CryoMod-Tutorial.txt), in the root of the repository.
 
-- `build.sh` — compila uma pasta de mod em `.cmod` (usa a API em
+- `build.sh` — builds a mod folder into a `.cmod` (uses the API in
   `CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api`).
-- `example/` — mod de exemplo completo (uma função, interface no estilo do launcher).
-  O `.cmod` pronto dele é o [`CryoMod-Example.cmod`](../CryoMod-Example.cmod).
+- `example/` — a complete example mod (one feature, launcher-style UI).
+  Its ready-made `.cmod` is [`CryoMod-Example.cmod`](../CryoMod-Example.cmod).
 
 ```bash
 cd cmod-sdk
-ANDROID_HOME=/caminho/do/android-sdk ./build.sh example
+ANDROID_HOME=/path/to/android-sdk ./build.sh example
 # OK: out/russoviller.example.cmod
 ```
 
-Precisa de JDK 17+ e do Android SDK (platform + build-tools).
+Requires JDK 17+ and the Android SDK (platform + build-tools).
 
-> ⚠ Um .cmod roda código dentro do launcher. Só instale mods de quem você confia.
+> ⚠ A .cmod runs code inside the launcher. Only install mods from people you trust.
