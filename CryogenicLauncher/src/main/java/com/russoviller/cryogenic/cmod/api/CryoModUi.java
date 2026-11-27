@@ -1,9 +1,12 @@
 package com.russoviller.cryogenic.cmod.api;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -118,4 +121,48 @@ public interface CryoModUi {
 
     /** Barra de progresso (indeterminate = animação sem porcentagem). */
     ProgressBar progress(boolean indeterminate);
+
+    // ---------------------------------------------------------------- API 2
+
+    /** API 2: an option was chosen ({@link #choice}). */
+    interface ChoiceListener {
+        void onChoice(int index, String option);
+    }
+
+    /** API 2: answer of {@link #confirm} (true = confirmed). */
+    interface ConfirmListener {
+        void onResult(boolean confirmed);
+    }
+
+    /** API 2: answer of {@link #prompt} (null = cancelled). */
+    interface TextListener {
+        void onText(String text);
+    }
+
+    /** API 2: image with rounded corners (size in dp, 0 = wrap content). */
+    ImageView image(Bitmap bitmap, float widthDp, float heightDp);
+
+    /** API 2: small pill (tag/filter). selected = filled with the theme color. */
+    TextView chip(CharSequence text, boolean selected, View.OnClickListener onClick);
+
+    /** API 2: check box with text. */
+    CompoundButton checkbox(CharSequence text, boolean checked, CompoundButton.OnCheckedChangeListener onChange);
+
+    /** API 2: dropdown with options (shows the selected one; tap to choose another). */
+    TextView choice(String[] options, int selected, ChoiceListener onChoice);
+
+    /** API 2: list row with icon (may be null), title, subtitle (may be null) and tap action. */
+    LinearLayout listItem(Bitmap icon, CharSequence title, CharSequence subtitle, View.OnClickListener onClick);
+
+    /** API 2: grid with this number of columns (children fill the columns in order). */
+    GridLayout grid(int columns);
+
+    /** API 2: themed dialog with Confirm/Cancel. Main thread. */
+    void confirm(CharSequence title, CharSequence message, ConfirmListener onResult);
+
+    /** API 2: themed dialog with a text field. Main thread. */
+    void prompt(CharSequence title, CharSequence hint, CharSequence initial, TextListener onResult);
+
+    /** API 2: themed dialog that shows any View (null title = no title). Returns a handle to close it. */
+    Runnable dialog(CharSequence title, View content);
 }

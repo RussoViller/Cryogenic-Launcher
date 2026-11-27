@@ -202,6 +202,21 @@ class LivePreviewRender {
     }
 
     @Test
+    fun launcherModsDetail() {
+        val dir = dir() ?: return
+        val hud = java.io.File("../cmod-sdk/out/russoviller.cryohud.cmod")
+        val example = java.io.File("../cmod-sdk/out/russoviller.example.cmod")
+        if (!hud.isFile || !example.isFile) return
+        com.russoviller.cryogenic.path.PathManager.DIR_FILES_PRIVATE = java.nio.file.Files.createTempDirectory("cmodprev").toFile()
+        hud.inputStream().use { com.russoviller.cryogenic.cmod.CmodManager.install(it) }
+        example.inputStream().use { com.russoviller.cryogenic.cmod.CmodManager.install(it) }
+        com.russoviller.cryogenic.cmod.CmodManager.reloadForTest()
+        shot("launcher_mods_detail.png") {
+            com.russoviller.cryogenic.cmod.LauncherModsContent(Modifier.fillMaxSize().padding(12.dp), onDismiss = {}, initialSelectedId = "russoviller.cryohud")
+        }
+    }
+
+    @Test
     fun chatOverlay() {
         assumeTrue(dir() != null)
         seedConfig()

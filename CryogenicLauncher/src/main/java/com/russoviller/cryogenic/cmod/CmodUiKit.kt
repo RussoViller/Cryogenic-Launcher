@@ -1,6 +1,16 @@
 package com.russoviller.cryogenic.cmod
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.graphics.Bitmap
+import android.graphics.Outline
+import android.view.ViewOutlineProvider
+import android.view.Window
+import android.widget.CheckBox
+import android.widget.FrameLayout
+import android.widget.GridLayout
+import android.widget.ImageView
+import android.widget.PopupMenu
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -188,4 +198,172 @@ internal class CmodUiKit(
             indeterminateTintList = ColorStateList.valueOf(getAccentColor())
             progressBackgroundTintList = ColorStateList.valueOf(alpha(CryoGlassColors.Frost.toArgb(), 0.3f))
         }
+
+    // ---------------------------------------------------------------- API 2
+
+    private fun rounded(view: View, radiusDp: Float) {
+        val r = dp(radiusDp).toFloat()
+        view.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(v: View, outline: Outline) = outline.setRoundRect(0, 0, v.width, v.height, r)
+        }
+        view.clipToOutline = true
+    }
+
+    override fun image(bitmap: Bitmap?, widthDp: Float, heightDp: Float): ImageView = ImageView(context).apply {
+        setImageBitmap(bitmap)
+        scaleType = ImageView.ScaleType.CENTER_CROP
+        adjustViewBounds = true
+        layoutParams = LinearLayout.LayoutParams(
+            if (widthDp > 0) dp(widthDp) else ViewGroup.LayoutParams.WRAP_CONTENT,
+            if (heightDp > 0) dp(heightDp) else ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        rounded(this, 14f)
+    }
+
+    override fun chip(text: CharSequence, selected: Boolean, onClick: View.OnClickListener?): TextView = TextView(context).apply {
+        this.text = text
+        gravity = Gravity.CENTER
+        setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f)
+        setTypeface(typeface, Typeface.BOLD)
+        setTextColor(if (selected) getBackgroundColor() else getTextColor())
+        setPadding(dp(12f), dp(5f), dp(12f), dp(5f))
+        val bg = if (selected) gradientBackground(14f) else GradientDrawable().apply {
+            cornerRadius = dp(14f).toFloat()
+            setColor(alpha(getAccentColor(), 0.12f))
+            setStroke(dp(1f), alpha(getAccentColor(), 0.55f))
+        }
+        background = if (onClick != null) ripple(bg, 14f) else bg
+        if (onClick != null) {
+            isClickable = true
+            setOnClickListener { v -> guard { onClick.onClick(v) } }
+        }
+    }
+
+    override fun checkbox(text: CharSequence, checked: Boolean, onChange: CompoundButton.OnCheckedChangeListener?): CompoundButton =
+        CheckBox(context).apply {
+            this.text = text
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+            setTextColor(getTextColor())
+            isChecked = checked
+            buttonTintList = ColorStateList(
+                arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf()),
+                intArrayOf(getAccentColor(), alpha(CryoGlassColors.Frost.toArgb(), 0.7f))
+            )
+            minHeight = dp(40f)
+            setOnCheckedChangeListener(onChange?.let { l -> CompoundButton.OnCheckedChangeListener { b, c -> guard { l.onCheckedChanged(b, c) } } })
+        }
+
+    override fun choice(options: Array<String>, selected: Int, onChoice: CryoModUi.ChoiceListener?): TextView {
+        var current = selected.coerceIn(0, (options.size - 1).coerceAtLeast(0))
+        return baseButton(options.getOrElse(current) { "" } + "  ▾", null, primary = false).apply {
+            gravity = Gravity.CENTER_VERTICAL or Gravity.START
+            setTypeface(typeface, Typeface.NORMAL)
+            setOnClickListener { anchor ->
+                val menu = PopupMenu(context, anchor)
+                options.forEachIndexed { i, o -> menu.menu.add(0, i, i, o) }
+                menu.setOnMenuItemClickListener { item ->
+                    current = item.itemId
+                    text = options[current] + "  ▾"
+                    if (onChoice != null) guard { onChoice.onChoice(current, options[current]) }
+                    true
+                }
+                menu.show()
+            }
+        }
+    }
+
+    override fun listItem(icon: Bitmap?, title: CharSequence, subtitle: CharSequence?, onClick: View.OnClickListener?): LinearLayout =
+        LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            val p = dp(10f)
+            setPadding(p, p, p, p)
+            val bg = glassBackground(16f)
+            background = if (onClick != null) ripple(bg, 16f) else bg
+            if (icon != null) {
+                addView(image(icon, 40f, 40f).apply { (layoutParams as LinearLayout.LayoutParams).marginEnd = dp(12f) })
+            }
+            addView(LinearLayout(context).apply {
+                orientation = LinearLayout.VERTICAL
+                addView(textView(title, 15f, getTextColor(), bold = true))
+                if (!subtitle.isNullOrEmpty()) addView(caption(subtitle))
+            }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+            if (onClick != null) {
+                isClickable = true
+                setOnClickListener { v -> guard { onClick.onClick(v) } }
+            }
+        }
+
+    override fun grid(columns: Int): GridLayout = GridLayout(context).apply {
+        columnCount = columns.coerceIn(1, 12)
+        useDefaultMargins = true
+        alignmentMode = GridLayout.ALIGN_BOUNDS
+    }
+
+    override fun dialog(title: CharSequence?, content: View): Runnable {
+        val d = Dialog(context)
+        d.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        val box = card().apply {
+            background = GradientDrawable().apply {
+                cornerRadius = dp(24f).toFloat()
+                setColor(getBackgroundColor())
+                setStroke(dp(1f), alpha(getAccentColor(), 0.6f))
+            }
+            if (!title.isNullOrEmpty()) addView(this@CmodUiKit.title(title))
+            (content.parent as? ViewGroup)?.removeView(content)
+            addView(content)
+        }
+        d.setContentView(FrameLayout(context).apply {
+            setPadding(dp(16f), dp(16f), dp(16f), dp(16f))
+            addView(box, FrameLayout.LayoutParams(dp(420f).coerceAtMost(context.resources.displayMetrics.widthPixels - dp(32f)), ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER))
+        })
+        d.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(Color.TRANSPARENT))
+        d.show()
+        return Runnable { runCatching { d.dismiss() } }
+    }
+
+    override fun confirm(title: CharSequence?, message: CharSequence?, onResult: CryoModUi.ConfirmListener?) {
+        var answered = false
+        lateinit var close: Runnable
+        fun answer(ok: Boolean) {
+            if (answered) return
+            answered = true
+            close.run()
+            if (onResult != null) guard { onResult.onResult(ok) }
+        }
+        val col = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            dividerDrawable = spacer(10f, vertical = true)
+            showDividers = LinearLayout.SHOW_DIVIDER_MIDDLE
+            if (!message.isNullOrEmpty()) addView(text(message))
+            addView(row().apply {
+                addView(secondaryButton(context.getString(android.R.string.cancel)) { answer(false) }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+                addView(button(context.getString(android.R.string.ok)) { answer(true) }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+            })
+        }
+        close = dialog(title, col)
+    }
+
+    override fun prompt(title: CharSequence?, hint: CharSequence?, initial: CharSequence?, onResult: CryoModUi.TextListener?) {
+        var answered = false
+        lateinit var close: Runnable
+        val field = input(hint).apply { setText(initial) }
+        fun answer(text: String?) {
+            if (answered) return
+            answered = true
+            close.run()
+            if (onResult != null) guard { onResult.onText(text) }
+        }
+        val col = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            dividerDrawable = spacer(10f, vertical = true)
+            showDividers = LinearLayout.SHOW_DIVIDER_MIDDLE
+            addView(field)
+            addView(row().apply {
+                addView(secondaryButton(context.getString(android.R.string.cancel)) { answer(null) }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+                addView(button(context.getString(android.R.string.ok)) { answer(field.text.toString()) }, LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f))
+            })
+        }
+        close = dialog(title, col)
+    }
 }

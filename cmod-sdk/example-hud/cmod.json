@@ -1,0 +1,11 @@
+{
+  "id": "russoviller.cryohud",
+  "name": "CryoHUD",
+  "version": "1.0.0",
+  "author": "RussoViller",
+  "description": "API 2 showcase: FPS and clock HUD over the game, quick command button, auto-walk and chat mention alerts. Configure it on the CryoMods page.",
+  "website": "https://github.com/RussoViller/Cryogenic-Launcher",
+  "main": "com.russoviller.cryohud.HudMod",
+  "gameMain": "com.russoviller.cryohud.HudGameMod",
+  "apiVersion": 2
+}

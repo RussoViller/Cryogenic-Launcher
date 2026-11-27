@@ -475,6 +475,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
             eventViewModel = eventViewModel,
             gamepadViewModel = gamepadViewModel,
             exitListener = { exitCode: Int, isSignal: Boolean ->
+                runCatching { com.russoviller.cryogenic.cmod.CmodGameHost.dispatchExit(exitCode) }
                 stopAllService()
                 if (exitCode != 0) {
                     val logPath = withLauncher {
@@ -501,6 +502,15 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
                 )
                 //Acompanha o log do jogo para mostrar no Discord o servidor em que a pessoa está
                 com.russoviller.cryogenic.discord.CryoServerWatcher.start(this, "")
+                //Mods do Launcher: lado do jogo (camada, teclas, chat, log)
+                runCatching {
+                    com.russoviller.cryogenic.cmod.CmodGameHost.start(
+                        this,
+                        version.getVersionName(),
+                        com.russoviller.cryogenic.ui.screens.game.CryoGraphicsError.gameVersion ?: version.getVersionName(),
+                        runCatching { version.getGameDir() }.getOrNull()
+                    )
+                }
             }
         }
 
@@ -772,6 +782,7 @@ class VMActivity : BaseAppCompatActivity(), SurfaceTextureListener {
 
     override fun onDestroy() {
         com.russoviller.cryogenic.game.input.GameFileDialog.detach(this)
+        runCatching { com.russoviller.cryogenic.cmod.CmodGameHost.stop() }
         com.russoviller.cryogenic.discord.CryoDiscordPresence.stop()
         runCatching { com.russoviller.cryogenic.music.CryoPlayer.release() }
         com.russoviller.cryogenic.ui.components.CryoTheme.inGame = false
@@ -1232,6 +1243,8 @@ fun runGame(
 ) {
     startGameService(context)
     com.russoviller.cryogenic.discord.CryoDiscordPresence.handoffToGame()
+    //Mods do Launcher: avisa que o jogo vai abrir
+    runCatching { com.russoviller.cryogenic.cmod.CmodManager.onGameLaunch(version.getVersionName()) }
     //O jogo roda em outro processo: avisa também o processo do Launcher, que para gradientes,
     //GIFs e animações enquanto o jogo estiver aberto
     com.russoviller.cryogenic.ui.components.CryoTheme.inGame = true

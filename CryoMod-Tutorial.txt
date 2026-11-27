@@ -1,12 +1,15 @@
 =====================================================================
   CRYOMOD TUTORIAL — How to make Launcher Mods (.cmod)
-  Cryogenic Launcher (r1.8.0+) · CryoMod API v1
+  Cryogenic Launcher (r1.8.0+) · CryoMod API v2
 =====================================================================
 
 A .cmod is a mod for the Cryogenic Launcher ITSELF (not a Minecraft
 mod). It adds ONE new feature to the launcher: a Bedrock -> Java map
-converter, a world organizer, a downloader, a farm calculator... the
-only limit is your creativity.
+converter, a world organizer, a downloader, a farm calculator... and,
+since API 2, it can also run INSIDE THE GAME: draw over the game,
+press keys, move the mouse, type in the chat, read the game log, add
+Java/Minecraft launch arguments (even a -javaagent). The only limit is
+your creativity.
 
 In the launcher:
   - Install: Settings > Launcher > Launcher Mods > Import .cmod
@@ -17,7 +20,9 @@ In the launcher:
   - Enabled mods are kept by "Save Settings".
 
 To try it right now: install CryoMod-Example.cmod (in the root of this
-repository), enable it and open the CryoMods page.
+repository), enable it and open the CryoMods page. For the API 2
+features (in-game HUD, quick command, auto-walk, chat alerts), install
+CryoMod-CryoHUD.cmod and open a game.
 
 ---------------------------------------------------------------------
  1. WHAT YOU NEED
@@ -64,6 +69,8 @@ A .cmod is a ZIP containing:
   assets/        (optional) your extra files (texts, images, tables,
                             models...). They end up in
                             api.getModDirectory()/assets/
+  game/          (optional, API 2) files for the game side, e.g. a
+                            Java agent .jar used in "jvmArgs".
 
 Any other file in the zip is ignored. Maximum size: 64 MB.
 
@@ -79,11 +86,32 @@ cmod.json:
     "apiVersion": 1
   }
 
+API 2 adds optional fields:
+
+  {
+    ...
+    "gameMain": "com.yourname.mymod.MyGameMod",
+    "website": "https://...",
+    "dependencies": ["othername.othermod"],
+    "jvmArgs": ["-Dmymod.enabled=true", "-javaagent:${modDir}/game/agent.jar"],
+    "gameArgs": ["--quickPlayMultiplayer", "play.example.net"],
+    "apiVersion": 2
+  }
+
   id          2 to 64 characters: letters, numbers, _ . -
               Use something unique (e.g. yourname.modname). Importing
               another .cmod with the same id UPDATES the installed mod.
   main        Main class (package + name). It must implement CryoMod
-              and have a public no-argument constructor.
+              and have a public no-argument constructor. Optional if
+              the mod has "gameMain" (a mod only for the game).
+  gameMain    (API 2) In-game class: implements CryoGameMod. See 15.
+  website     (API 2) Link shown in Launcher Mods (Website button).
+  dependencies (API 2) ids of mods that must be enabled first. If one
+              is missing, the mod shows "Missing dependency: <id>".
+  jvmArgs     (API 2) Extra Java arguments for the game. Only -D..,
+              -X.., -javaagent:.., --add-opens, --add-exports and
+              --enable-native-access. See 16.
+  gameArgs    (API 2) Extra Minecraft arguments (end of the command).
   apiVersion  API version the mod uses. If it is higher than the
               launcher's, the mod won't start ("Failed to start").
 
@@ -265,6 +293,8 @@ and you can mix them:
     .cmod: add the .jar files to the compilation and to d8. The mod
     loads its own classes first, so they don't clash with the
     launcher's.
+  - build.sh: put the .jar libraries in a libs/ folder next to src/:
+    they are used to compile and are merged into classes.dex.
   - Kotlin: compile with kotlinc to a .jar, add kotlin-stdlib.jar and
     pass everything to d8 (build.sh only compiles Java; adapt it if
     you use Kotlin).
@@ -273,8 +303,9 @@ and you can mix them:
 11. SAFETY AND GOOD PRACTICES
 ---------------------------------------------------------------------
 
-  - A .cmod runs code inside the launcher, with the same permissions
-    as the launcher. Only install mods from people you trust, and
+  - A .cmod runs code inside the launcher (and, with gameMain or
+    jvmArgs, inside the game), with the same permissions as the
+    launcher. Only install mods from people you trust, and
     don't make mods that steal data, accounts or files: the launcher
     shows this warning to everyone.
   - Don't touch the user's files without them asking (show what you
@@ -291,16 +322,18 @@ and you can mix them:
 
 Send the AI:
   1) This file (CryoMod-Tutorial.txt)
-  2) The 5 API files:
+  2) All the API files:
        CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api/
-       (CryoMod.java, CryoModApi.java, CryoModButton.java,
-        CryoModScreen.java, CryoModUi.java)
-  3) The example: cmod-sdk/example/src/.../ExampleMod.java and cmod.json
+       (CryoMod, CryoModApi, CryoModButton, CryoModScreen, CryoModUi,
+        CryoModPrefs, CryoModTask, CryoModInfo, CryoModMessageListener,
+        CryoLauncherListener, CryoGameMod, CryoGameApi,
+        CryoGameLogListener, CryoKeys)
+  3) The examples: cmod-sdk/example/ and cmod-sdk/example-hud/
 
 And a request like:
 
   "Create a Launcher Mod (.cmod) for Cryogenic Launcher using the
-   CryoMod API v1 from the attached files. Java 8, Android Views only
+   CryoMod API v2 from the attached files. Java 8, Android Views only
    (no Compose), ONE feature only (one addButton). Heavy work in
    api.runInBackground. Use screen.getUi() for a launcher-style UI.
    The mod must: <describe what you want>. Give me the cmod.json and
@@ -323,9 +356,135 @@ Then build it with build.sh (section 2) and test it in the launcher.
   # 3) dex
   d8 --release --min-api 26 --lib $ANDROID_JAR \
      --classpath api_classes --output dex mod.jar
-  # 4) package (zip with cmod.json, classes.dex, icon.png, assets/)
+  # 4) package (zip with cmod.json, classes.dex, icon.png, assets/, game/)
   cp cmod.json icon.png dex/
   (cd dex && zip -r ../mymod.cmod .)
+
+---------------------------------------------------------------------
+14. API 2: MORE POWER IN THE LAUNCHER
+---------------------------------------------------------------------
+
+Set "apiVersion": 2 to use these (launchers with API 1 won't load the
+mod). All of them are on CryoModApi:
+
+  getPreferences()        key/value settings (getString/putInt/...),
+                          saved right away and SHARED with the in-game
+                          side of the mod.
+  schedule(ms, r)         run later on the main thread.
+  scheduleRepeating(..)   run every N ms. Both return a CryoModTask
+                          (cancel()) and stop when the mod is disabled.
+  setButtonBadge("3")     small badge on your button (null removes).
+  openUrl / copyToClipboard / shareText
+  getLanguage()           "pt", "en", "zh"... (translate your mod)
+  getInstalledMods()      CryoModInfo of every installed mod.
+  isModEnabled(id)
+  getGameVersions() / getSelectedGameVersion() / selectGameVersion()
+  addLauncherListener(..) events: onGameLaunch(version),
+                          onLauncherForeground/Background,
+                          onModEnabled/Disabled, onGameVersionSelected.
+
+Mods talking to mods:
+
+  api.sendMessage("other.mod", "channel", payload)  -> one mod
+  api.broadcast("channel", payload)                  -> every mod
+  api.addMessageListener((from, channel, payload) -> { ... });
+
+  api.exposeService("name", object)      share an object
+  api.getService("other.mod", "name")    get it from another mod
+
+  Each mod has its own class loader: share objects whose types come
+  from Android/Java (Runnable, Map, java.util.function.*, String...).
+  With "dependencies" you can build library mods used by other mods.
+
+New UI pieces (screen.getUi()): image, chip, checkbox, choice
+(dropdown), listItem, grid, confirm, prompt and dialog (any View in a
+themed dialog).
+
+The Launcher Mods window shows, for each mod: status, what it does
+(Launcher / In-game / JVM args / Game args), id, version, size,
+dependencies, and the buttons Restart (reloads the .cmod from disk:
+great while developing), Logs (everything api.log wrote, plus the
+last game session), Share (exports the .cmod), Website, Clear data
+and Delete.
+
+---------------------------------------------------------------------
+15. API 2: IN-GAME MODS (gameMain)
+---------------------------------------------------------------------
+
+The class in "gameMain" implements CryoGameMod and runs in the game
+screen (a different process from the launcher: share data with
+getPreferences(), not with static fields).
+
+  public final class MyGameMod implements CryoGameMod {
+      @Override
+      public void onGameStart(CryoGameApi api) {
+          TextView pill = api.getUi().chip("Hello!", true, null);
+          api.addOverlayView(pill, Gravity.TOP | Gravity.END, 12, 10);
+          api.addLogListener(line -> {
+              if (line.contains("[CHAT]") && line.contains("!day"))
+                  api.sendChatMessage("/time set day");
+          });
+      }
+      @Override
+      public void onGameExit(int exitCode) { }
+  }
+
+CryoGameApi:
+
+  getOverlay() / addOverlayView(view, gravity, xDp, yDp) /
+  removeOverlayView(view)
+      A layer over the game AND the controls. Empty areas let the
+      touch through; only clickable Views catch touches.
+  pressKey(key, down) / tapKey / holdKey(key, ms) / typeText(text)
+  mouseButton(button, down) / click / setCursor / moveCursor / scroll
+      Keys use GLFW codes: CryoKeys.W, CryoKeys.SPACE, CryoKeys.F3,
+      CryoKeys.MOUSE_LEFT...
+  sendChatMessage("/command or text")
+      Opens the chat, types and sends. Only while playing (no menu
+      open): returns false otherwise.
+  isCursorGrabbed()   true while playing (no menu/inventory/chat).
+  getFps(), getWindowWidth(), getWindowHeight(), getCursorX/Y()
+  addLogListener(line -> ...)
+      Every line of the game log. Chat messages contain "[CHAT]".
+      Runs on the log thread: be quick.
+  getVersionName(), getMinecraftVersion(), getGameDirectory()
+  getPreferences(), getUi(), toast, log, runOnUiThread,
+  runInBackground, schedule, scheduleRepeating
+
+Tip: macros (holdKey + click in sequence), auto-walk, timers, chat
+bots, stream alerts, a HUD with anything you calculate, a button
+that runs your favorite commands... all of this is possible.
+
+---------------------------------------------------------------------
+16. API 2: JVM AND GAME ARGUMENTS
+---------------------------------------------------------------------
+
+"jvmArgs" are added to the Java of the game when it starts; "gameArgs"
+are added to the end of the Minecraft arguments. Placeholders:
+
+  ${modDir}    folder of the installed .cmod (game/ files are there)
+  ${dataDir}   data folder of the mod
+  ${gameDir}   game folder of the running version
+
+Example: a Java agent that changes Minecraft classes while it loads
+(the agent .jar is normal Java, compiled for the game's Java):
+
+  "jvmArgs": ["-javaagent:${modDir}/game/myagent.jar=${dataDir}"]
+
+The arguments only apply while the mod is enabled. They are written in
+the game log ("CryoMods: JVM args ...").
+
+---------------------------------------------------------------------
+17. IDEAS
+---------------------------------------------------------------------
+
+  - In-game: FPS/ping/clock HUD, auto-walk/auto-click buttons,
+    macro pads, chat mention alerts, translators, death counters,
+    stream overlays, a quick-command wheel.
+  - Launcher: world backups on onGameLaunch, playtime statistics,
+    a mod pack downloader, screenshot galleries, a skin editor.
+  - Mods of mods: a "library" mod with exposeService that other mods
+    use through "dependencies".
 
 =====================================================================
  Cryogenic Launcher — created by RussoViller

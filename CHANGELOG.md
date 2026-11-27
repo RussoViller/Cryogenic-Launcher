@@ -8,6 +8,8 @@ Updates:
   - Quick themes in Rest Mode
   - Save Settings in Extra Functions (.cryoconf export/import)
   - Launcher Mods (.cmod)
+  - In-game Launcher Mods
+  - CryoMod API 2
   - CryoMods page
 - Settings:
   - Launcher tab

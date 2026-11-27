@@ -289,6 +289,8 @@ class GameLauncher(
             val glLibrary = if (sfpewEnabled) getSfpewLibraryPath() else getRendererLibrary()
             args.add("-Dorg.lwjgl.opengl.libname=$glLibrary")
         }
+        //Mods do Launcher: argumentos extras da JVM (cmod.json "jvmArgs")
+        runCatching { args.addAll(com.russoviller.cryogenic.cmod.CmodGameHost.extraJvmArgs(version.getGameDir())) }
     }
 
     private suspend fun launchGame(
@@ -333,7 +335,10 @@ class GameLauncher(
                 getCacioJavaArgs(screenSize, isJava8)
             },
             onCapeProxyStarted = { proxy -> capeProxy = proxy }
-        ).getAllArgs()
+        ).getAllArgs().let { args ->
+            //Mods do Launcher: argumentos extras do Minecraft (cmod.json "gameArgs")
+            args + runCatching { com.russoviller.cryogenic.cmod.CmodGameHost.extraGameArgs(gameDirPath) }.getOrDefault(emptyList())
+        }
 
         tryStartTouchProxy()
 

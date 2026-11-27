@@ -137,10 +137,11 @@ Only install APK files from sources you trust.
 
 The full launcher source code is in this repository. Build instructions are in [`BUILDING.md`](BUILDING.md).
 
-**Launcher Mods (.cmod)** add new features to the launcher itself (not to Minecraft). Install them in **Settings › Launcher › Launcher Mods** and use them from the **CryoMods** page.
+**Launcher Mods (.cmod)** add new features to the launcher itself and, with CryoMod API 2, can also act inside the game (overlays over the game, keys and mouse, chat, game log, extra Java/Minecraft arguments). Install them in **Settings › Launcher › Launcher Mods** and use them from the **CryoMods** page.
 
 - [`CryoMod-Tutorial.txt`](CryoMod-Tutorial.txt): step-by-step guide, API reference and tips, including how to ask an AI to write a mod.
 - [`CryoMod-Example.cmod`](CryoMod-Example.cmod): a ready example to install and study.
+- [`CryoMod-CryoHUD.cmod`](CryoMod-CryoHUD.cmod): API 2 example (in-game HUD, quick command, auto-walk, chat alerts).
 - [`cmod-sdk`](cmod-sdk): build script and the example source.
 - API: [`CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api`](CryogenicLauncher/src/main/java/com/russoviller/cryogenic/cmod/api).
 

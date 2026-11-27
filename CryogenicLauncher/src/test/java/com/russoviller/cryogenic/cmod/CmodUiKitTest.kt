@@ -67,4 +67,47 @@ class CmodUiKitTest {
             File(d, "cmod_ui_kit.png").outputStream().use { bmp.compress(Bitmap.CompressFormat.PNG, 100, it) }
         }
     }
+
+    @Test
+    fun api2PiecesAndDialogs() {
+        val activity = Robolectric.buildActivity(Activity::class.java).setup().get()
+        val ui = CmodUiKit(activity)
+        val bmp = Bitmap.createBitmap(8, 8, Bitmap.Config.ARGB_8888)
+        val page = ui.column()
+        page.addView(ui.image(bmp, 40f, 40f))
+        var chipClicks = 0
+        val chip = ui.chip("Tag", true) { chipClicks++ }
+        page.addView(chip)
+        page.addView(ui.checkbox("Check", true, null))
+        page.addView(ui.choice(arrayOf("A", "B"), 1, null))
+        var itemClicks = 0
+        val item = ui.listItem(bmp, "Title", "Sub") { itemClicks++ }
+        page.addView(item)
+        val grid = ui.grid(3)
+        repeat(5) { grid.addView(ui.chip("c$it", false, null)) }
+        page.addView(grid)
+        chip.performClick(); item.performClick()
+        assertEquals(1, chipClicks)
+        assertEquals(1, itemClicks)
+        assertEquals(3, grid.columnCount)
+
+        var confirmed: Boolean? = null
+        ui.confirm("Title", "Message") { confirmed = it }
+        val d1 = org.robolectric.shadows.ShadowDialog.getLatestDialog()
+        assertTrue(d1.isShowing)
+        fun find(v: View, text: String): View? {
+            if (v is android.widget.TextView && v.text.toString() == text) return v
+            if (v is android.view.ViewGroup) for (i in 0 until v.childCount) find(v.getChildAt(i), text)?.let { return it }
+            return null
+        }
+        find(d1.window!!.decorView, activity.getString(android.R.string.ok))!!.performClick()
+        assertEquals(true, confirmed)
+        assertTrue(!d1.isShowing)
+
+        var typed: String? = "x"
+        ui.prompt("Name", "hint", "abc") { typed = it }
+        val d2 = org.robolectric.shadows.ShadowDialog.getLatestDialog()
+        find(d2.window!!.decorView, activity.getString(android.R.string.cancel))!!.performClick()
+        assertEquals(null, typed)
+    }
 }

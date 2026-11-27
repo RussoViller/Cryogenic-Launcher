@@ -4,10 +4,13 @@
 # Usage: ./build.sh <mod-folder> [output.cmod]
 #
 # The mod folder must contain:
-#   cmod.json      mod info (id, name, version, author, description, main, apiVersion)
+#   cmod.json      mod info (id, name, version, author, description, main, gameMain,
+#                  apiVersion, website, dependencies, jvmArgs, gameArgs)
 #   src/           Java source code
 #   icon.png       (optional) mod icon
 #   assets/        (optional) extra files, copied as they are
+#   game/          (optional) files for the game side (e.g. a -javaagent jar), copied as they are
+#   libs/          (optional) .jar libraries compiled into the mod
 #
 # Requires: JDK 17+ (javac, jar) and the Android SDK (android.jar + d8).
 # ANDROID_HOME (or ANDROID_SDK_ROOT) must point to the SDK.
@@ -43,20 +46,24 @@ javac -source 8 -target 8 -nowarn -Xlint:-options -cp "$ANDROID_JAR" -d "$WORK/a
 # 2) Mod code
 mkdir -p "$WORK/classes"
 find "$MOD_DIR/src" -name '*.java' > "$WORK/sources.txt"
+LIB_JARS=()
+[ -d "$MOD_DIR/libs" ] && while IFS= read -r j; do LIB_JARS+=("$j"); done < <(find "$MOD_DIR/libs" -name '*.jar')
+LIBS="$(IFS=:; echo "${LIB_JARS[*]:-}")"
 javac -source 8 -target 8 -nowarn -Xlint:-options -encoding UTF-8 \
-    -cp "$ANDROID_JAR:$WORK/cryomod-api.jar" -d "$WORK/classes" @"$WORK/sources.txt"
+    -cp "$ANDROID_JAR:$WORK/cryomod-api.jar:$LIBS" -d "$WORK/classes" @"$WORK/sources.txt"
 (cd "$WORK/classes" && jar cf "$WORK/mod.jar" .)
 
 # 3) Dex
 mkdir -p "$WORK/dex" "$WORK/pkg"
 "$D8" --release --min-api 26 --lib "$ANDROID_JAR" --classpath "$WORK/cryomod-api.jar" \
-    --output "$WORK/dex" "$WORK/mod.jar"
+    --output "$WORK/dex" "$WORK/mod.jar" ${LIB_JARS[@]+"${LIB_JARS[@]}"}
 
 # 4) Package
 cp "$MOD_DIR/cmod.json" "$WORK/pkg/"
 cp "$WORK"/dex/classes*.dex "$WORK/pkg/"
 [ -f "$MOD_DIR/icon.png" ] && cp "$MOD_DIR/icon.png" "$WORK/pkg/"
 [ -d "$MOD_DIR/assets" ] && cp -r "$MOD_DIR/assets" "$WORK/pkg/"
+[ -d "$MOD_DIR/game" ] && cp -r "$MOD_DIR/game" "$WORK/pkg/"
 rm -f "$OUT"
 (cd "$WORK/pkg" && jar cfM "$OUT" .)
 echo "OK: $OUT"

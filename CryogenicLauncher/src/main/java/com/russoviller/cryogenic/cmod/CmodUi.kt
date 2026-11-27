@@ -17,6 +17,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -145,16 +147,34 @@ fun LauncherModsDialog(onDismiss: () -> Unit, onOpenCryoMods: (() -> Unit)? = nu
     }
 }
 
+private enum class ModFilter { ALL, ON, OFF }
+
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun LauncherModsContent(modifier: Modifier, onDismiss: () -> Unit, onOpenCryoMods: (() -> Unit)? = null) {
+internal fun LauncherModsContent(
+    modifier: Modifier,
+    onDismiss: () -> Unit,
+    onOpenCryoMods: (() -> Unit)? = null,
+    initialSelectedId: String = NONE
+) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     LaunchedEffect(Unit) { runCatching { CmodManager.init(context) } }
     val mods = CmodManager.installed
-    var selectedId by remember { mutableStateOf(NONE) }
+    var selectedId by remember { mutableStateOf(initialSelectedId) }
     var busy by remember { mutableStateOf(false) }
     var message by remember { mutableStateOf<String?>(null) }
+    var query by remember { mutableStateOf("") }
+    var filter by remember { mutableStateOf(ModFilter.ALL) }
+    var logsFor by remember { mutableStateOf<InstalledCmod?>(null) }
     val selected = mods.firstOrNull { it.info.id == selectedId }
+    val shown = mods.filter { mod ->
+        val on = CmodManager.isEnabled(mod.info.id)
+        val q = query.trim()
+        (filter == ModFilter.ALL || (filter == ModFilter.ON) == on) &&
+            (q.isEmpty() || mod.info.name.contains(q, true) || mod.info.id.contains(q, true) ||
+                mod.info.author.contains(q, true) || mod.info.description.contains(q, true))
+    }
 
     val wrongText = stringResource(R.string.cryo_cmods_import_wrong)
     val errorText = stringResource(R.string.cryo_presets_error)
@@ -186,7 +206,7 @@ internal fun LauncherModsContent(modifier: Modifier, onDismiss: () -> Unit, onOp
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // ---------------- Lista ----------------
-        Column(modifier = Modifier.width(240.dp).fillMaxHeight()) {
+        Column(modifier = Modifier.width(250.dp).fillMaxHeight()) {
             Text(
                 text = stringResource(R.string.cryo_cmods_launcher_mods),
                 style = MaterialTheme.typography.titleMedium.copy(
@@ -195,11 +215,46 @@ internal fun LauncherModsContent(modifier: Modifier, onDismiss: () -> Unit, onOp
                 )
             )
             Text(
-                text = stringResource(R.string.cryo_cmods_launcher_mods_summary),
+                text = if (mods.isEmpty()) stringResource(R.string.cryo_cmods_launcher_mods_summary)
+                    else stringResource(R.string.cryo_cmods_count, mods.size, mods.count { CmodManager.isEnabled(it.info.id) }),
                 style = MaterialTheme.typography.labelSmall,
                 color = CryoGlassColors.Frost.copy(alpha = 0.75f)
             )
             Spacer(Modifier.height(8.dp))
+            if (mods.isNotEmpty()) {
+                SimpleTextInputField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = query,
+                    onValueChange = { query = it },
+                    singleLine = true,
+                    hint = {
+                        Text(
+                            text = stringResource(R.string.cryo_cmods_search_mods),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = CryoGlassColors.Frost.copy(alpha = 0.55f)
+                        )
+                    },
+                    contextPadding = PaddingValues(horizontal = 14.dp, vertical = 9.dp),
+                    textStyle = MaterialTheme.typography.labelMedium.copy(color = Color.White)
+                )
+                Spacer(Modifier.height(6.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    ModFilter.entries.forEach { f ->
+                        ModChip(
+                            text = stringResource(
+                                when (f) {
+                                    ModFilter.ALL -> R.string.cryo_cmods_filter_all
+                                    ModFilter.ON -> R.string.cryo_cmods_status_on
+                                    ModFilter.OFF -> R.string.cryo_cmods_status_off
+                                }
+                            ),
+                            selected = filter == f,
+                            onClick = { filter = f }
+                        )
+                    }
+                }
+                Spacer(Modifier.height(8.dp))
+            }
             Column(
                 modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(6.dp)
@@ -211,24 +266,24 @@ internal fun LauncherModsContent(modifier: Modifier, onDismiss: () -> Unit, onOp
                         style = MaterialTheme.typography.labelSmall,
                         color = CryoGlassColors.Frost.copy(alpha = 0.7f)
                     )
+                } else if (shown.isEmpty()) {
+                    Text(
+                        modifier = Modifier.padding(horizontal = 6.dp, vertical = 10.dp),
+                        text = stringResource(R.string.cryo_cmods_search_empty_mods),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = CryoGlassColors.Frost.copy(alpha = 0.7f)
+                    )
                 }
-                mods.forEach { mod ->
-                    val enabled = CmodManager.isEnabled(mod.info.id)
-                    val error = CmodManager.errors[mod.info.id]
+                shown.forEach { mod ->
+                    val status = modStatus(mod)
                     ModTile(
                         icon = mod.icon,
                         title = mod.info.name,
-                        subtitle = when {
-                            error != null && enabled -> stringResource(R.string.cryo_cmods_status_error)
-                            enabled -> stringResource(R.string.cryo_cmods_status_on)
-                            else -> stringResource(R.string.cryo_cmods_status_off)
-                        },
-                        subtitleColor = when {
-                            error != null && enabled -> Color(0xFFFF8A80)
-                            enabled -> CryoGlassColors.Aurora
-                            else -> CryoGlassColors.Frost.copy(alpha = 0.65f)
-                        },
+                        subtitle = stringResource(status.text),
+                        subtitleColor = status.color,
                         selected = mod.info.id == selectedId,
+                        dot = status.color.takeIf { status != ModStatus.OFF },
+                        badge = mod.info.version.takeIf { it.isNotEmpty() }?.let { "v$it" },
                         onClick = { selectedId = mod.info.id; message = null }
                     )
                 }
@@ -260,10 +315,18 @@ internal fun LauncherModsContent(modifier: Modifier, onDismiss: () -> Unit, onOp
                     lines = listOf(stringResource(R.string.cryo_cmods_what_body)),
                     icon = null
                 )
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    listOf(
+                        R.string.cryo_cmods_cap_launcher, R.string.cryo_cmods_cap_game,
+                        R.string.cryo_cmods_cap_jvm, R.string.cryo_cmods_cap_args
+                    ).forEach { ModChip(text = stringResource(it), selected = false) }
+                }
             } else {
                 val info = selected.info
                 val enabled = CmodManager.isEnabled(info.id)
+                val active = CmodManager.isActive(info.id)
                 val error = CmodManager.errors[info.id]
+                val status = modStatus(selected)
                 ModHero(
                     label = "CMOD · ${info.id}",
                     title = info.name,
@@ -274,6 +337,34 @@ internal fun LauncherModsContent(modifier: Modifier, onDismiss: () -> Unit, onOp
                     ),
                     icon = selected.icon
                 )
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    ModChip(text = stringResource(status.text), selected = true, color = status.color)
+                    if (info.hasLauncherSide) ModChip(text = stringResource(R.string.cryo_cmods_cap_launcher), selected = false)
+                    if (info.hasGameSide) ModChip(text = stringResource(R.string.cryo_cmods_cap_game), selected = false)
+                    if (info.jvmArgs.isNotEmpty()) ModChip(text = stringResource(R.string.cryo_cmods_cap_jvm), selected = false)
+                    if (info.gameArgs.isNotEmpty()) ModChip(text = stringResource(R.string.cryo_cmods_cap_args), selected = false)
+                }
+                // ficha técnica
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Color.White.copy(alpha = 0.04f))
+                        .border(1.dp, CryoGlassColors.Ice.copy(alpha = 0.2f), RoundedCornerShape(16.dp))
+                        .padding(horizontal = 12.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    InfoLine(stringResource(R.string.cryo_cmods_info_id), info.id)
+                    if (info.version.isNotEmpty()) InfoLine(stringResource(R.string.cryo_cmods_info_version), info.version)
+                    if (info.author.isNotEmpty()) InfoLine(stringResource(R.string.cryo_cmods_info_author), info.author)
+                    InfoLine("API", "v${info.apiVersion}")
+                    InfoLine(stringResource(R.string.cryo_cmods_info_size), formatSize(selected.sizeBytes))
+                    if (info.dependencies.isNotEmpty()) {
+                        InfoLine(stringResource(R.string.cryo_cmods_info_requires), info.dependencies.joinToString(", ") { d ->
+                            mods.firstOrNull { it.info.id == d }?.info?.name ?: d
+                        })
+                    }
+                }
                 if (error != null && enabled) {
                     Text(
                         modifier = Modifier
@@ -288,6 +379,7 @@ internal fun LauncherModsContent(modifier: Modifier, onDismiss: () -> Unit, onOp
                     )
                 }
                 var confirmDelete by remember(info.id) { mutableStateOf(false) }
+                var confirmClear by remember(info.id) { mutableStateOf(false) }
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     CryoButton(
                         modifier = Modifier.weight(1.2f),
@@ -296,51 +388,99 @@ internal fun LauncherModsContent(modifier: Modifier, onDismiss: () -> Unit, onOp
                     ) {
                         MarqueeText(text = stringResource(if (enabled) R.string.cryo_cmods_disable else R.string.cryo_cmods_enable))
                     }
+                    CryoTonalButton(
+                        modifier = Modifier.weight(1f),
+                        enabled = !busy && enabled,
+                        onClick = {
+                            CmodManager.restart(info.id)
+                            message = context.getString(R.string.cryo_cmods_restarted, info.name)
+                        }
+                    ) {
+                        Icon(modifier = Modifier.size(18.dp), painter = painterResource(R.drawable.ic_restart_alt), contentDescription = null)
+                        MarqueeText(text = stringResource(R.string.cryo_cmods_restart))
+                    }
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    CryoTonalButton(modifier = Modifier.weight(1f), onClick = { logsFor = selected }) {
+                        MarqueeText(text = stringResource(R.string.cryo_cmods_logs))
+                    }
+                    CryoTonalButton(
+                        modifier = Modifier.weight(1f),
+                        enabled = !busy,
+                        onClick = {
+                            busy = true
+                            scope.launch {
+                                runCatching { CmodManager.share(context, CmodManager.export(context, info.id)) }
+                                    .onFailure { message = errorText }
+                                busy = false
+                            }
+                        }
+                    ) {
+                        Icon(modifier = Modifier.size(18.dp), painter = painterResource(R.drawable.ic_share_filled), contentDescription = null)
+                        MarqueeText(text = stringResource(R.string.cryo_cmods_share))
+                    }
+                    if (info.website.isNotEmpty()) {
+                        CryoTonalButton(
+                            modifier = Modifier.weight(1f),
+                            onClick = {
+                                runCatching {
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(info.website)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                                }
+                            }
+                        ) {
+                            MarqueeText(text = stringResource(R.string.cryo_cmods_website))
+                        }
+                    }
+                }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     CryoOutlinedButton(
                         modifier = Modifier.weight(1f),
                         enabled = !busy,
-                        onClick = { confirmDelete = !confirmDelete },
+                        onClick = { confirmClear = !confirmClear; confirmDelete = false }
+                    ) {
+                        MarqueeText(text = stringResource(R.string.cryo_cmods_clear_data))
+                    }
+                    CryoOutlinedButton(
+                        modifier = Modifier.weight(1f),
+                        enabled = !busy,
+                        onClick = { confirmDelete = !confirmDelete; confirmClear = false },
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
                     ) {
                         Icon(modifier = Modifier.size(18.dp), painter = painterResource(R.drawable.ic_delete_outlined), contentDescription = null)
                         MarqueeText(text = stringResource(R.string.cryo_presets_delete))
                     }
                 }
-                if (confirmDelete) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(16.dp))
-                            .background(MaterialTheme.colorScheme.error.copy(alpha = 0.12f))
-                            .border(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.6f), RoundedCornerShape(16.dp))
-                            .padding(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Text(
-                            text = stringResource(R.string.cryo_cmods_delete_confirm, info.name),
-                            style = MaterialTheme.typography.labelLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            CryoOutlinedButton(
-                                modifier = Modifier.weight(1f),
-                                onClick = {
-                                    CmodManager.delete(info.id)
-                                    selectedId = NONE
-                                },
-                                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
-                            ) { Text(text = stringResource(R.string.cryo_presets_delete)) }
-                            CryoTonalButton(modifier = Modifier.weight(1f), onClick = { confirmDelete = false }) {
-                                Text(text = stringResource(R.string.generic_cancel))
-                            }
-                        }
-                    }
+                if (confirmClear) {
+                    ConfirmBox(
+                        text = stringResource(R.string.cryo_cmods_clear_data_confirm, info.name),
+                        confirm = stringResource(R.string.cryo_cmods_clear_data),
+                        onConfirm = {
+                            CmodManager.clearData(info.id)
+                            confirmClear = false
+                            message = context.getString(R.string.cryo_cmods_data_cleared)
+                        },
+                        onCancel = { confirmClear = false }
+                    )
                 }
-                if (onOpenCryoMods != null && enabled) {
+                if (confirmDelete) {
+                    ConfirmBox(
+                        text = stringResource(R.string.cryo_cmods_delete_confirm, info.name),
+                        confirm = stringResource(R.string.cryo_presets_delete),
+                        onConfirm = {
+                            CmodManager.delete(info.id)
+                            selectedId = NONE
+                        },
+                        onCancel = { confirmDelete = false }
+                    )
+                }
+                if (onOpenCryoMods != null && active && info.hasLauncherSide) {
                     CryoTonalButton(modifier = Modifier.fillMaxWidth(), onClick = onOpenCryoMods) {
                         MarqueeText(text = stringResource(R.string.cryo_cmods_open_screen))
                     }
+                }
+                if (info.hasGameSide) NoteBox(stringResource(R.string.cryo_cmods_game_note))
+                if (info.jvmArgs.isNotEmpty() || info.gameArgs.isNotEmpty()) {
+                    NoteBox(stringResource(R.string.cryo_cmods_args_note, (info.jvmArgs + info.gameArgs).joinToString(" ")), mono = true)
                 }
             }
 
@@ -379,6 +519,193 @@ internal fun LauncherModsContent(modifier: Modifier, onDismiss: () -> Unit, onOp
             )
         }
     }
+    logsFor?.let { mod -> ModLogsDialog(mod = mod, onDismiss = { logsFor = null }) }
+}
+
+private enum class ModStatus(val text: Int, val color: Color) {
+    RUNNING(R.string.cryo_cmods_status_running, Color(0xFF7CF5B8)),
+    GAME(R.string.cryo_cmods_status_game, Color(0xFF8EC9FF)),
+    ERROR(R.string.cryo_cmods_status_error, Color(0xFFFF8A80)),
+    OFF(R.string.cryo_cmods_status_off, Color(0xA6D6E6F2))
+}
+
+private fun modStatus(mod: InstalledCmod): ModStatus {
+    val id = mod.info.id
+    return when {
+        !CmodManager.isEnabled(id) -> ModStatus.OFF
+        CmodManager.errors[id] != null || !CmodManager.isActive(id) -> ModStatus.ERROR
+        mod.info.hasLauncherSide -> ModStatus.RUNNING
+        else -> ModStatus.GAME
+    }
+}
+
+private fun formatSize(bytes: Long): String = when {
+    bytes >= 1024 * 1024 -> String.format(java.util.Locale.ROOT, "%.1f MB", bytes / 1048576.0)
+    bytes >= 1024 -> String.format(java.util.Locale.ROOT, "%.1f KB", bytes / 1024.0)
+    else -> "$bytes B"
+}
+
+@Composable
+private fun InfoLine(label: String, value: String) {
+    Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text(
+            modifier = Modifier.width(92.dp),
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = CryoGlassColors.Ice,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            modifier = Modifier.weight(1f),
+            text = value,
+            style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace),
+            color = Color.White
+        )
+    }
+}
+
+@Composable
+private fun ModChip(text: String, selected: Boolean, color: Color = CryoGlassColors.Ice, onClick: (() -> Unit)? = null) {
+    Text(
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(if (selected) color.copy(alpha = 0.22f) else Color.White.copy(alpha = 0.04f))
+            .border(1.dp, color.copy(alpha = if (selected) 0.9f else 0.35f), RoundedCornerShape(50))
+            .let { if (onClick != null) it.clickable(onClick = onClick) else it }
+            .padding(horizontal = 10.dp, vertical = 4.dp),
+        text = text,
+        style = MaterialTheme.typography.labelSmall,
+        fontWeight = FontWeight.Bold,
+        color = if (selected) Color.White else CryoGlassColors.Frost.copy(alpha = 0.85f),
+        maxLines = 1
+    )
+}
+
+@Composable
+private fun NoteBox(text: String, mono: Boolean = false) {
+    Text(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(CryoGlassColors.Aurora.copy(alpha = 0.10f))
+            .border(1.dp, CryoGlassColors.Aurora.copy(alpha = 0.45f), RoundedCornerShape(12.dp))
+            .padding(10.dp),
+        text = text,
+        style = MaterialTheme.typography.labelSmall.let { if (mono) it.copy(fontFamily = FontFamily.Monospace) else it },
+        color = CryoGlassColors.Frost
+    )
+}
+
+@Composable
+private fun ConfirmBox(text: String, confirm: String, onConfirm: () -> Unit, onCancel: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.error.copy(alpha = 0.12f))
+            .border(1.dp, MaterialTheme.colorScheme.error.copy(alpha = 0.6f), RoundedCornerShape(16.dp))
+            .padding(12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(text = text, style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = Color.White)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            CryoOutlinedButton(
+                modifier = Modifier.weight(1f),
+                onClick = onConfirm,
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
+            ) { MarqueeText(text = confirm) }
+            CryoTonalButton(modifier = Modifier.weight(1f), onClick = onCancel) {
+                Text(text = stringResource(R.string.generic_cancel))
+            }
+        }
+    }
+}
+
+/** Log do mod: lado do Launcher (desta sessão) e lado do jogo (última vez que o jogo abriu). */
+@Composable
+private fun ModLogsDialog(mod: InstalledCmod, onDismiss: () -> Unit) {
+    val context = LocalContext.current
+    var gameTab by remember { mutableStateOf(false) }
+    val revision = CmodLogs.revision
+    var reload by remember { mutableStateOf(0) }
+    val lines = remember(revision, gameTab, reload) {
+        if (gameTab) CmodLogs.gameLines(mod.info.id) else CmodLogs.get(mod.info.id)
+    }
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        Column(
+            modifier = Modifier
+                .padding(12.dp)
+                .fillMaxWidth(0.9f)
+                .fillMaxHeight(0.92f)
+                .cryoGlass(shape = RoundedCornerShape(24.dp), cornerRadius = 24.dp, opaque = true)
+                .padding(14.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                ModIcon(mod.icon, 28)
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = "${mod.info.name} · ${stringResource(R.string.cryo_cmods_logs)}",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Black,
+                    color = Color.White,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                ModChip(text = stringResource(R.string.cryo_cmods_cap_launcher), selected = !gameTab, onClick = { gameTab = false })
+                ModChip(text = stringResource(R.string.cryo_cmods_cap_game), selected = gameTab, onClick = { gameTab = true; reload++ })
+            }
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(14.dp))
+                    .background(Color.Black.copy(alpha = 0.45f))
+                    .border(1.dp, CryoGlassColors.Ice.copy(alpha = 0.25f), RoundedCornerShape(14.dp))
+                    .verticalScroll(rememberScrollState(), reverseScrolling = true)
+                    .padding(10.dp)
+            ) {
+                if (lines.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.cryo_cmods_logs_empty),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = CryoGlassColors.Frost.copy(alpha = 0.7f)
+                    )
+                }
+                lines.forEach { line ->
+                    Text(
+                        text = line,
+                        style = MaterialTheme.typography.labelSmall.copy(fontFamily = FontFamily.Monospace, fontSize = 11.sp),
+                        color = when {
+                            line.length > 9 && line[9] == 'E' -> Color(0xFFFF8A80)
+                            else -> CryoGlassColors.Frost
+                        }
+                    )
+                }
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                CryoTonalButton(
+                    modifier = Modifier.weight(1f),
+                    enabled = lines.isNotEmpty(),
+                    onClick = {
+                        runCatching {
+                            context.getSystemService(android.content.ClipboardManager::class.java)
+                                ?.setPrimaryClip(android.content.ClipData.newPlainText(mod.info.name, lines.joinToString("\n")))
+                        }
+                    }
+                ) { MarqueeText(text = stringResource(R.string.cryo_cmods_copy)) }
+                CryoOutlinedButton(
+                    modifier = Modifier.weight(1f),
+                    enabled = lines.isNotEmpty(),
+                    onClick = { CmodLogs.clear(mod.info.id); reload++ }
+                ) { MarqueeText(text = stringResource(R.string.cryo_cmods_clear)) }
+                CryoButton(modifier = Modifier.weight(1f), onClick = onDismiss) {
+                    Text(text = stringResource(R.string.generic_close))
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -409,7 +736,16 @@ private fun ModIcon(icon: Bitmap?, size: Int) {
 }
 
 @Composable
-private fun ModTile(icon: Bitmap?, title: String, subtitle: String, subtitleColor: Color, selected: Boolean, onClick: () -> Unit) {
+private fun ModTile(
+    icon: Bitmap?,
+    title: String,
+    subtitle: String,
+    subtitleColor: Color,
+    selected: Boolean,
+    onClick: () -> Unit,
+    dot: Color? = null,
+    badge: String? = null
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -424,7 +760,21 @@ private fun ModTile(icon: Bitmap?, title: String, subtitle: String, subtitleColo
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        ModIcon(icon, 36)
+        Box {
+            ModIcon(icon, 36)
+            if (dot != null) {
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .size(11.dp)
+                        .clip(RoundedCornerShape(50))
+                        .background(CryoGlassColors.Deep)
+                        .padding(2.dp)
+                        .clip(RoundedCornerShape(50))
+                        .background(dot)
+                )
+            }
+        }
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
@@ -440,6 +790,19 @@ private fun ModTile(icon: Bitmap?, title: String, subtitle: String, subtitleColo
                 color = subtitleColor,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
+            )
+        }
+        if (!badge.isNullOrEmpty()) {
+            Text(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(50))
+                    .background(Brush.horizontalGradient(listOf(CryoGlassColors.IceSoft, CryoGlassColors.Ice)))
+                    .padding(horizontal = 7.dp, vertical = 2.dp),
+                text = badge,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Black,
+                color = CryoGlassColors.Deep,
+                maxLines = 1
             )
         }
     }
@@ -651,6 +1014,7 @@ fun CryoModsScreen(
                             subtitle = entry.button.description?.takeIf { it.isNotBlank() } ?: entry.modName,
                             subtitleColor = CryoGlassColors.Frost.copy(alpha = 0.75f),
                             selected = selected,
+                            badge = CmodManager.badges[entry.modId],
                             onClick = {
                                 openEntry = entry
                                 screenTitle = entry.button.title
@@ -681,8 +1045,10 @@ fun CryoModsScreen(
                     if (openEntry != null && headerVisible) {
                         Row(
                             modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(10.dp)
                         ) {
+                            openEntry?.let { e -> ModIcon(e.button.icon ?: e.modIcon, 26) }
                             Text(
                                 modifier = Modifier.weight(1f),
                                 text = screenTitle,
