@@ -34,6 +34,10 @@ Requirements:
 - Without the official keystore (`CryogenicLauncher/cryogenic_launcher.jks`, not included in the repository), the APK is not signed with the official signature: sign it with your own key.
 - Microsoft account login: set the `OAUTH_CLIENT_ID` environment variable (or a `.oauth_client_id.txt` file in the root).
 
+## Automatic debug APKs
+
+Every update to the source code on `main` builds the debug APKs (arm64-v8a, armeabi-v7a and the IS versions) with GitHub Actions: open **Actions › Debug APKs › (latest run) › Artifacts**. Debug APKs install alongside the official version (package `.debug` / `.is.debug`) and are signed with a public CI debug key (`.github/ci/debug.keystore`), not the official key.
+
 ## Launcher Mods (.cmod)
 
 To make mods for the launcher itself, see [`CryoMod-Tutorial.txt`](CryoMod-Tutorial.txt), the [`cmod-sdk`](cmod-sdk) folder and the ready-made example [`CryoMod-Example.cmod`](CryoMod-Example.cmod).

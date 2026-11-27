@@ -40,3 +40,4 @@ build/
 cmod-sdk/out/
 __pycache__/
 PetLib/rust/target/
+!.github/ci/debug.keystore

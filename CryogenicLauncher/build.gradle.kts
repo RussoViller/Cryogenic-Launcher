@@ -92,7 +92,8 @@ android {
         }
         debug {
             isMinifyEnabled = false
-            applicationIdSuffix = ".debug"
+            //debug instala ao lado da versão oficial; IS debug também separada da debug normal
+            applicationIdSuffix = if (storageIS) ".is.debug" else ".debug"
             versionNameSuffix = "-debug"
             if (hasCryogenicKeystore) signingConfig = signingConfigs.getByName("cryogenic")
         }
