@@ -64,11 +64,12 @@ class CryoLiveAudioSource(
     @SuppressLint("MissingPermission")
     override fun create(sampleRate: Int, isStereo: Boolean, echoCanceler: Boolean, noiseSuppressor: Boolean): Boolean {
         channels = if (isStereo) 2 else 1
-        micRing.capacity = sampleRate / 2
-        voiceRing.capacity = sampleRate / 2
+        micRing.capacity = sampleRate
+        voiceRing.capacity = sampleRate
         // espera juntar um pouco antes de tocar: atrasos pequenos na entrega não picotam a voz
-        micJitter = JitterBuffer(micRing, prebuffer = ms(sampleRate, 40), maxLatency = ms(sampleRate, 200), keepLatency = ms(sampleRate, 60))
-        voiceJitter = JitterBuffer(voiceRing, prebuffer = ms(sampleRate, 80), maxLatency = ms(sampleRate, 300), keepLatency = ms(sampleRate, 120))
+        // o som interno (que dita o ritmo) chega em rajadas: sobra de ~100 ms para a voz nunca faltar
+        micJitter = JitterBuffer(micRing, prebuffer = ms(sampleRate, 100), maxLatency = ms(sampleRate, 350), keepLatency = ms(sampleRate, 120))
+        voiceJitter = JitterBuffer(voiceRing, prebuffer = ms(sampleRate, 140), maxLatency = ms(sampleRate, 450), keepLatency = ms(sampleRate, 160))
         val inMask = if (isStereo) AudioFormat.CHANNEL_IN_STEREO else AudioFormat.CHANNEL_IN_MONO
         val min = AudioRecord.getMinBufferSize(sampleRate, inMask, AudioFormat.ENCODING_PCM_16BIT).coerceAtLeast(8192)
         return runCatching {
@@ -160,8 +161,9 @@ class CryoLiveAudioSource(
     }
 
     private fun micLoop(mic: AudioRecord) {
-        runCatching { Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO) }
-        val buffer = ShortArray(sampleRate / 50)
+        // o jogo disputa a CPU: as threads de áudio da live ficam na prioridade de áudio em tempo real
+        runCatching { Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO) }
+        val buffer = ShortArray(sampleRate / 100)
         while (running) {
             val n = runCatching { mic.read(buffer, 0, buffer.size) }.getOrDefault(-1)
             if (n <= 0) {
@@ -179,12 +181,13 @@ class CryoLiveAudioSource(
     }
 
     private fun mixLoop(internal: AudioRecord) {
-        runCatching { Process.setThreadPriority(Process.THREAD_PRIORITY_AUDIO) }
+        runCatching { Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_AUDIO) }
         val frames = sampleRate / 50 // 20 ms
         val internalBuf = ShortArray(frames * channels)
         val micBuf = ShortArray(frames)
         val voiceBuf = ShortArray(frames)
         val out = ByteArray(frames * channels * 2)
+        val clock = SampleClock(sampleRate)
         while (running) {
             val read = runCatching { internal.read(internalBuf, 0, internalBuf.size, AudioRecord.READ_BLOCKING) }.getOrDefault(-1)
             if (read <= 0) {
@@ -198,6 +201,7 @@ class CryoLiveAudioSource(
             val useVoice = voiceActive && (!explicitMic || micSilent)
             voiceShared = useVoice
 
+            // as duas filas andam sempre (a que não está em uso não acumula atraso)
             val micGot = micJitter.read(micBuf, frameCount)
             val voiceGot = voiceJitter.read(voiceBuf, frameCount)
             val mv = micVolume
@@ -208,21 +212,31 @@ class CryoLiveAudioSource(
                 val v = voice * mv
                 for (c in 0 until channels) {
                     val idx = f * channels + c
-                    val mixed = (internalBuf[idx] * iv + v).toInt().coerceIn(-32768, 32767)
+                    val mixed = softClip(internalBuf[idx] * iv + v)
                     out[idx * 2] = mixed.toByte()
                     out[idx * 2 + 1] = (mixed shr 8).toByte()
                 }
             }
             val size = frameCount * channels * 2
-            runCatching {
-                // relógio do codificador (elapsedRealtime): áudio e vídeo no mesmo tempo
-                target?.inputPCMData(Frame(out.copyOf(size), 0, size, android.os.SystemClock.elapsedRealtimeNanos() / 1000))
-            }
+            // tempo pelo número de amostras (linha do tempo do áudio sem tremido)
+            val ts = clock.next(frameCount)
+            runCatching { target?.inputPCMData(Frame(out.copyOf(size), 0, size, ts)) }
         }
     }
 
     companion object {
         private const val TAG = "CryoLiveAudio"
+
+        private const val KNEE = 24000f
+
+        /** Limita sem cortar seco: som alto + voz alta não distorce (voz "rouca"). */
+        internal fun softClip(x: Float): Int {
+            val a = kotlin.math.abs(x)
+            if (a <= KNEE) return x.toInt()
+            val room = 32767f - KNEE
+            val y = KNEE + room * kotlin.math.tanh((a - KNEE) / room)
+            return (if (x < 0) -y else y).toInt().coerceIn(-32768, 32767)
+        }
         /** voz do jogo recebida há menos de 1 s = Voice Chat capturando */
         private const val VOICE_ACTIVE_NS = 1_000_000_000L
 
@@ -322,9 +336,14 @@ class LinearResampler {
 }
 
 /**
- * Leitura com pré-buffer (jitter buffer): só começa a tocar com [prebuffer] amostras guardadas; se
- * acabar (atraso na entrega), suaviza o corte e volta a juntar. Também corta o atraso acumulado
- * acima de [maxLatency], voltando para [keepLatency].
+ * Leitura com pré-buffer (jitter buffer) para uma fonte que tem relógio próprio (microfone, voz do
+ * jogo) misturada no ritmo de outra (som interno).
+ *
+ * - Só começa com [prebuffer] amostras guardadas (aguenta rajadas e atrasos na entrega).
+ * - Mantém o nível perto do alvo ajustando a velocidade em ~0,3% (imperceptível), em vez de
+ *   cortar pedaços: é isso que deixava a voz picotada/robótica.
+ * - Se acabar de vez, termina suave e volta a juntar; atraso acima de [maxLatency] cai para
+ *   [keepLatency].
  */
 class JitterBuffer(
     private val ring: VoiceRing,
@@ -334,6 +353,7 @@ class JitterBuffer(
 ) {
     private var playing = false
     private var fadeIn = 0
+    private var tmp = ShortArray(0)
 
     fun read(out: ShortArray, count: Int): Int {
         val available = ring.available()
@@ -343,25 +363,50 @@ class JitterBuffer(
             fadeIn = FADE
         }
         if (available > maxLatency) ring.skip(available - keepLatency)
-        val got = ring.pull(out, count)
-        if (fadeIn > 0) {
-            val n = minOf(fadeIn, got)
-            for (i in 0 until n) {
-                val step = FADE - fadeIn + i
-                out[i] = (out[i] * step / FADE).toShort()
-            }
-            fadeIn -= n
+        val level = ring.available()
+        // velocidade: um pouco mais rápido se acumulou, um pouco mais devagar se está baixando
+        val step = (count / 300).coerceAtLeast(1)
+        val want = when {
+            level > prebuffer + prebuffer / 2 -> count + step
+            level < prebuffer && level > count + step -> count - step
+            else -> count
         }
-        if (got < count) {
-            // acabou: termina suave (sem estalo) e volta a juntar
+        if (level < want) {
+            // acabou: entrega o que tem, termina suave e volta a juntar
+            val got = ring.pull(out, minOf(count, level))
             val n = minOf(FADE, got)
             for (i in 0 until n) {
                 val idx = got - n + i
                 out[idx] = (out[idx] * (n - i) / (n + 1)).toShort()
             }
             playing = false
+            return got
         }
-        return got
+        if (want == count) {
+            ring.pull(out, count)
+        } else {
+            if (tmp.size < want) tmp = ShortArray(want + 16)
+            ring.pull(tmp, want)
+            // reamostragem linear want -> count
+            val ratio = (want - 1).toDouble() / (count - 1).coerceAtLeast(1)
+            for (i in 0 until count) {
+                val pos = i * ratio
+                val k = pos.toInt().coerceAtMost(want - 1)
+                val frac = pos - k
+                val a = tmp[k].toInt()
+                val b = tmp[(k + 1).coerceAtMost(want - 1)].toInt()
+                out[i] = (a + (b - a) * frac).toInt().toShort()
+            }
+        }
+        if (fadeIn > 0) {
+            val n = minOf(fadeIn, count)
+            for (i in 0 until n) {
+                val stepIn = FADE - fadeIn + i
+                out[i] = (out[i] * stepIn / FADE).toShort()
+            }
+            fadeIn -= n
+        }
+        return count
     }
 
     fun reset() {
@@ -372,5 +417,36 @@ class JitterBuffer(
 
     private companion object {
         const val FADE = 64
+    }
+}
+
+/**
+ * Tempo de cada bloco de áudio pela contagem de amostras, no relógio do codificador
+ * (elapsedRealtime): blocos que chegam em rajadas não viram buracos/sobreposições na live.
+ * Se o tempo contado se afastar demais do relógio (áudio parou), recomeça a contagem.
+ */
+class SampleClock(private val sampleRate: Int, private val nowUs: () -> Long = { android.os.SystemClock.elapsedRealtimeNanos() / 1000 }) {
+    private var anchorUs = -1L
+    private var samples = 0L
+
+    fun next(count: Int): Long {
+        val durUs = count * 1_000_000L / sampleRate
+        val captured = nowUs() - durUs
+        if (anchorUs < 0) {
+            anchorUs = captured
+            samples = 0
+        }
+        var ts = anchorUs + samples * 1_000_000L / sampleRate
+        if (kotlin.math.abs(ts - captured) > MAX_DRIFT_US) {
+            anchorUs = captured
+            samples = 0
+            ts = anchorUs
+        }
+        samples += count
+        return ts
+    }
+
+    private companion object {
+        const val MAX_DRIFT_US = 300_000L
     }
 }

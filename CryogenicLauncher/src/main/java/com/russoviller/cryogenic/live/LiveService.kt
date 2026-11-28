@@ -58,7 +58,8 @@ class LiveService : Service(), ConnectChecker {
         private const val NOTIFICATION_ID = 7301
         private const val TAG = "LiveService"
         private const val MAX_CHAT = 150
-        private const val AUDIO_SAMPLE_RATE = 44100
+        // 48 kHz: a taxa do próprio aparelho (sem reamostragem do som interno nem da voz do jogo)
+        private const val AUDIO_SAMPLE_RATE = 48000
         private const val AUDIO_BITRATE = 128 * 1000
 
         fun hasMicPermission(context: Context): Boolean =

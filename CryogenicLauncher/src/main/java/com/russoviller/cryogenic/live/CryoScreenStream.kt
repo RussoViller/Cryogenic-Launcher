@@ -72,7 +72,9 @@ class CryoScreenStream(
 
     /** início da live: relógio do RootEncoder (elapsedRealtime) e o das imagens da tela (nanoTime) */
     private var startElapsedUs = 0L
-    private var startMonoUs = 0L
+    /** 1º quadro: tempo dele no relógio da tela e no relógio da live (ver [videoPts]) */
+    private var firstFrameSrcUs = -1L
+    private var firstFrameLiveUs = 0L
     private var lastVideoPts = -1L
     @Volatile private var spsSent = false
     @Volatile private var framesOut = 0L
@@ -161,7 +163,7 @@ class CryoScreenStream(
         rtmp.setReTries(10)
         rtmp.connect(url)
         startElapsedUs = SystemClock.elapsedRealtimeNanos() / 1000
-        startMonoUs = System.nanoTime() / 1000
+        firstFrameSrcUs = -1L
         startVideoCodec()
         audioSource.start(audioEncoder)
         audioEncoder.start(startElapsedUs)
@@ -217,15 +219,37 @@ class CryoScreenStream(
         }
         if (!streaming) return
         framesOut++
-        // tempo de captura da tela (relógio monotônico) no mesmo início do áudio
-        var pts = info.presentationTimeUs - startMonoUs
-        if (pts < 0) pts = SystemClock.elapsedRealtimeNanos() / 1000 - startElapsedUs
+        var pts = videoPts(info.presentationTimeUs)
         if (pts <= lastVideoPts) pts = lastVideoPts + 1
         lastVideoPts = pts
         info.presentationTimeUs = pts
         buffer.position(info.offset)
         buffer.limit(info.offset + info.size)
         rtmp.sendVideo(buffer, info)
+    }
+
+    /**
+     * Tempo do quadro na linha do tempo da live (a mesma do áudio): mantém o espaçamento real entre
+     * os quadros (tempo de captura) e ancora o primeiro no relógio da live, seja qual for o relógio
+     * que a tela/GL usa. Se os dois se afastarem (troca de modo, pausa longa), ancora de novo.
+     */
+    private fun videoPts(srcUs: Long): Long {
+        val elapsedNow = SystemClock.elapsedRealtimeNanos() / 1000
+        val liveNow = elapsedNow - startElapsedUs
+        // normal: a tela usa o relógio monotônico; converte para o da live (mesmo do áudio)
+        val direct = srcUs + (elapsedNow - System.nanoTime() / 1000) - startElapsedUs
+        if (kotlin.math.abs(direct - liveNow) < 1_000_000L) return direct
+        if (firstFrameSrcUs < 0) {
+            firstFrameSrcUs = srcUs
+            firstFrameLiveUs = liveNow
+        }
+        var pts = firstFrameLiveUs + (srcUs - firstFrameSrcUs)
+        if (kotlin.math.abs(pts - liveNow) > 500_000L) {
+            firstFrameSrcUs = srcUs
+            firstFrameLiveUs = liveNow
+            pts = liveNow
+        }
+        return pts
     }
 
     // ---------------------------------------------------------------- troca de modo
