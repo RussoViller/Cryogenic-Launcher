@@ -667,8 +667,8 @@ class MainActivity : BaseAppCompatActivity() {
                     var done = 0
                     var converted: com.russoviller.cryogenic.hud.PojavConverter.Result? = null
                     uris.forEach { uri ->
-                        val text = try {
-                            contentResolver.openInputStream(uri)?.use { it.readString() }
+                        val bytes = try {
+                            contentResolver.openInputStream(uri)?.use { it.readBytes() }
                         } catch (e: Exception) {
                             showError(message = androidText(e.getMessageOrToString()))
                             return@forEach
@@ -676,7 +676,15 @@ class MainActivity : BaseAppCompatActivity() {
                             showError(message = androidText(R.string.multirt_runtime_import_failed_input_stream))
                             return@forEach
                         }
-                        val fileName = uri.lastPathSegment?.substringAfterLast('/') ?: "HUD"
+                        val fileName = com.russoviller.cryogenic.hud.hudUriName(this@MainActivity, uri) ?: "HUD"
+                        //HUD em .zip: o .json + as imagens PNG dos botões
+                        val text = if (com.russoviller.cryogenic.hud.HudImages.isZip(bytes)) {
+                            val unpacked = runCatching { com.russoviller.cryogenic.hud.HudImages.unpack(scheme, bytes) }.getOrNull()
+                            unpacked?.json ?: run {
+                                showError(message = androidText(R.string.control_manage_import_failed_to_parse))
+                                return@forEach
+                            }
+                        } else bytes.decodeToString()
                         val format = com.russoviller.cryogenic.hud.HudDetector.detect(text)
                         if (scheme == com.russoviller.cryogenic.hud.HudScheme.CRYOGENIC) {
                             when (format) {
@@ -740,7 +748,7 @@ class MainActivity : BaseAppCompatActivity() {
                         }
                     }
                     if (scheme == com.russoviller.cryogenic.hud.HudScheme.CRYOGENIC) ControlManager.refresh()
-                    else com.russoviller.cryogenic.hud.HudStore.refresh(scheme)
+                    com.russoviller.cryogenic.hud.HudStore.refresh(scheme)
                     if (done > 0) {
                         val conv = converted
                         withContext(Dispatchers.Main) {

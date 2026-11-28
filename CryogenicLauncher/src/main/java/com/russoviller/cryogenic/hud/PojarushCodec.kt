@@ -75,7 +75,8 @@ object PojarushCodec : HudCodec {
             stroke = stroke, strokePressed = stroke,
             strokeDp = o.float("strokeDp", 1f), radiusDp = o.float("radiusDp", 10f), radiusPx = o.bool("radiusInPx"),
             textSp = o.float("textSp", 15f), opacity = o.float("opacity", 1f).coerceIn(0f, 1f),
-            knobFill = o.int("fillPressed", 0x99FFFFFF.toInt()), knobStroke = stroke
+            knobFill = o.int("fillPressed", 0x99FFFFFF.toInt()), knobStroke = stroke,
+            image = o.str("image"), imagePressed = o.str("imagePressed")
         )
     }
 
@@ -86,8 +87,11 @@ object PojarushCodec : HudCodec {
             "stroke" to jp(s.stroke), "strokeDp" to jp(s.strokeDp.toDouble()), "radiusDp" to jp(s.radiusDp.toDouble()),
             "textSp" to jp(s.textSp.toDouble()), "radiusInPx" to jp(s.radiusPx)
         )
-        return if (s.opacity < 0.999f) out.with("opacity" to jp(s.opacity.toDouble()))
-        else JsonObject(out.toMutableMap().apply { remove("opacity") })
+        val m = out.toMutableMap()
+        if (s.opacity < 0.999f) m["opacity"] = jp(s.opacity.toDouble()) else m.remove("opacity")
+        if (s.image.isNotEmpty()) m["image"] = jp(s.image) else m.remove("image")
+        if (s.imagePressed.isNotEmpty()) m["imagePressed"] = jp(s.imagePressed) else m.remove("imagePressed")
+        return JsonObject(m)
     }
 
     // ------------------------------------------------------------------ leitura

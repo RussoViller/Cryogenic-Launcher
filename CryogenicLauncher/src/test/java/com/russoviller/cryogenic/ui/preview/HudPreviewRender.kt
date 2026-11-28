@@ -36,6 +36,7 @@ import com.russoviller.cryogenic.hud.HudRuntime
 import com.russoviller.cryogenic.hud.HudRuntimeLayout
 import com.russoviller.cryogenic.hud.HudScheme
 import com.russoviller.cryogenic.hud.HudSchemeSelector
+import com.russoviller.cryogenic.hud.Zl2Codec
 import org.junit.Assume.assumeTrue
 import org.junit.Rule
 import org.junit.Test
@@ -170,5 +171,36 @@ class HudPreviewRender {
             }
         }
         save("hud_selector_preview.png")
+    }
+
+    @Test
+    fun editorCryogenic() {
+        assumeTrue(dir() != null)
+        val l = Zl2Codec.parse(File("src/main/assets/default_layout.json").readText(), "Padrão")
+        set { HudEditor(l, inGame = false, onSave = { true }, onExit = {}, onClassicEditor = {}) }
+        save("hud_editor_cryo.png")
+        rule.onRoot().performTouchInput {
+            val w = width.toFloat(); val h = height.toFloat()
+            val b = l.buttons.last()
+            val bw = b.width.px(width, height, density); val bh = b.height.px(width, height, density)
+            click(Offset(b.x * (w - bw) + bw / 2f, b.y * (h - bh) + bh / 2f))
+        }
+        rule.mainClock.advanceTimeBy(300L)
+        rule.onAllNodesWithText("Properties")[0].performClick()
+        save("hud_editor_cryo_props.png")
+        rule.onAllNodesWithText("Hide")[0].performClick()
+        save("hud_editor_cryo_hidden.png")
+    }
+
+    @Test
+    fun selectorCryogenic() {
+        assumeTrue(dir() != null)
+        set {
+            Column(Modifier.fillMaxSize().background(Color(0xFF3A5A40)).padding(12.dp)) {
+                HudSchemeSelector(HudScheme.CRYOGENIC, {}, Modifier.fillMaxWidth())
+                HudPreview(Zl2Codec.parse(File("src/main/assets/default_layout.json").readText(), "x"), Modifier.padding(top = 12.dp).width(320.dp))
+            }
+        }
+        save("hud_selector_cryo.png")
     }
 }

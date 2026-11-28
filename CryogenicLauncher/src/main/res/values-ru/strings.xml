@@ -2998,4 +2998,26 @@
     <string name="hude_vis_menu">В меню</string>
     <string name="hude_visibility">Видимость</string>
     <string name="hude_width">Ширина</string>
+    <string name="cryo_hud_images_imported">Импортировано изображений: %1$d</string>
+    <string name="cryo_hud_images_missing">Изображений не найдено на устройстве: %1$d (%2$s). Используйте Импорт → Импорт изображений (PNG или ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Нет изображений</string>
+    <string name="cryo_hud_import_images">Импорт изображений (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">HUD %1$s</string>
+    <string name="cryo_hud_use">Использовать в игре</string>
+    <string name="hude_classic_hint">Текстовые поля, переводы и расширенные стили редактируются в классическом редакторе.</string>
+    <string name="hude_classic_open">Открыть классический редактор</string>
+    <string name="hude_classic_title">Классический редактор</string>
+    <string name="hude_cryo_events">События при касании</string>
+    <string name="hude_cryo_toggleable">Переключаемая</string>
+    <string name="hude_hide_bar">Скрыть</string>
+    <string name="hude_image">Изображение</string>
+    <string name="hude_image_gallery">Изображения HUD</string>
+    <string name="hude_image_gallery_empty">Изображений пока нет. Добавьте PNG.</string>
+    <string name="hude_image_missing">Не найдено: %1$s</string>
+    <string name="hude_image_none">Без изображения</string>
+    <string name="hude_image_pressed">Изображение (нажата)</string>
+    <string name="hude_image_stick_bg">Фоновое изображение</string>
+    <string name="hude_image_stick_knob">Изображение стика</string>
+    <string name="hude_move_bar">Переместить</string>
+    <string name="hude_show_bar">Показать панель</string>
 </resources>

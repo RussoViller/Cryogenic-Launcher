@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">Dans les menus</string>
     <string name="hude_visibility">Visibilité</string>
     <string name="hude_width">Largeur</string>
+    <string name="cryo_hud_images_imported">%1$d images importées</string>
+    <string name="cryo_hud_images_missing">%1$d images introuvables sur cet appareil (%2$s). Utilisez Importer → Importer des images (PNG ou ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Images manquantes</string>
+    <string name="cryo_hud_import_images">Importer des images (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">HUDs %1$s</string>
+    <string name="cryo_hud_use">Utiliser en jeu</string>
+    <string name="hude_classic_hint">Les zones de texte, traductions et styles avancés se modifient dans l\'éditeur classique.</string>
+    <string name="hude_classic_open">Ouvrir l\'éditeur classique</string>
+    <string name="hude_classic_title">Éditeur classique</string>
+    <string name="hude_cryo_events">Événements au toucher</string>
+    <string name="hude_cryo_toggleable">Basculable</string>
+    <string name="hude_hide_bar">Masquer</string>
+    <string name="hude_image">Image</string>
+    <string name="hude_image_gallery">Images du HUD</string>
+    <string name="hude_image_gallery_empty">Aucune image. Ajoutez un PNG.</string>
+    <string name="hude_image_missing">Introuvable : %1$s</string>
+    <string name="hude_image_none">Aucune image</string>
+    <string name="hude_image_pressed">Image (appuyé)</string>
+    <string name="hude_image_stick_bg">Image de fond</string>
+    <string name="hude_image_stick_knob">Image de la manette</string>
+    <string name="hude_move_bar">Déplacer</string>
+    <string name="hude_show_bar">Afficher la barre</string>
 </resources>

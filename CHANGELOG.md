@@ -17,6 +17,8 @@ Updates:
   - HUD system choice (Cryogenic, FCL, PojaRush)
   - FCL and PojaRush HUDs with their own editors
   - Zalith 1 / Pojav / Mojo HUD conversion
+  - New HUD editor (also in game)
+  - PNG images on HUD buttons
 - Live:
   - TikTok live streaming (up to 720p 60 FPS)
   - Microphone and internal audio controls

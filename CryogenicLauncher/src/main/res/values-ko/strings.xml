@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">메뉴에서</string>
     <string name="hude_visibility">표시 여부</string>
     <string name="hude_width">너비</string>
+    <string name="cryo_hud_images_imported">이미지 %1$d개를 가져왔습니다</string>
+    <string name="cryo_hud_images_missing">이 기기에 이미지 %1$d개가 없습니다 (%2$s). 가져오기 → 이미지 가져오기 (PNG 또는 ZIP)를 사용하세요.</string>
+    <string name="cryo_hud_images_missing_title">누락된 이미지</string>
+    <string name="cryo_hud_import_images">이미지 가져오기 (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">%1$s HUD</string>
+    <string name="cryo_hud_use">게임에서 사용</string>
+    <string name="hude_classic_hint">텍스트 상자, 번역, 고급 스타일은 클래식 편집기에서 편집합니다.</string>
+    <string name="hude_classic_open">클래식 편집기 열기</string>
+    <string name="hude_classic_title">클래식 편집기</string>
+    <string name="hude_cryo_events">터치 시 이벤트</string>
+    <string name="hude_cryo_toggleable">전환형</string>
+    <string name="hude_hide_bar">숨기기</string>
+    <string name="hude_image">이미지</string>
+    <string name="hude_image_gallery">HUD 이미지</string>
+    <string name="hude_image_gallery_empty">아직 이미지가 없습니다. PNG를 추가하세요.</string>
+    <string name="hude_image_missing">찾을 수 없음: %1$s</string>
+    <string name="hude_image_none">이미지 없음</string>
+    <string name="hude_image_pressed">이미지 (눌림)</string>
+    <string name="hude_image_stick_bg">배경 이미지</string>
+    <string name="hude_image_stick_knob">스틱 이미지</string>
+    <string name="hude_move_bar">이동</string>
+    <string name="hude_show_bar">도구 모음 표시</string>
 </resources>

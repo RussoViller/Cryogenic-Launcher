@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">Nei menu</string>
     <string name="hude_visibility">Visibilità</string>
     <string name="hude_width">Larghezza</string>
+    <string name="cryo_hud_images_imported">%1$d immagini importate</string>
+    <string name="cryo_hud_images_missing">%1$d immagini non trovate su questo dispositivo (%2$s). Usa Importa → Importa immagini (PNG o ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Immagini mancanti</string>
+    <string name="cryo_hud_import_images">Importa immagini (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">HUD %1$s</string>
+    <string name="cryo_hud_use">Usa nel gioco</string>
+    <string name="hude_classic_hint">Caselle di testo, traduzioni e stili avanzati si modificano nell\'editor classico.</string>
+    <string name="hude_classic_open">Apri editor classico</string>
+    <string name="hude_classic_title">Editor classico</string>
+    <string name="hude_cryo_events">Eventi al tocco</string>
+    <string name="hude_cryo_toggleable">Alternabile</string>
+    <string name="hude_hide_bar">Nascondi</string>
+    <string name="hude_image">Immagine</string>
+    <string name="hude_image_gallery">Immagini dell\'HUD</string>
+    <string name="hude_image_gallery_empty">Ancora nessuna immagine. Aggiungi un PNG.</string>
+    <string name="hude_image_missing">Non trovata: %1$s</string>
+    <string name="hude_image_none">Nessuna immagine</string>
+    <string name="hude_image_pressed">Immagine (premuto)</string>
+    <string name="hude_image_stick_bg">Immagine di sfondo</string>
+    <string name="hude_image_stick_knob">Immagine levetta</string>
+    <string name="hude_move_bar">Sposta</string>
+    <string name="hude_show_bar">Mostra barra</string>
 </resources>

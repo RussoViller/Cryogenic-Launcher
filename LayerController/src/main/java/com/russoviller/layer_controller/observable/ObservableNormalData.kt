@@ -48,6 +48,8 @@ class ObservableNormalData(data: NormalData) : ObservableWidget() {
     var isSwipple by mutableStateOf(data.isSwipple)
     var isPenetrable by mutableStateOf(data.isPenetrable)
     var isToggleable by mutableStateOf(data.isToggleable)
+    var image by mutableStateOf(data.image)
+    var imagePressed by mutableStateOf(data.imagePressed)
 
     override val behavior: InteractionBehavior
         get() = InteractionBehavior.from(
@@ -220,7 +222,9 @@ class ObservableNormalData(data: NormalData) : ObservableWidget() {
             _clickEvents = clickEvents.filterValidEvent(),
             isSwipple = isSwipple,
             isPenetrable = isPenetrable,
-            isToggleable = isToggleable
+            isToggleable = isToggleable,
+            image = image,
+            imagePressed = imagePressed
         )
     }
 }

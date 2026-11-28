@@ -148,7 +148,8 @@ object FclCodec : HudCodec {
                     swipe = ev.bool("swipable"),
                     look = ev.bool("pointerFollow"),
                     movable = ev.bool("Movable"),
-                    style = buttonStyles[b.str("style")] ?: defaultButtonStyle,
+                    style = (buttonStyles[b.str("style")] ?: defaultButtonStyle)
+                        .copy(image = b.str("cryoImage"), imagePressed = b.str("cryoImagePressed")),
                     raw = b
                 )
             }
@@ -179,7 +180,7 @@ object FclCodec : HudCodec {
                     deadZone = (ev.int("deadZone", 0) / 100f).coerceIn(0f, 0.9f),
                     doubleActs = if (ev.bool("sneak", true) && sneakKey != null) listOf(sneakKey) else emptyList(),
                     doubleKeep = true,
-                    style = style,
+                    style = style.copy(image = d.str("cryoImage"), imagePressed = d.str("cryoImagePressed")),
                     raw = d
                 )
             }
@@ -344,7 +345,7 @@ object FclCodec : HudCodec {
                     "style" to jp(bStyleName(b.style)),
                     "baseInfo" to baseInfoJson(b.raw?.obj("baseInfo"), b.x, b.y, b.width, b.height, b.visibility),
                     "event" to event
-                )
+                ).withImages(b.style)
             }
             val directions = layout.sticks.filter { layerOf(it.layer) == layer.id }.map { s ->
                 fun codes(list: List<HudAction>) = jarr(list.mapNotNull { a -> (a as? HudAction.Key)?.let(::codeOf)?.let { jp(it) } })
@@ -372,7 +373,7 @@ object FclCodec : HudCodec {
                     "baseInfo" to baseInfoJson(s.raw?.obj("baseInfo"), s.x, s.y, s.size, s.size, s.visibility)
                         .with("sizeType" to jp(if (s.size.dp != null) "ABSOLUTE" else "PERCENTAGE")),
                     "event" to event
-                )
+                ).withImages(s.style)
             }
             val rawData = layer.raw?.obj("viewData") ?: JsonObject(emptyMap())
             (layer.raw ?: JsonObject(emptyMap())).with(
@@ -404,4 +405,12 @@ object FclCodec : HudCodec {
         val layer = HudLayer(newHudId(), "Default")
         return HudLayout(HudScheme.FCL, name, author, "1.0", layers = listOf(layer))
     }
+}
+
+/** Imagens PNG dos botões (campo extra do Cryogenic; o FCL ignora). */
+private fun JsonObject.withImages(s: HudStyle): JsonObject {
+    val m = toMutableMap()
+    if (s.image.isNotEmpty()) m["cryoImage"] = jp(s.image) else m.remove("cryoImage")
+    if (s.imagePressed.isNotEmpty()) m["cryoImagePressed"] = jp(s.imagePressed) else m.remove("cryoImagePressed")
+    return JsonObject(m)
 }

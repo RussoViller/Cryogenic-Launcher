@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">I menyer</string>
     <string name="hude_visibility">Synlighet</string>
     <string name="hude_width">Bredd</string>
+    <string name="cryo_hud_images_imported">%1$d bilder importerade</string>
+    <string name="cryo_hud_images_missing">%1$d bilder hittades inte på enheten (%2$s). Använd Importera → Importera bilder (PNG eller ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Saknade bilder</string>
+    <string name="cryo_hud_import_images">Importera bilder (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">%1$s-HUD:ar</string>
+    <string name="cryo_hud_use">Använd i spelet</string>
+    <string name="hude_classic_hint">Textrutor, översättningar och avancerade stilar redigeras i den klassiska redigeraren.</string>
+    <string name="hude_classic_open">Öppna klassisk redigerare</string>
+    <string name="hude_classic_title">Klassisk redigerare</string>
+    <string name="hude_cryo_events">Händelser vid tryck</string>
+    <string name="hude_cryo_toggleable">Växlingsbar</string>
+    <string name="hude_hide_bar">Dölj</string>
+    <string name="hude_image">Bild</string>
+    <string name="hude_image_gallery">HUD-bilder</string>
+    <string name="hude_image_gallery_empty">Inga bilder ännu. Lägg till en PNG.</string>
+    <string name="hude_image_missing">Hittades inte: %1$s</string>
+    <string name="hude_image_none">Ingen bild</string>
+    <string name="hude_image_pressed">Bild (nedtryckt)</string>
+    <string name="hude_image_stick_bg">Bakgrundsbild</string>
+    <string name="hude_image_stick_knob">Spakbild</string>
+    <string name="hude_move_bar">Flytta</string>
+    <string name="hude_show_bar">Visa verktygsfält</string>
 </resources>

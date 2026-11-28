@@ -72,6 +72,9 @@ private fun longToBytes(long: Long): ByteArray {
     return buffer
 }
 
+/** JSON do layout no formato atual (editorVersion mais novo). */
+fun ControlLayout.toJsonString(): String = layoutJson.encodeToString(this)
+
 suspend fun ControlLayout.saveToFile(file: File) {
     withContext(Dispatchers.IO) {
         val jsonString = layoutJson.encodeToString(this@saveToFile)

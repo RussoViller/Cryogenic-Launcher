@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.serialization.json.JsonObject
+import com.russoviller.layer_controller.utils.toJsonString
 import java.io.File
 
 /** HUD de outro esquema enviado para o esquema errado. */
@@ -66,10 +67,16 @@ object HudStore {
 
     fun init(context: Context) {
         appContext = context.applicationContext
+        installLayerImages()
         scope.launch {
             refreshNow(HudScheme.FCL)
             refreshNow(HudScheme.POJARUSH)
         }
+    }
+
+    /** Imagens PNG nos botões do HUD Cryogenic (desenhadas pelo LayerController). */
+    fun installLayerImages() {
+        com.russoviller.layer_controller.utils.LayerImages.loader = { name -> HudImages.bitmap(HudScheme.CRYOGENIC, name) }
     }
 
     fun dir(scheme: HudScheme): File = when (scheme) {
@@ -95,25 +102,38 @@ object HudStore {
 
     fun select(scheme: HudScheme, file: File) {
         setting(scheme).save(file.name)
+        if (scheme == HudScheme.CRYOGENIC) com.russoviller.cryogenic.game.control.ControlManager.refresh()
     }
 
     fun codec(scheme: HudScheme): HudCodec = requireNotNull(HudCodecs.of(scheme)) { "No codec for $scheme" }
 
     fun load(scheme: HudScheme, file: File): HudLayout {
-        val text = file.readText()
+        var text = file.readText()
         val format = HudDetector.detect(text)
         if (format != HudFormat.UNKNOWN && format.scheme != scheme) throw HudSchemeMismatchException(format, scheme)
+        if (format == HudFormat.POJAV) throw HudSchemeMismatchException(format, scheme)
+        if (scheme == HudScheme.CRYOGENIC) {
+            // layouts antigos são atualizados para a versão atual antes de editar
+            val version = runCatching { HudJson.parseObject(text).int("editorVersion", 0) }.getOrDefault(0)
+            if (version < Zl2Codec.EDITOR_VERSION) {
+                text = com.russoviller.layer_controller.layout.loadLayoutFromString(text).toJsonString()
+            }
+        }
         return codec(scheme).parse(text, file.nameWithoutExtension)
     }
 
     fun save(file: File, layout: HudLayout) {
         file.parentFile?.mkdirs()
+        val text = codec(layout.scheme).write(layout)
+        // o HUD Cryogenic precisa abrir no jogo: valida antes de gravar
+        if (layout.scheme == HudScheme.CRYOGENIC) com.russoviller.layer_controller.layout.loadLayoutFromString(text)
         val tmp = File(file.parentFile, file.name + ".tmp")
-        tmp.writeText(codec(layout.scheme).write(layout))
+        tmp.writeText(text)
         if (!tmp.renameTo(file)) {
             file.writeText(tmp.readText())
             tmp.delete()
         }
+        if (layout.scheme == HudScheme.CRYOGENIC) com.russoviller.cryogenic.game.control.ControlManager.refresh()
     }
 
     private fun newFile(scheme: HudScheme): File {
@@ -128,12 +148,11 @@ object HudStore {
     }
 
     suspend fun refreshNow(scheme: HudScheme) {
-        if (scheme == HudScheme.CRYOGENIC) return
         mutex.withLock {
             loading.getValue(scheme).value = true
             try {
                 val dir = dir(scheme).apply { mkdirs() }
-                if (dir.listFiles()?.none { it.isFile && it.extension.equals("json", true) } != false) {
+                if (scheme != HudScheme.CRYOGENIC && dir.listFiles()?.none { it.isFile && it.extension.equals("json", true) } != false) {
                     unpackDefaults(scheme)
                 }
                 val list = dir.listFiles()
@@ -151,7 +170,7 @@ object HudStore {
                 lists.getValue(scheme).value = list
                 // seleção inválida → primeiro HUD que funciona
                 val sel = setting(scheme).getValue()
-                if (list.none { it.file.name == sel && it.layout != null }) {
+                if (scheme != HudScheme.CRYOGENIC && list.none { it.file.name == sel && it.layout != null }) {
                     list.firstOrNull { it.layout != null }?.let { setting(scheme).save(it.file.name) }
                 }
             } finally {
@@ -174,7 +193,13 @@ object HudStore {
 
     fun create(scheme: HudScheme, name: String, author: String, starter: Boolean): File {
         val file = newFile(scheme)
-        val layout = if (starter) HudDefaults.starter(scheme, name, author) else codec(scheme).empty(name, author)
+        val cryoDefault = if (starter && scheme == HudScheme.CRYOGENIC) {
+            runCatching {
+                appContext?.assets?.open("default_layout.json")?.use { it.readBytes().decodeToString() }
+                    ?.let { Zl2Codec.parse(it, name).copy(name = name, author = author) }
+            }.getOrNull()
+        } else null
+        val layout = cryoDefault ?: if (starter) HudDefaults.starter(scheme, name, author) else codec(scheme).empty(name, author)
         save(file, layout)
         refresh(scheme)
         return file
@@ -191,6 +216,15 @@ object HudStore {
     fun delete(scheme: HudScheme, entry: Entry) {
         entry.file.delete()
         refresh(scheme)
+        if (scheme == HudScheme.CRYOGENIC) com.russoviller.cryogenic.game.control.ControlManager.refresh()
+    }
+
+    /** Arquivo para compartilhar: .zip com as imagens quando o HUD usa PNG, senão o próprio .json. */
+    fun shareable(scheme: HudScheme, entry: Entry, cacheDir: File): File {
+        val layout = entry.layout ?: return entry.file
+        if (HudImages.refs(layout).none { HudImages.file(scheme, it) != null }) return entry.file
+        val safe = layout.name.replace(Regex("[^A-Za-z0-9_\\- ]"), "_").trim().ifBlank { "HUD" }.take(40)
+        return HudImages.pack(scheme, entry.file, layout, File(File(cacheDir, "hud_share").apply { mkdirs() }, "$safe.zip"))
     }
 
     sealed interface ImportResult {

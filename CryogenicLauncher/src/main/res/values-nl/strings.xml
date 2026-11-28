@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">In menu\'s</string>
     <string name="hude_visibility">Zichtbaarheid</string>
     <string name="hude_width">Breedte</string>
+    <string name="cryo_hud_images_imported">%1$d afbeeldingen geïmporteerd</string>
+    <string name="cryo_hud_images_missing">%1$d afbeeldingen niet gevonden op dit apparaat (%2$s). Gebruik Importeren → Afbeeldingen importeren (PNG of ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Ontbrekende afbeeldingen</string>
+    <string name="cryo_hud_import_images">Afbeeldingen importeren (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">%1$s-HUD\'s</string>
+    <string name="cryo_hud_use">Gebruiken in het spel</string>
+    <string name="hude_classic_hint">Tekstvakken, vertalingen en geavanceerde stijlen bewerk je in de klassieke editor.</string>
+    <string name="hude_classic_open">Klassieke editor openen</string>
+    <string name="hude_classic_title">Klassieke editor</string>
+    <string name="hude_cryo_events">Gebeurtenissen bij aanraken</string>
+    <string name="hude_cryo_toggleable">Schakelbaar</string>
+    <string name="hude_hide_bar">Verbergen</string>
+    <string name="hude_image">Afbeelding</string>
+    <string name="hude_image_gallery">HUD-afbeeldingen</string>
+    <string name="hude_image_gallery_empty">Nog geen afbeeldingen. Voeg een PNG toe.</string>
+    <string name="hude_image_missing">Niet gevonden: %1$s</string>
+    <string name="hude_image_none">Geen afbeelding</string>
+    <string name="hude_image_pressed">Afbeelding (ingedrukt)</string>
+    <string name="hude_image_stick_bg">Achtergrondafbeelding</string>
+    <string name="hude_image_stick_knob">Stickafbeelding</string>
+    <string name="hude_move_bar">Verplaatsen</string>
+    <string name="hude_show_bar">Werkbalk tonen</string>
 </resources>

@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">في القوائم</string>
     <string name="hude_visibility">الظهور</string>
     <string name="hude_width">العرض</string>
+    <string name="cryo_hud_images_imported">تم استيراد %1$d صور</string>
+    <string name="cryo_hud_images_missing">لم يتم العثور على %1$d صور على هذا الجهاز (%2$s). استخدم استيراد ← استيراد الصور (PNG أو ZIP).</string>
+    <string name="cryo_hud_images_missing_title">صور مفقودة</string>
+    <string name="cryo_hud_import_images">استيراد الصور (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">HUDs %1$s</string>
+    <string name="cryo_hud_use">استخدام في اللعبة</string>
+    <string name="hude_classic_hint">مربعات النص والترجمات والأنماط المتقدمة تُعدَّل في المحرر الكلاسيكي.</string>
+    <string name="hude_classic_open">فتح المحرر الكلاسيكي</string>
+    <string name="hude_classic_title">المحرر الكلاسيكي</string>
+    <string name="hude_cryo_events">الأحداث عند اللمس</string>
+    <string name="hude_cryo_toggleable">قابل للتبديل</string>
+    <string name="hude_hide_bar">إخفاء</string>
+    <string name="hude_image">صورة</string>
+    <string name="hude_image_gallery">صور الـ HUD</string>
+    <string name="hude_image_gallery_empty">لا توجد صور بعد. أضف PNG.</string>
+    <string name="hude_image_missing">غير موجودة: %1$s</string>
+    <string name="hude_image_none">بدون صورة</string>
+    <string name="hude_image_pressed">صورة (مضغوط)</string>
+    <string name="hude_image_stick_bg">صورة الخلفية</string>
+    <string name="hude_image_stick_knob">صورة المقبض</string>
+    <string name="hude_move_bar">نقل</string>
+    <string name="hude_show_bar">إظهار الشريط</string>
 </resources>

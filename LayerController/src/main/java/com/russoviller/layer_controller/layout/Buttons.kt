@@ -20,6 +20,8 @@ package com.russoviller.layer_controller.layout
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.background
+import androidx.compose.runtime.remember
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
@@ -102,6 +104,49 @@ internal fun TextButton(
             ?: DefaultObservableButtonStyle
 
         val locale = LocalConfiguration.current.locales[0]
+
+        //imagem PNG no lugar do desenho do botão
+        val normal = data as? ObservableNormalData
+        val picture = remember(normal?.image) { com.russoviller.layer_controller.utils.LayerImages.load(normal?.image) }
+        if (normal != null && picture != null) {
+            val pressedPicture = remember(normal.imagePressed) { com.russoviller.layer_controller.utils.LayerImages.load(normal.imagePressed) }
+            val alpha = (if (style.commonStyle || !isDark) style.lightStyle.alpha else style.darkStyle.alpha).coerceIn(0f, 1f)
+            Box(
+                modifier = Modifier
+                    .buttonSize(data, screenSize)
+                    .editMode(
+                        isEditMode = isEditMode,
+                        data = data,
+                        screenSize = screenSize,
+                        enableSnap = enableSnap,
+                        snapMode = snapMode,
+                        localSnapRange = localSnapRange,
+                        getOtherWidgets = getOtherWidgets,
+                        snapThresholdValue = snapThresholdValue,
+                        drawLine = drawLine,
+                        onLineCancel = onLineCancel,
+                        onTapInEditMode = onTapInEditMode
+                    )
+            ) {
+                androidx.compose.foundation.Image(
+                    bitmap = if (isPressed && pressedPicture != null) pressedPicture else picture,
+                    contentDescription = null,
+                    contentScale = androidx.compose.ui.layout.ContentScale.FillBounds,
+                    alpha = alpha,
+                    modifier = Modifier.matchParentSize()
+                )
+                if (isPressed && pressedPicture == null) {
+                    Box(Modifier.matchParentSize().background(androidx.compose.ui.graphics.Color(0x46FFFFFF)))
+                }
+                DisposableEffect(Unit) {
+                    data.onCompositionStart(eventHandler)
+                    onDispose {
+                        data.onCompositionDispose(eventHandler)
+                    }
+                }
+            }
+            return
+        }
 
         Box(
             modifier = Modifier

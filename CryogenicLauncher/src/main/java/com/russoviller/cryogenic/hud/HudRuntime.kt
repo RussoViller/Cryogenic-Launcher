@@ -555,6 +555,7 @@ fun HudRuntimeLayout(
 private fun HudCanvas(runtime: HudRuntime, geo: HudGeometry, opacity: () -> Float, grabbing: Boolean) {
     val measurer = rememberTextMeasurer(cacheSize = 64)
     val layout = runtime.layout
+    val images: (String) -> androidx.compose.ui.graphics.ImageBitmap? = remember(layout) { { HudImages.bitmap(layout.scheme, it) } }
     Canvas(modifier = Modifier.fillMaxSize()) {
         val alpha = opacity().coerceIn(0f, 1f)
         if (runtime.hidden) {
@@ -567,11 +568,11 @@ private fun HudCanvas(runtime: HudRuntime, geo: HudGeometry, opacity: () -> Floa
         }
         for (s in layout.sticks) {
             if (!runtime.isShown(s.layer, s.visibility, grabbing)) continue
-            drawHudStick(s, geo.stickRect(s), runtime.stickVisual[s.id] ?: HudStickVisual(), alpha, geo.density)
+            drawHudStick(s, geo.stickRect(s), runtime.stickVisual[s.id] ?: HudStickVisual(), alpha, geo.density, images)
         }
         for (b in layout.buttons) {
             if (!runtime.isShown(b.layer, b.visibility, grabbing)) continue
-            drawHudButton(b, geo.buttonRect(b, runtime.movedTo[b.id]), runtime.pressedIds[b.id] == true, alpha, geo.density, measurer)
+            drawHudButton(b, geo.buttonRect(b, runtime.movedTo[b.id]), runtime.pressedIds[b.id] == true, alpha, geo.density, measurer, images)
         }
     }
 }

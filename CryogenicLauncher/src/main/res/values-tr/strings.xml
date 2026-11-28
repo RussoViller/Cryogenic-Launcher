@@ -2998,4 +2998,26 @@
     <string name="hude_vis_menu">Menülerde</string>
     <string name="hude_visibility">Görünürlük</string>
     <string name="hude_width">Genişlik</string>
+    <string name="cryo_hud_images_imported">%1$d görsel içe aktarıldı</string>
+    <string name="cryo_hud_images_missing">Bu cihazda %1$d görsel bulunamadı (%2$s). İçe Aktar → Görselleri içe aktar (PNG veya ZIP) seçeneğini kullanın.</string>
+    <string name="cryo_hud_images_missing_title">Eksik görseller</string>
+    <string name="cryo_hud_import_images">Görselleri içe aktar (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">%1$s HUD\'ları</string>
+    <string name="cryo_hud_use">Oyunda kullan</string>
+    <string name="hude_classic_hint">Metin kutuları, çeviriler ve gelişmiş stiller klasik düzenleyicide düzenlenir.</string>
+    <string name="hude_classic_open">Klasik düzenleyiciyi aç</string>
+    <string name="hude_classic_title">Klasik düzenleyici</string>
+    <string name="hude_cryo_events">Dokununca olaylar</string>
+    <string name="hude_cryo_toggleable">Aç/kapat</string>
+    <string name="hude_hide_bar">Gizle</string>
+    <string name="hude_image">Görsel</string>
+    <string name="hude_image_gallery">HUD görselleri</string>
+    <string name="hude_image_gallery_empty">Henüz görsel yok. Bir PNG ekleyin.</string>
+    <string name="hude_image_missing">Bulunamadı: %1$s</string>
+    <string name="hude_image_none">Görsel yok</string>
+    <string name="hude_image_pressed">Görsel (basılı)</string>
+    <string name="hude_image_stick_bg">Arka plan görseli</string>
+    <string name="hude_image_stick_knob">Çubuk görseli</string>
+    <string name="hude_move_bar">Taşı</string>
+    <string name="hude_show_bar">Araç çubuğunu göster</string>
 </resources>

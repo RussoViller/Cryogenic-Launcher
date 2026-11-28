@@ -2998,4 +2998,26 @@
     <string name="hude_vis_menu">メニュー中</string>
     <string name="hude_visibility">表示</string>
     <string name="hude_width">幅</string>
+    <string name="cryo_hud_images_imported">%1$d 枚の画像をインポートしました</string>
+    <string name="cryo_hud_images_missing">この端末に %1$d 枚の画像がありません（%2$s）。インポート → 画像をインポート（PNG または ZIP）を使ってください。</string>
+    <string name="cryo_hud_images_missing_title">不足している画像</string>
+    <string name="cryo_hud_import_images">画像をインポート（PNG / ZIP）</string>
+    <string name="cryo_hud_list_scheme">%1$s HUD</string>
+    <string name="cryo_hud_use">ゲームで使う</string>
+    <string name="hude_classic_hint">テキストボックス、翻訳、詳細なスタイルはクラシックエディターで編集します。</string>
+    <string name="hude_classic_open">クラシックエディターを開く</string>
+    <string name="hude_classic_title">クラシックエディター</string>
+    <string name="hude_cryo_events">タッチ時のイベント</string>
+    <string name="hude_cryo_toggleable">切り替え式</string>
+    <string name="hude_hide_bar">隠す</string>
+    <string name="hude_image">画像</string>
+    <string name="hude_image_gallery">HUDの画像</string>
+    <string name="hude_image_gallery_empty">まだ画像がありません。PNGを追加してください。</string>
+    <string name="hude_image_missing">見つかりません：%1$s</string>
+    <string name="hude_image_none">画像なし</string>
+    <string name="hude_image_pressed">画像（押下時）</string>
+    <string name="hude_image_stick_bg">背景画像</string>
+    <string name="hude_image_stick_knob">スティック画像</string>
+    <string name="hude_move_bar">移動</string>
+    <string name="hude_show_bar">ツールバーを表示</string>
 </resources>

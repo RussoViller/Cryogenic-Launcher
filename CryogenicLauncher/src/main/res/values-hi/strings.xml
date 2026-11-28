@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">मेन्यू में</string>
     <string name="hude_visibility">दृश्यता</string>
     <string name="hude_width">चौड़ाई</string>
+    <string name="cryo_hud_images_imported">%1$d चित्र आयात हुए</string>
+    <string name="cryo_hud_images_missing">इस डिवाइस पर %1$d चित्र नहीं मिले (%2$s)। आयात → चित्र आयात करें (PNG या ZIP) इस्तेमाल करें।</string>
+    <string name="cryo_hud_images_missing_title">गायब चित्र</string>
+    <string name="cryo_hud_import_images">चित्र आयात करें (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">%1$s HUD</string>
+    <string name="cryo_hud_use">गेम में इस्तेमाल करें</string>
+    <string name="hude_classic_hint">टेक्स्ट बॉक्स, अनुवाद और उन्नत स्टाइल क्लासिक एडिटर में बदले जाते हैं।</string>
+    <string name="hude_classic_open">क्लासिक एडिटर खोलें</string>
+    <string name="hude_classic_title">क्लासिक एडिटर</string>
+    <string name="hude_cryo_events">छूने पर इवेंट</string>
+    <string name="hude_cryo_toggleable">टॉगल योग्य</string>
+    <string name="hude_hide_bar">छिपाएँ</string>
+    <string name="hude_image">चित्र</string>
+    <string name="hude_image_gallery">HUD चित्र</string>
+    <string name="hude_image_gallery_empty">अभी कोई चित्र नहीं। एक PNG जोड़ें।</string>
+    <string name="hude_image_missing">नहीं मिला: %1$s</string>
+    <string name="hude_image_none">कोई चित्र नहीं</string>
+    <string name="hude_image_pressed">चित्र (दबा हुआ)</string>
+    <string name="hude_image_stick_bg">पृष्ठभूमि चित्र</string>
+    <string name="hude_image_stick_knob">स्टिक चित्र</string>
+    <string name="hude_move_bar">खिसकाएँ</string>
+    <string name="hude_show_bar">टूलबार दिखाएँ</string>
 </resources>

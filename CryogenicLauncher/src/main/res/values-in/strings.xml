@@ -2998,4 +2998,26 @@
     <string name="hude_vis_menu">Di menu</string>
     <string name="hude_visibility">Visibilitas</string>
     <string name="hude_width">Lebar</string>
+    <string name="cryo_hud_images_imported">%1$d gambar diimpor</string>
+    <string name="cryo_hud_images_missing">%1$d gambar tidak ditemukan di perangkat ini (%2$s). Gunakan Impor → Impor gambar (PNG atau ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Gambar hilang</string>
+    <string name="cryo_hud_import_images">Impor gambar (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">HUD %1$s</string>
+    <string name="cryo_hud_use">Pakai di game</string>
+    <string name="hude_classic_hint">Kotak teks, terjemahan, dan gaya lanjutan diedit di editor klasik.</string>
+    <string name="hude_classic_open">Buka editor klasik</string>
+    <string name="hude_classic_title">Editor klasik</string>
+    <string name="hude_cryo_events">Peristiwa saat disentuh</string>
+    <string name="hude_cryo_toggleable">Bisa dialihkan</string>
+    <string name="hude_hide_bar">Sembunyikan</string>
+    <string name="hude_image">Gambar</string>
+    <string name="hude_image_gallery">Gambar HUD</string>
+    <string name="hude_image_gallery_empty">Belum ada gambar. Tambahkan PNG.</string>
+    <string name="hude_image_missing">Tidak ditemukan: %1$s</string>
+    <string name="hude_image_none">Tanpa gambar</string>
+    <string name="hude_image_pressed">Gambar (ditekan)</string>
+    <string name="hude_image_stick_bg">Gambar latar</string>
+    <string name="hude_image_stick_knob">Gambar stik</string>
+    <string name="hude_move_bar">Pindah</string>
+    <string name="hude_show_bar">Tampilkan bilah</string>
 </resources>

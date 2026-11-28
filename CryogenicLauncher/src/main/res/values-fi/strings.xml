@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">Valikoissa</string>
     <string name="hude_visibility">Näkyvyys</string>
     <string name="hude_width">Leveys</string>
+    <string name="cryo_hud_images_imported">%1$d kuvaa tuotu</string>
+    <string name="cryo_hud_images_missing">%1$d kuvaa ei löytynyt laitteelta (%2$s). Käytä Tuo → Tuo kuvia (PNG tai ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Puuttuvat kuvat</string>
+    <string name="cryo_hud_import_images">Tuo kuvia (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">%1$s-HUDit</string>
+    <string name="cryo_hud_use">Käytä pelissä</string>
+    <string name="hude_classic_hint">Tekstilaatikot, käännökset ja lisätyylit muokataan klassisessa muokkaimessa.</string>
+    <string name="hude_classic_open">Avaa klassinen muokkain</string>
+    <string name="hude_classic_title">Klassinen muokkain</string>
+    <string name="hude_cryo_events">Tapahtumat kosketettaessa</string>
+    <string name="hude_cryo_toggleable">Vaihdettava</string>
+    <string name="hude_hide_bar">Piilota</string>
+    <string name="hude_image">Kuva</string>
+    <string name="hude_image_gallery">HUD-kuvat</string>
+    <string name="hude_image_gallery_empty">Ei vielä kuvia. Lisää PNG.</string>
+    <string name="hude_image_missing">Ei löytynyt: %1$s</string>
+    <string name="hude_image_none">Ei kuvaa</string>
+    <string name="hude_image_pressed">Kuva (painettu)</string>
+    <string name="hude_image_stick_bg">Taustakuva</string>
+    <string name="hude_image_stick_knob">Sauvan kuva</string>
+    <string name="hude_move_bar">Siirrä</string>
+    <string name="hude_show_bar">Näytä työkalurivi</string>
 </resources>

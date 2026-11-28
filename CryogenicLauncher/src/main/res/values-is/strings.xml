@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">Í valmyndum</string>
     <string name="hude_visibility">Sýnileiki</string>
     <string name="hude_width">Breidd</string>
+    <string name="cryo_hud_images_imported">%1$d myndir fluttar inn</string>
+    <string name="cryo_hud_images_missing">%1$d myndir fundust ekki í tækinu (%2$s). Notaðu Flytja inn → Flytja inn myndir (PNG eða ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Myndir vantar</string>
+    <string name="cryo_hud_import_images">Flytja inn myndir (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">%1$s HUD</string>
+    <string name="cryo_hud_use">Nota í leik</string>
+    <string name="hude_classic_hint">Textareitum, þýðingum og ítarlegum stílum er breytt í klassíska ritlinum.</string>
+    <string name="hude_classic_open">Opna klassískan ritil</string>
+    <string name="hude_classic_title">Klassískur ritill</string>
+    <string name="hude_cryo_events">Atburðir við snertingu</string>
+    <string name="hude_cryo_toggleable">Víxlanlegur</string>
+    <string name="hude_hide_bar">Fela</string>
+    <string name="hude_image">Mynd</string>
+    <string name="hude_image_gallery">HUD myndir</string>
+    <string name="hude_image_gallery_empty">Engar myndir enn. Bættu við PNG.</string>
+    <string name="hude_image_missing">Fannst ekki: %1$s</string>
+    <string name="hude_image_none">Engin mynd</string>
+    <string name="hude_image_pressed">Mynd (ýtt)</string>
+    <string name="hude_image_stick_bg">Bakgrunnsmynd</string>
+    <string name="hude_image_stick_knob">Mynd pinna</string>
+    <string name="hude_move_bar">Færa</string>
+    <string name="hude_show_bar">Sýna stiku</string>
 </resources>

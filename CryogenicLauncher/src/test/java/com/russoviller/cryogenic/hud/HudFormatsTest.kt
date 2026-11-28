@@ -188,7 +188,65 @@ class HudFormatsTest {
         val e = HudSchemeMismatchException(HudFormat.FCL, HudScheme.POJARUSH)
         assertTrue(e.message!!.contains("FCL") && e.message!!.contains("PojaRush"))
         assertNotNull(HudCodecs.of(HudScheme.FCL))
-        assertEquals(null, HudCodecs.of(HudScheme.CRYOGENIC))
+        assertEquals(Zl2Codec, HudCodecs.of(HudScheme.CRYOGENIC))
+    }
+
+
+    @Test
+    fun cryogenicRoundTripAndEdit() {
+        val text = File("src/main/assets/default_layout.json").readText()
+        val original = loadLayoutFromString(text)
+        val a = Zl2Codec.parse(text, "x")
+        assertEquals(original.layers.sumOf { it.normalButtons.size }, a.buttons.size)
+        assertEquals(original.layers.size, a.layers.size)
+        // sem mudar nada: o layout continua igual para o jogo
+        val same = loadLayoutFromString(Zl2Codec.write(a))
+        assertEquals(original.layers.map { l -> l.normalButtons.map { it.uuid to it.clickEvents } },
+            same.layers.map { l -> l.normalButtons.map { it.uuid to it.clickEvents } })
+        assertEquals(original.styles.size, same.styles.size)
+        assertEquals(original.layers.map { it.textBoxes.size }, same.layers.map { it.textBoxes.size })
+        val b = Zl2Codec.parse(Zl2Codec.write(a), "x")
+        assertEquals(a.buttons.map { it.copy(raw = null) }, b.buttons.map { it.copy(raw = null) })
+
+        // editar: cor nova, imagem e um botão novo com tecla e camada
+        val first = a.buttons.first()
+        val edited = a.copy(
+            name = "Editado",
+            buttons = a.buttons.map { if (it.id == first.id) it.copy(style = it.style.copy(fill = 0x7F00FF00, image = "pulo")) else it } +
+                HudButton(newHudId(), "J", a.layers.first().id, 0.5f, 0.5f, HudSize(60f), HudSize(null, 0.2f, false),
+                    press = HudTrigger(listOf(HudAction.Key(32), HudAction.Layer(listOf(a.layers.last().id), 0)), keep = true),
+                    style = Zl2Codec.defaultStyle)
+        )
+        val json = Zl2Codec.write(edited)
+        val loaded = loadLayoutFromString(json)
+        assertEquals("Editado", loaded.info.name.default)
+        val all = loaded.layers.flatMap { it.normalButtons }
+        val firstLoaded = all.first { it.uuid == first.id.replace("-", "").take(18) }
+        assertEquals("pulo", firstLoaded.image)
+        assertTrue(loaded.styles.size == original.styles.size + 1)
+        val j = all.first { it.text.default == "J" }
+        assertTrue(j.isToggleable)
+        assertEquals(listOf("GLFW_KEY_SPACE", a.layers.last().id), j.clickEvents.map { it.key })
+        assertEquals(null, j.buttonStyle)
+        // salvar duas vezes não cria estilos repetidos
+        val twice = loadLayoutFromString(Zl2Codec.write(Zl2Codec.parse(json, "x")))
+        assertEquals(loaded.styles.size, twice.styles.size)
+    }
+
+    @Test
+    fun imagesInFclAndPojarush() {
+        val f = FclCodec.parse(fclDefault, "x")
+        val withImg = f.copy(buttons = f.buttons.mapIndexed { i, b -> if (i == 0) b.copy(style = b.style.copy(image = "a", imagePressed = "b")) else b })
+        val back = FclCodec.parse(FclCodec.write(withImg), "x")
+        assertEquals("a", back.buttons[0].style.image)
+        assertEquals("b", back.buttons[0].style.imagePressed)
+        assertEquals("", back.buttons[1].style.image)
+        val p = HudDefaults.starter(HudScheme.POJARUSH)
+        val p2 = p.copy(buttons = p.buttons.mapIndexed { i, b -> if (i == 0) b.copy(style = b.style.copy(image = "jump")) else b })
+        val out = HudJson.parseObject(PojarushCodec.write(p2))
+        assertEquals("jump", out.objects("buttons")[0].obj("style")!!.str("image"))
+        assertEquals(false, out.objects("buttons")[1].obj("style")!!.containsKey("image"))
+        assertEquals(setOf("jump"), HudImages.refs(PojarushCodec.parse(PojarushCodec.write(p2), "x")))
     }
 
     @Suppress("unused")

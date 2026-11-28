@@ -296,11 +296,12 @@ fun ControlManageScreen(
             onSelect = { AllSettings.hudScheme.save(it.id) },
             modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)
         )
-        if (scheme != com.russoviller.cryogenic.hud.HudScheme.CRYOGENIC) {
+        if (true) {
             com.russoviller.cryogenic.hud.HudSchemeManager(
                 scheme = scheme,
                 eventViewModel = eventViewModel,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                onClassicEditor = { file -> startEditorActivity(context, file) }
             )
         } else
         AnimatedRow(

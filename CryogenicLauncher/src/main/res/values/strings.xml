@@ -3027,4 +3027,26 @@
     <string name="hude_vis_menu">In menus</string>
     <string name="hude_visibility">Visibility</string>
     <string name="hude_width">Width</string>
+    <string name="cryo_hud_images_imported">%1$d images imported</string>
+    <string name="cryo_hud_images_missing">%1$d images not found on this device (%2$s). Use Import → Import images (PNG or ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Missing images</string>
+    <string name="cryo_hud_import_images">Import images (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">%1$s HUDs</string>
+    <string name="cryo_hud_use">Use in game</string>
+    <string name="hude_classic_hint">Text boxes, translations and advanced styles are edited in the classic editor.</string>
+    <string name="hude_classic_open">Open classic editor</string>
+    <string name="hude_classic_title">Classic editor</string>
+    <string name="hude_cryo_events">Events when touched</string>
+    <string name="hude_cryo_toggleable">Toggleable</string>
+    <string name="hude_hide_bar">Hide</string>
+    <string name="hude_image">Image</string>
+    <string name="hude_image_gallery">HUD images</string>
+    <string name="hude_image_gallery_empty">No images yet. Add a PNG.</string>
+    <string name="hude_image_missing">Not found: %1$s</string>
+    <string name="hude_image_none">No image</string>
+    <string name="hude_image_pressed">Image (pressed)</string>
+    <string name="hude_image_stick_bg">Background image</string>
+    <string name="hude_image_stick_knob">Stick image</string>
+    <string name="hude_move_bar">Move</string>
+    <string name="hude_show_bar">Show toolbar</string>
 </resources>

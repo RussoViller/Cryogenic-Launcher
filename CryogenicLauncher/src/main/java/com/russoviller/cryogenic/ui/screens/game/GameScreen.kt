@@ -377,23 +377,63 @@ private class GameViewModel(
         loadHud(file)
     }
 
-    fun startHudEditor() {
-        if (hudScheme == HudScheme.CRYOGENIC || isEditingAny) return
+    /** HUD aberto no editor novo (vale para os três esquemas). */
+    var hudEditLayout by mutableStateOf<HudLayout?>(null)
+        private set
+    private var hudEditFile: File? = null
+
+    fun startHudEditor(onFail: () -> Unit = {}) {
+        if (isEditingAny) return
         clearState()
-        if (hudLayout == null) hudLayout = HudStore.codec(hudScheme).empty("HUD", "")
+        if (hudScheme == HudScheme.CRYOGENIC) {
+            val file = currentControlFile ?: return onFail()
+            viewModelScope.launch(Dispatchers.IO) {
+                val layout = runCatching { HudStore.load(HudScheme.CRYOGENIC, file) }
+                    .onFailure { Logger.warning(TAG, "Failed to open HUD in the editor: $file", it) }
+                    .getOrNull()
+                withContext(Dispatchers.Main) {
+                    if (layout == null) onFail()
+                    else {
+                        hudEditFile = file
+                        hudEditLayout = layout
+                        isEditingHud = true
+                    }
+                }
+            }
+            return
+        }
+        hudEditFile = hudFile
+        hudEditLayout = hudLayout ?: HudStore.codec(hudScheme).empty("HUD", "")
         isEditingHud = true
     }
 
     fun exitHudEditor() {
         isEditingHud = false
-        loadHud(hudFile)
+        hudEditLayout = null
+        if (hudScheme == HudScheme.CRYOGENIC) {
+            viewModelScope.launch(Dispatchers.Main) {
+                loadControlLayout(currentControlFile)
+                editorRefresh++
+            }
+        } else loadHud(hudFile)
+    }
+
+    /** Sai do editor novo e abre o editor clássico do HUD Cryogenic. */
+    fun openClassicEditor(editorVM: EditorViewModel) {
+        isEditingHud = false
+        hudEditLayout = null
+        viewModelScope.launch(Dispatchers.Main) {
+            loadControlLayout(currentControlFile)
+            startControlEditor(editorVM)
+        }
     }
 
     fun saveHud(layout: HudLayout): Boolean {
-        val file = hudFile ?: File(HudStore.dir(hudScheme), "${java.util.UUID.randomUUID().toString().take(8)}.json").also {
+        val file = hudEditFile ?: hudFile ?: File(HudStore.dir(hudScheme), "${java.util.UUID.randomUUID().toString().take(8)}.json").also {
             hudFile = it
             HudStore.select(hudScheme, it)
         }
+        hudEditFile = file
         return runCatching { HudStore.save(file, layout) }
             .onFailure { Logger.warning(TAG, "Failed to save HUD: $file", it) }
             .isSuccess
@@ -509,6 +549,7 @@ private class GameViewModel(
             loadControlLayout()
         }
         loadHud()
+        HudStore.installLayerImages()
     }
 
     override fun onCleared() {
@@ -911,14 +952,11 @@ fun GameScreen(
                 else viewModel.hudPickerVisible = true
             },
             onEditLayout = {
-                if (viewModel.hudScheme == HudScheme.CRYOGENIC) {
-                    viewModel.startControlEditor(
-                        editorVM = editorViewModel
-                    )
-                } else {
-                    viewModel.gameMenuState = MenuState.HIDE
-                    viewModel.startHudEditor()
-                }
+                viewModel.gameMenuState = MenuState.HIDE
+                viewModel.startHudEditor(
+                    //se o HUD não abrir no editor novo, usa o clássico
+                    onFail = { viewModel.startControlEditor(editorVM = editorViewModel) }
+                )
             },
             onShowToast = { text, duration ->
                 eventViewModel.sendToast(text, duration)
@@ -943,13 +981,16 @@ fun GameScreen(
         )
 
         if (viewModel.isEditingHud) {
-            viewModel.hudLayout?.let { layout ->
+            viewModel.hudEditLayout?.let { layout ->
                 HudEditor(
                     initial = layout,
                     inGame = true,
                     onSave = { viewModel.saveHud(it) },
                     onExit = { viewModel.exitHudEditor() },
-                    backSignal = viewModel.hudBackSignal
+                    backSignal = viewModel.hudBackSignal,
+                    onClassicEditor = if (viewModel.hudScheme == HudScheme.CRYOGENIC) {
+                        { viewModel.openClassicEditor(editorViewModel) }
+                    } else null
                 )
             }
         } else if (viewModel.isEditingLayout) {

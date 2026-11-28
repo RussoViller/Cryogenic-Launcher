@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">W menu</string>
     <string name="hude_visibility">Widoczność</string>
     <string name="hude_width">Szerokość</string>
+    <string name="cryo_hud_images_imported">Zaimportowano obrazy: %1$d</string>
+    <string name="cryo_hud_images_missing">Nie znaleziono obrazów na tym urządzeniu: %1$d (%2$s). Użyj Importuj → Importuj obrazy (PNG lub ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Brakujące obrazy</string>
+    <string name="cryo_hud_import_images">Importuj obrazy (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">HUD-y %1$s</string>
+    <string name="cryo_hud_use">Użyj w grze</string>
+    <string name="hude_classic_hint">Pola tekstowe, tłumaczenia i zaawansowane style edytuje się w edytorze klasycznym.</string>
+    <string name="hude_classic_open">Otwórz edytor klasyczny</string>
+    <string name="hude_classic_title">Edytor klasyczny</string>
+    <string name="hude_cryo_events">Zdarzenia po dotknięciu</string>
+    <string name="hude_cryo_toggleable">Przełączany</string>
+    <string name="hude_hide_bar">Ukryj</string>
+    <string name="hude_image">Obraz</string>
+    <string name="hude_image_gallery">Obrazy HUD</string>
+    <string name="hude_image_gallery_empty">Brak obrazów. Dodaj PNG.</string>
+    <string name="hude_image_missing">Nie znaleziono: %1$s</string>
+    <string name="hude_image_none">Brak obrazu</string>
+    <string name="hude_image_pressed">Obraz (wciśnięty)</string>
+    <string name="hude_image_stick_bg">Obraz tła</string>
+    <string name="hude_image_stick_knob">Obraz gałki</string>
+    <string name="hude_move_bar">Przesuń</string>
+    <string name="hude_show_bar">Pokaż pasek</string>
 </resources>

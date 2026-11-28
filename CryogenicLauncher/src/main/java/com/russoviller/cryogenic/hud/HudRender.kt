@@ -5,6 +5,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
+import kotlin.math.roundToInt
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.TextMeasurer
@@ -60,18 +64,41 @@ internal fun Int.toHudColor(alpha: Float = 1f): Color {
     return if (alpha >= 0.999f) c else c.copy(alpha = c.alpha * alpha)
 }
 
+internal fun DrawScope.drawHudImage(img: ImageBitmap, rect: Rect, alpha: Float) {
+    drawImage(
+        image = img,
+        srcOffset = IntOffset.Zero,
+        srcSize = IntSize(img.width, img.height),
+        dstOffset = IntOffset(rect.left.roundToInt(), rect.top.roundToInt()),
+        dstSize = IntSize(rect.width.roundToInt().coerceAtLeast(1), rect.height.roundToInt().coerceAtLeast(1)),
+        alpha = alpha.coerceIn(0f, 1f)
+    )
+}
+
 internal fun DrawScope.drawHudButton(
     b: HudButton,
     rect: Rect,
     pressed: Boolean,
     alpha: Float,
     density: Float,
-    measurer: TextMeasurer
+    measurer: TextMeasurer,
+    images: (String) -> ImageBitmap? = { null }
 ) {
     val st = b.style
     val a = (alpha * st.opacity).coerceIn(0f, 1f)
     if (a <= 0.01f) return
-    val radiusPx = (if (st.radiusPx) st.radiusDp else st.radiusDp * density).coerceIn(0f, min(rect.width, rect.height) / 2f)
+    // imagem PNG no lugar do desenho do botão
+    val picture = (if (pressed && st.imagePressed.isNotEmpty()) images(st.imagePressed) else null)
+        ?: st.image.takeIf { it.isNotEmpty() }?.let(images)
+    if (picture != null) {
+        drawHudImage(picture, rect, a)
+        if (pressed && (st.imagePressed.isEmpty() || images(st.imagePressed) == null)) {
+            drawRect(Color.White.copy(alpha = 0.27f * a), rect.topLeft, rect.size)
+        }
+        return
+    }
+    val radiusPx = (st.radiusPercent?.let { it / 100f * min(rect.width, rect.height) }
+        ?: if (st.radiusPx) st.radiusDp else st.radiusDp * density).coerceIn(0f, min(rect.width, rect.height) / 2f)
     val cr = CornerRadius(radiusPx, radiusPx)
     drawRoundRect(
         color = (if (pressed) st.fillPressed else st.fill).toHudColor(a),
@@ -114,13 +141,26 @@ internal fun DrawScope.drawHudStick(
     rect: Rect,
     visual: HudStickVisual,
     alpha: Float,
-    density: Float
+    density: Float,
+    images: (String) -> ImageBitmap? = { null }
 ) {
     val st = s.style
     val a = (alpha * st.opacity).coerceIn(0f, 1f)
     if (a <= 0.01f) return
     val size = rect.width
     val center = visual.center ?: rect.center
+    // imagens: fundo (image) e botão central (imagePressed)
+    val frame = st.image.takeIf { it.isNotEmpty() }?.let(images)
+    if (frame != null && s.mode == HudStickMode.ROCKER) {
+        drawHudImage(frame, Rect(center.x - size / 2f, center.y - size / 2f, center.x + size / 2f, center.y + size / 2f), a)
+        val knobSize = size * st.knobRatio.coerceIn(0.1f, 0.9f)
+        val travel = (size - knobSize) / 2f
+        val k = Offset(center.x + visual.knob.x * travel, center.y + visual.knob.y * travel)
+        val knob = st.imagePressed.takeIf { it.isNotEmpty() }?.let(images)
+        if (knob != null) drawHudImage(knob, Rect(k.x - knobSize / 2f, k.y - knobSize / 2f, k.x + knobSize / 2f, k.y + knobSize / 2f), a)
+        else drawCircle(st.knobFill.toHudColor(a), knobSize / 2f, k)
+        return
+    }
     val strokePx = st.strokeDp * density
     if (s.mode == HudStickMode.DPAD) {
         val gap = size * st.gapRatio.coerceIn(0f, 0.3f)

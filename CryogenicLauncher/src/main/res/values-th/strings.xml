@@ -2998,4 +2998,26 @@
     <string name="hude_vis_menu">ในเมนู</string>
     <string name="hude_visibility">การแสดงผล</string>
     <string name="hude_width">ความกว้าง</string>
+    <string name="cryo_hud_images_imported">นำเข้ารูปภาพแล้ว %1$d รูป</string>
+    <string name="cryo_hud_images_missing">ไม่พบรูปภาพ %1$d รูปในเครื่องนี้ (%2$s) ใช้ นำเข้า → นำเข้ารูปภาพ (PNG หรือ ZIP)</string>
+    <string name="cryo_hud_images_missing_title">รูปภาพที่ขาดหายไป</string>
+    <string name="cryo_hud_import_images">นำเข้ารูปภาพ (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">HUD ของ %1$s</string>
+    <string name="cryo_hud_use">ใช้ในเกม</string>
+    <string name="hude_classic_hint">กล่องข้อความ คำแปล และสไตล์ขั้นสูงแก้ไขในตัวแก้ไขแบบคลาสสิก</string>
+    <string name="hude_classic_open">เปิดตัวแก้ไขแบบคลาสสิก</string>
+    <string name="hude_classic_title">ตัวแก้ไขแบบคลาสสิก</string>
+    <string name="hude_cryo_events">เหตุการณ์เมื่อแตะ</string>
+    <string name="hude_cryo_toggleable">สลับได้</string>
+    <string name="hude_hide_bar">ซ่อน</string>
+    <string name="hude_image">รูปภาพ</string>
+    <string name="hude_image_gallery">รูปภาพของ HUD</string>
+    <string name="hude_image_gallery_empty">ยังไม่มีรูปภาพ เพิ่ม PNG</string>
+    <string name="hude_image_missing">ไม่พบ: %1$s</string>
+    <string name="hude_image_none">ไม่มีรูปภาพ</string>
+    <string name="hude_image_pressed">รูปภาพ (กด)</string>
+    <string name="hude_image_stick_bg">รูปพื้นหลัง</string>
+    <string name="hude_image_stick_knob">รูปก้านจอย</string>
+    <string name="hude_move_bar">ย้าย</string>
+    <string name="hude_show_bar">แสดงแถบเครื่องมือ</string>
 </resources>

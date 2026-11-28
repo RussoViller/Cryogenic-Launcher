@@ -95,6 +95,12 @@ data class HudStyle(
     val radiusPx: Boolean = false,
     val textSp: Float = 14f,
     val opacity: Float = 1f,
+    /** Arredondamento em % do menor lado (formato do Cryogenic); null = usa radiusDp. */
+    val radiusPercent: Float? = null,
+    /** Imagem PNG (nome do arquivo na pasta de imagens do esquema). Vazio = sem imagem. */
+    val image: String = "",
+    /** Imagem quando pressionado (no joystick: o botão central). */
+    val imagePressed: String = "",
     /** Nome do estilo compartilhado (FCL). */
     val name: String = "",
     /** Joystick: tamanho do botão central (fração do joystick). */
@@ -216,7 +222,7 @@ object HudCodecs {
     fun of(scheme: HudScheme): HudCodec? = when (scheme) {
         HudScheme.FCL -> FclCodec
         HudScheme.POJARUSH -> PojarushCodec
-        HudScheme.CRYOGENIC -> null
+        HudScheme.CRYOGENIC -> Zl2Codec
     }
 }
 

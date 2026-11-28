@@ -2998,4 +2998,26 @@
     <string name="hude_vis_menu">菜单中</string>
     <string name="hude_visibility">可见性</string>
     <string name="hude_width">宽度</string>
+    <string name="cryo_hud_images_imported">已导入 %1$d 张图片</string>
+    <string name="cryo_hud_images_missing">此设备上找不到 %1$d 张图片（%2$s）。请使用 导入 → 导入图片（PNG 或 ZIP）。</string>
+    <string name="cryo_hud_images_missing_title">缺少图片</string>
+    <string name="cryo_hud_import_images">导入图片（PNG / ZIP）</string>
+    <string name="cryo_hud_list_scheme">%1$s HUD</string>
+    <string name="cryo_hud_use">在游戏中使用</string>
+    <string name="hude_classic_hint">文本框、翻译和高级样式请在经典编辑器中编辑。</string>
+    <string name="hude_classic_open">打开经典编辑器</string>
+    <string name="hude_classic_title">经典编辑器</string>
+    <string name="hude_cryo_events">触摸时的事件</string>
+    <string name="hude_cryo_toggleable">可切换</string>
+    <string name="hude_hide_bar">隐藏</string>
+    <string name="hude_image">图片</string>
+    <string name="hude_image_gallery">HUD 图片</string>
+    <string name="hude_image_gallery_empty">还没有图片，添加一张 PNG。</string>
+    <string name="hude_image_missing">未找到：%1$s</string>
+    <string name="hude_image_none">无图片</string>
+    <string name="hude_image_pressed">图片（按下）</string>
+    <string name="hude_image_stick_bg">背景图片</string>
+    <string name="hude_image_stick_knob">摇杆头图片</string>
+    <string name="hude_move_bar">移动</string>
+    <string name="hude_show_bar">显示工具栏</string>
 </resources>

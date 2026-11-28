@@ -30,10 +30,15 @@ object HudDefaults {
             press = HudTrigger(press),
             // FCL não tem "liga/desliga" separado: vira um "pressionar" travado
             tap = HudTrigger(tap),
-            toggle = if (scheme == HudScheme.FCL) HudTrigger() else HudTrigger(toggle, keep = true),
+            toggle = if (scheme != HudScheme.POJARUSH) HudTrigger() else HudTrigger(toggle, keep = true),
             look = look, swipe = swipe, style = st
         ).let { b ->
-            if (scheme == HudScheme.FCL && toggle.isNotEmpty()) b.copy(press = HudTrigger(toggle, keep = true)) else b
+            when {
+                scheme != HudScheme.POJARUSH && toggle.isNotEmpty() -> b.copy(press = HudTrigger(toggle, keep = true))
+                // no Cryogenic os eventos disparam ao tocar
+                scheme == HudScheme.CRYOGENIC && tap.isNotEmpty() -> b.copy(press = HudTrigger(press + tap), tap = HudTrigger())
+                else -> b
+            }
         }
 
         val buttons = listOf(
@@ -65,7 +70,8 @@ object HudDefaults {
             mode = HudStickMode.ROCKER,
             follow = if (scheme == HudScheme.FCL) HudStickFollow.CENTER else HudStickFollow.FIXED,
             canLock = true, lockThreshold = 0.3f, deadZone = 0.12f,
-            doubleActs = listOf(k("LEFT_SHIFT")), doubleKeep = true,
+            doubleActs = if (scheme == HudScheme.CRYOGENIC) emptyList() else listOf(k("LEFT_SHIFT")), doubleKeep = true,
+            lockActs = if (scheme == HudScheme.CRYOGENIC) listOf(k("LEFT_CONTROL")) else emptyList(),
             style = HudStyle(
                 fill = 0x33101C2C, stroke = 0xAA7FD8FF.toInt(), strokePressed = 0xAA7FD8FF.toInt(), strokeDp = 2f, radiusDp = 500f,
                 knobRatio = 0.42f, knobFill = 0xAA7FD8FF.toInt(), knobStroke = 0xFFFFFFFF.toInt(),

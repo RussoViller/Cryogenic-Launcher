@@ -2998,4 +2998,26 @@
     <string name="hude_vis_menu">Trong menu</string>
     <string name="hude_visibility">Hiển thị</string>
     <string name="hude_width">Chiều rộng</string>
+    <string name="cryo_hud_images_imported">Đã nhập %1$d hình ảnh</string>
+    <string name="cryo_hud_images_missing">Không tìm thấy %1$d hình ảnh trên thiết bị này (%2$s). Dùng Nhập → Nhập hình ảnh (PNG hoặc ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Thiếu hình ảnh</string>
+    <string name="cryo_hud_import_images">Nhập hình ảnh (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">HUD %1$s</string>
+    <string name="cryo_hud_use">Dùng trong game</string>
+    <string name="hude_classic_hint">Hộp văn bản, bản dịch và kiểu nâng cao được sửa trong trình chỉnh sửa cổ điển.</string>
+    <string name="hude_classic_open">Mở trình chỉnh sửa cổ điển</string>
+    <string name="hude_classic_title">Trình chỉnh sửa cổ điển</string>
+    <string name="hude_cryo_events">Sự kiện khi chạm</string>
+    <string name="hude_cryo_toggleable">Bật/tắt được</string>
+    <string name="hude_hide_bar">Ẩn</string>
+    <string name="hude_image">Hình ảnh</string>
+    <string name="hude_image_gallery">Hình ảnh HUD</string>
+    <string name="hude_image_gallery_empty">Chưa có hình ảnh. Thêm một PNG.</string>
+    <string name="hude_image_missing">Không tìm thấy: %1$s</string>
+    <string name="hude_image_none">Không có hình ảnh</string>
+    <string name="hude_image_pressed">Hình ảnh (khi nhấn)</string>
+    <string name="hude_image_stick_bg">Hình nền</string>
+    <string name="hude_image_stick_knob">Hình cần</string>
+    <string name="hude_move_bar">Di chuyển</string>
+    <string name="hude_show_bar">Hiện thanh công cụ</string>
 </resources>

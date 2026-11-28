@@ -2999,4 +2999,26 @@
     <string name="hude_vis_menu">I menyer</string>
     <string name="hude_visibility">Synlighet</string>
     <string name="hude_width">Bredde</string>
+    <string name="cryo_hud_images_imported">%1$d bilder importert</string>
+    <string name="cryo_hud_images_missing">%1$d bilder ble ikke funnet på enheten (%2$s). Bruk Importer → Importer bilder (PNG eller ZIP).</string>
+    <string name="cryo_hud_images_missing_title">Manglende bilder</string>
+    <string name="cryo_hud_import_images">Importer bilder (PNG / ZIP)</string>
+    <string name="cryo_hud_list_scheme">%1$s-HUD-er</string>
+    <string name="cryo_hud_use">Bruk i spillet</string>
+    <string name="hude_classic_hint">Tekstbokser, oversettelser og avanserte stiler redigeres i den klassiske editoren.</string>
+    <string name="hude_classic_open">Åpne klassisk editor</string>
+    <string name="hude_classic_title">Klassisk editor</string>
+    <string name="hude_cryo_events">Hendelser ved berøring</string>
+    <string name="hude_cryo_toggleable">Kan veksles</string>
+    <string name="hude_hide_bar">Skjul</string>
+    <string name="hude_image">Bilde</string>
+    <string name="hude_image_gallery">HUD-bilder</string>
+    <string name="hude_image_gallery_empty">Ingen bilder ennå. Legg til en PNG.</string>
+    <string name="hude_image_missing">Ikke funnet: %1$s</string>
+    <string name="hude_image_none">Uten bilde</string>
+    <string name="hude_image_pressed">Bilde (trykket)</string>
+    <string name="hude_image_stick_bg">Bakgrunnsbilde</string>
+    <string name="hude_image_stick_knob">Spakbilde</string>
+    <string name="hude_move_bar">Flytt</string>
+    <string name="hude_show_bar">Vis verktøylinje</string>
 </resources>

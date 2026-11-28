@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.zIndex
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -139,14 +145,22 @@ fun HudEditor(
     inGame: Boolean,
     onSave: (HudLayout) -> Boolean,
     onExit: () -> Unit,
-    backSignal: Int = 0
+    backSignal: Int = 0,
+    onClassicEditor: (() -> Unit)? = null
 ) {
     val state = remember(initial) { HudEditorState(initial) }
-    val fcl = initial.scheme == HudScheme.FCL
+    val scheme = initial.scheme
+    val fcl = scheme == HudScheme.FCL
+    val cryo = scheme == HudScheme.CRYOGENIC
     var askExit by remember { mutableStateOf(false) }
     var picker by remember { mutableStateOf<((HudAction) -> Unit)?>(null) }
     var pickerKeysOnly by remember { mutableStateOf(false) }
     var savedToast by remember { mutableStateOf(false) }
+    var barHidden by remember { mutableStateOf(false) }
+    var barOffset by remember { mutableStateOf<Offset?>(null) }
+    var barSize by remember { mutableStateOf(IntSize.Zero) }
+
+    HideSystemBars()
 
     fun save(): Boolean {
         val ok = onSave(state.layout)
@@ -180,92 +194,153 @@ fun HudEditor(
         }
         HudEditCanvas(state, geo)
 
-        // barra de ferramentas
-        Row(
+        // ------------------------------------------------ barra flutuante (2 linhas, móvel, pode ocultar)
+        val screenW = constraints.maxWidth.toFloat()
+        val screenH = constraints.maxHeight.toFloat()
+        // sem posição escolhida: centraliza no espaço livre ao lado do painel
+        val panelPx = if (state.panel != HudPanel.NONE) 346f * density else 0f
+        val freeLeft = if (state.panelLeft) panelPx else 0f
+        val freeW = screenW - panelPx
+        val pos = barOffset ?: Offset((freeLeft + (freeW - barSize.width) / 2f).coerceIn(0f, (screenW - barSize.width).coerceAtLeast(0f)), 6f * density)
+        fun moveBar(delta: Offset) {
+            val p = (barOffset ?: pos) + delta
+            barOffset = Offset(
+                p.x.coerceIn(0f, (screenW - barSize.width).coerceAtLeast(0f)),
+                p.y.coerceIn(0f, (screenH - barSize.height).coerceAtLeast(0f))
+            )
+        }
+        val dragModifier = Modifier.pointerInput(Unit) {
+            detectDragGestures { change, drag -> change.consume(); moveBar(drag) }
+        }
+        Box(
             modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(top = 6.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(PanelBg)
-                .border(1.dp, Line, RoundedCornerShape(16.dp))
-                .horizontalScroll(rememberScrollState())
-                .padding(horizontal = 6.dp, vertical = 4.dp),
-            horizontalArrangement = Arrangement.spacedBy(2.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .zIndex(2f)
+                .offset { IntOffset(pos.x.roundToInt(), pos.y.roundToInt()) }
+                .onSizeChanged { barSize = it }
         ) {
-            ToolButton(painterResource(R.drawable.ic_add), stringResource(R.string.hude_add_button)) {
-                val id = newHudId()
-                state.edit { l ->
-                    val style = l.buttons.lastOrNull()?.style ?: if (fcl) HudStyle(name = "Default") else PojarushCodec.defaultButtonStyle
-                    l.copy(buttons = l.buttons + HudButton(id, "?", layer = state.activeLayer, style = style))
+            if (barHidden) {
+                Box(
+                    modifier = Modifier
+                        .size(46.dp)
+                        .clip(CircleShape)
+                        .background(PanelBg)
+                        .border(1.5.dp, Ice, CircleShape)
+                        .then(dragModifier)
+                        .clickable { barHidden = false },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(painterResource(R.drawable.ic_edit_outlined), stringResource(R.string.hude_show_bar), tint = Ice, modifier = Modifier.size(20.dp))
                 }
-                state.selected = HudSel.Btn(id)
-                state.panel = HudPanel.PROPS
-            }
-            ToolText("◎", stringResource(if (fcl) R.string.hude_add_direction else R.string.hude_add_stick)) {
-                val id = newHudId()
-                state.edit { l ->
-                    l.copy(sticks = l.sticks + HudStick(id, layer = state.activeLayer, x = 0.5f, y = 0.5f,
-                        follow = if (fcl) HudStickFollow.CENTER else HudStickFollow.FIXED,
-                        doubleActs = listOf(HudAction.Key(340))))
+            } else {
+                Column(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(PanelBg)
+                        .border(1.dp, Line, RoundedCornerShape(16.dp))
+                        .padding(horizontal = 4.dp, vertical = 3.dp),
+                    verticalArrangement = Arrangement.spacedBy(1.dp)
+                ) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(1.dp)) {
+                        ToolButton(painterResource(R.drawable.ic_add), stringResource(R.string.hude_add_button)) {
+                            val id = newHudId()
+                            state.edit { l ->
+                                val style = l.buttons.lastOrNull()?.style?.copy(image = "", imagePressed = "") ?: when (scheme) {
+                                    HudScheme.FCL -> HudStyle(name = "Default")
+                                    HudScheme.CRYOGENIC -> Zl2Codec.defaultStyle
+                                    HudScheme.POJARUSH -> PojarushCodec.defaultButtonStyle
+                                }
+                                l.copy(buttons = l.buttons + HudButton(id, "?", layer = state.activeLayer, style = style))
+                            }
+                            state.selected = HudSel.Btn(id)
+                            state.panel = HudPanel.PROPS
+                        }
+                        ToolText("◎", stringResource(if (fcl) R.string.hude_add_direction else R.string.hude_add_stick)) {
+                            val id = newHudId()
+                            state.edit { l ->
+                                l.copy(sticks = l.sticks + HudStick(id, layer = state.activeLayer, x = 0.5f, y = 0.5f,
+                                    follow = if (fcl) HudStickFollow.CENTER else HudStickFollow.FIXED,
+                                    doubleActs = if (cryo) emptyList() else listOf(HudAction.Key(340)),
+                                    lockActs = if (cryo) listOf(HudAction.Key(341)) else emptyList()))
+                            }
+                            state.selected = HudSel.Stk(id)
+                            state.panel = HudPanel.PROPS
+                        }
+                        ToolButton(painterResource(R.drawable.ic_cryo_layers), stringResource(if (fcl) R.string.hude_groups else R.string.hude_layers),
+                            active = state.panel == HudPanel.LAYERS) {
+                            state.panel = if (state.panel == HudPanel.LAYERS) HudPanel.NONE else HudPanel.LAYERS
+                        }
+                        ToolButton(painterResource(R.drawable.ic_edit_outlined), stringResource(R.string.hude_properties),
+                            active = state.panel == HudPanel.PROPS, enabled = state.selected != null) {
+                            state.panel = if (state.panel == HudPanel.PROPS) HudPanel.NONE else HudPanel.PROPS
+                        }
+                        ToolButton(painterResource(R.drawable.ic_copy_all_outlined), stringResource(R.string.generic_copy), enabled = state.selected != null) {
+                            state.selectedButton()?.let { b ->
+                                val id = newHudId()
+                                state.edit { l -> l.copy(buttons = l.buttons + b.copy(id = id, raw = null, x = (b.x + 0.04f).coerceAtMost(1f), y = (b.y + 0.04f).coerceAtMost(1f))) }
+                                state.selected = HudSel.Btn(id)
+                            }
+                            state.selectedStick()?.let { s ->
+                                val id = newHudId()
+                                state.edit { l -> l.copy(sticks = l.sticks + s.copy(id = id, raw = null, x = (s.x + 0.05f).coerceAtMost(1f))) }
+                                state.selected = HudSel.Stk(id)
+                            }
+                        }
+                        ToolButton(painterResource(R.drawable.ic_delete_outlined), stringResource(R.string.generic_delete), enabled = state.selected != null) {
+                            when (val sel = state.selected) {
+                                is HudSel.Btn -> state.edit { l -> l.copy(buttons = l.buttons.filterNot { it.id == sel.id }) }
+                                is HudSel.Stk -> state.edit { l -> l.copy(sticks = l.sticks.filterNot { it.id == sel.id }) }
+                                null -> {}
+                            }
+                            state.selected = null
+                            if (state.panel == HudPanel.PROPS) state.panel = HudPanel.NONE
+                        }
+                        ToolButton(painterResource(R.drawable.ic_undo), stringResource(R.string.hude_undo), enabled = state.canUndo) { state.undo() }
+                    }
+                    Row(horizontalArrangement = Arrangement.spacedBy(1.dp)) {
+                        ToolText("#", stringResource(R.string.hude_grid), active = state.grid) { state.grid = !state.grid }
+                        ToolButton(painterResource(R.drawable.ic_info_outlined), stringResource(R.string.hude_info), active = state.panel == HudPanel.INFO) {
+                            state.panel = if (state.panel == HudPanel.INFO) HudPanel.NONE else HudPanel.INFO
+                        }
+                        ToolButton(painterResource(R.drawable.ic_cryo_swap), stringResource(R.string.hude_panel_side)) { state.panelLeft = !state.panelLeft }
+                        ToolButton(painterResource(R.drawable.ic_save_filled), stringResource(R.string.generic_save), active = state.dirty) { save() }
+                        ToolButton(painterResource(R.drawable.ic_close), stringResource(R.string.generic_close)) {
+                            if (state.dirty) askExit = true else onExit()
+                        }
+                        ToolButton(painterResource(R.drawable.ic_visibility_off_outlined), stringResource(R.string.hude_hide_bar)) {
+                            barHidden = true
+                            state.panel = HudPanel.NONE
+                        }
+                        // alça para arrastar a barra
+                        Column(
+                            modifier = Modifier
+                                .width(62.dp)
+                                .clip(RoundedCornerShape(12.dp))
+                                .background(Ice.copy(alpha = 0.10f))
+                                .then(dragModifier)
+                                .padding(vertical = 3.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(painterResource(R.drawable.ic_drag_handle), stringResource(R.string.hude_move_bar), modifier = Modifier.size(18.dp), tint = Ice)
+                            Text(stringResource(R.string.hude_move_bar), fontSize = 9.sp, color = Frost, maxLines = 1)
+                        }
+                    }
                 }
-                state.selected = HudSel.Stk(id)
-                state.panel = HudPanel.PROPS
-            }
-            ToolButton(painterResource(R.drawable.ic_cryo_layers), stringResource(if (fcl) R.string.hude_groups else R.string.hude_layers),
-                active = state.panel == HudPanel.LAYERS) {
-                state.panel = if (state.panel == HudPanel.LAYERS) HudPanel.NONE else HudPanel.LAYERS
-            }
-            ToolButton(painterResource(R.drawable.ic_edit_outlined), stringResource(R.string.hude_properties),
-                active = state.panel == HudPanel.PROPS, enabled = state.selected != null) {
-                state.panel = if (state.panel == HudPanel.PROPS) HudPanel.NONE else HudPanel.PROPS
-            }
-            ToolButton(painterResource(R.drawable.ic_copy_all_outlined), stringResource(R.string.generic_copy), enabled = state.selected != null) {
-                state.selectedButton()?.let { b ->
-                    val id = newHudId()
-                    state.edit { l -> l.copy(buttons = l.buttons + b.copy(id = id, raw = null, x = (b.x + 0.04f).coerceAtMost(1f), y = (b.y + 0.04f).coerceAtMost(1f))) }
-                    state.selected = HudSel.Btn(id)
-                }
-                state.selectedStick()?.let { s ->
-                    val id = newHudId()
-                    state.edit { l -> l.copy(sticks = l.sticks + s.copy(id = id, raw = null, x = (s.x + 0.05f).coerceAtMost(1f))) }
-                    state.selected = HudSel.Stk(id)
-                }
-            }
-            ToolButton(painterResource(R.drawable.ic_delete_outlined), stringResource(R.string.generic_delete), enabled = state.selected != null) {
-                when (val sel = state.selected) {
-                    is HudSel.Btn -> state.edit { l -> l.copy(buttons = l.buttons.filterNot { it.id == sel.id }) }
-                    is HudSel.Stk -> state.edit { l -> l.copy(sticks = l.sticks.filterNot { it.id == sel.id }) }
-                    null -> {}
-                }
-                state.selected = null
-                if (state.panel == HudPanel.PROPS) state.panel = HudPanel.NONE
-            }
-            ToolButton(painterResource(R.drawable.ic_undo), stringResource(R.string.hude_undo), enabled = state.canUndo) { state.undo() }
-            ToolText("#", stringResource(R.string.hude_grid), active = state.grid) { state.grid = !state.grid }
-            ToolButton(painterResource(R.drawable.ic_info_outlined), stringResource(R.string.hude_info), active = state.panel == HudPanel.INFO) {
-                state.panel = if (state.panel == HudPanel.INFO) HudPanel.NONE else HudPanel.INFO
-            }
-            ToolButton(painterResource(R.drawable.ic_cryo_swap), stringResource(R.string.hude_panel_side)) { state.panelLeft = !state.panelLeft }
-            ToolButton(painterResource(R.drawable.ic_save_filled), stringResource(R.string.generic_save), active = state.dirty) { save() }
-            ToolButton(painterResource(R.drawable.ic_close), stringResource(R.string.generic_close)) {
-                if (state.dirty) askExit = true else onExit()
             }
         }
 
         // título do esquema
         Text(
-            text = (if (fcl) "FCL" else "PojaRush") + " · " + state.layout.name + if (state.dirty) " •" else "",
+            text = scheme.title + " · " + state.layout.name + if (state.dirty) " •" else "",
             modifier = Modifier.align(Alignment.BottomCenter).padding(bottom = 6.dp)
                 .clip(RoundedCornerShape(10.dp)).background(PanelBg).padding(horizontal = 10.dp, vertical = 3.dp),
             color = Frost, fontSize = 11.sp, maxLines = 1, overflow = TextOverflow.Ellipsis
         )
 
-        if (state.panel != HudPanel.NONE) {
+        if (state.panel != HudPanel.NONE && !barHidden) {
             Column(
                 modifier = Modifier
                     .align(if (state.panelLeft) Alignment.CenterStart else Alignment.CenterEnd)
-                    .padding(top = 52.dp, bottom = 8.dp, start = 8.dp, end = 8.dp)
+                    .padding(8.dp)
                     .width(330.dp)
                     .fillMaxHeight()
                     .clip(RoundedCornerShape(18.dp))
@@ -276,18 +351,29 @@ fun HudEditor(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 val openPicker: (Boolean, (HudAction) -> Unit) -> Unit = { keysOnly, cb -> pickerKeysOnly = keysOnly; picker = cb }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Spacer(Modifier.weight(1f))
+                    Icon(
+                        painterResource(R.drawable.ic_close), stringResource(R.string.generic_close), tint = Frost,
+                        modifier = Modifier.size(28.dp).clip(CircleShape).clickable { state.panel = HudPanel.NONE }.padding(5.dp)
+                    )
+                }
                 when (state.panel) {
                     HudPanel.PROPS -> {
                         val b = state.selectedButton()
                         val s = state.selectedStick()
                         when {
-                            b != null -> ButtonProps(state, b, fcl, geo, openPicker)
-                            s != null -> StickProps(state, s, fcl, openPicker)
+                            b != null -> ButtonProps(state, b, scheme, geo, openPicker)
+                            s != null -> StickProps(state, s, scheme, openPicker)
                             else -> Text(stringResource(R.string.hude_select_hint), color = Frost, fontSize = 13.sp)
                         }
                     }
                     HudPanel.LAYERS -> LayersPanel(state, fcl)
-                    HudPanel.INFO -> InfoPanel(state)
+                    HudPanel.INFO -> InfoPanel(state, onClassicEditor?.let { classic ->
+                        {
+                            if (!state.dirty || save()) classic()
+                        }
+                    })
                     HudPanel.NONE -> {}
                 }
             }
@@ -296,7 +382,7 @@ fun HudEditor(
 
     picker?.let { cb ->
         ActionPickerDialog(
-            fcl = fcl,
+            scheme = scheme,
             keysOnly = pickerKeysOnly,
             layers = state.layout.layers,
             onPick = { a -> cb(a); picker = null },
@@ -432,12 +518,12 @@ private fun HudEditCanvas(state: HudEditorState, geo: HudGeometry) {
         for (s in l.sticks) {
             if (!st.visibleInEditor(s.layer)) continue
             val dim = if (l.layers.firstOrNull { it.id == s.layer }?.visible == false) 0.5f else 1f
-            drawHudStick(s, geo.stickRect(s), HudStickVisual(), 0.9f * dim, geo.density)
+            drawHudStick(s, geo.stickRect(s), HudStickVisual(), 0.9f * dim, geo.density) { HudImages.bitmap(l.scheme, it) }
         }
         for (b in l.buttons) {
             if (!st.visibleInEditor(b.layer)) continue
             val dim = if (l.layers.firstOrNull { it.id == b.layer }?.visible == false) 0.5f else 1f
-            drawHudButton(b, geo.buttonRect(b), false, 0.9f * dim, geo.density, measurer)
+            drawHudButton(b, geo.buttonRect(b), false, 0.9f * dim, geo.density, measurer) { HudImages.bitmap(l.scheme, it) }
         }
         val selRect: Rect? = st.selectedButton()?.let { geo.buttonRect(it) } ?: st.selectedStick()?.let { geo.stickRect(it) }
         if (selRect != null) {
@@ -749,10 +835,11 @@ private fun TriggerBox(
 private fun ColumnScope.ButtonProps(
     state: HudEditorState,
     b: HudButton,
-    fcl: Boolean,
+    scheme: HudScheme,
     geo: HudGeometry,
     openPicker: (Boolean, (HudAction) -> Unit) -> Unit
 ) {
+    val fcl = scheme == HudScheme.FCL
     fun upd(push: Boolean = true, f: (HudButton) -> HudButton) = state.updateButton(b.id, push, f)
     Text(stringResource(R.string.hude_button), color = Color.White, fontWeight = FontWeight.Black, fontSize = 16.sp)
     TextRow(stringResource(R.string.hude_text), b.text) { v -> upd(false) { it.copy(text = v) } }
@@ -765,56 +852,88 @@ private fun ColumnScope.ButtonProps(
     SliderRow("X", b.x * 100f, 0f..100f, { String.format("%.1f%%", it) }) { v -> upd(false) { it.copy(x = (v * 10).roundToInt() / 1000f) } }
     SliderRow("Y", b.y * 100f, 0f..100f, { String.format("%.1f%%", it) }) { v -> upd(false) { it.copy(y = (v * 10).roundToInt() / 1000f) } }
 
-    if (fcl) {
-        Section(stringResource(R.string.hude_events))
-        TriggerBox(stringResource(R.string.hude_fcl_press), b.press, state, true, true, true, openPicker) { v -> upd { it.copy(press = v) } }
-        TriggerBox(stringResource(R.string.hude_fcl_long), b.long, state, true, true, true, openPicker) { v -> upd { it.copy(long = v) } }
-        TriggerBox(stringResource(R.string.hude_fcl_click), b.tap, state, true, true, false, openPicker) { v -> upd { it.copy(tap = v) } }
-        TriggerBox(stringResource(R.string.hude_fcl_double), b.double, state, true, true, false, openPicker) { v -> upd { it.copy(double = v) } }
-        Section(stringResource(R.string.hude_options))
-        SwitchRow(stringResource(R.string.hude_fcl_pointer_follow), b.look, stringResource(R.string.hude_look_hint)) { v -> upd { it.copy(look = v) } }
-        SwitchRow(stringResource(R.string.hude_fcl_movable), b.movable, stringResource(R.string.hude_movable_hint)) { v -> upd { it.copy(movable = v) } }
-        SwitchRow(stringResource(R.string.hude_swipe), b.swipe, stringResource(R.string.hude_swipe_hint)) { v -> upd { it.copy(swipe = v) } }
-    } else {
-        Section(stringResource(R.string.hude_actions))
-        TriggerBox(stringResource(R.string.hude_pr_press), b.press, state, false, false, true, openPicker) { v -> upd { it.copy(press = v) } }
-        if (b.press.repeat) SliderRow(stringResource(R.string.hude_spam_cps), b.repeatCps, 1f..40f, { "${it.roundToInt()}/s" }) { v ->
-            upd(false) { it.copy(repeatCps = v.roundToInt().toFloat()) }
+    when (scheme) {
+        HudScheme.FCL -> {
+            Section(stringResource(R.string.hude_events))
+            TriggerBox(stringResource(R.string.hude_fcl_press), b.press, state, true, true, true, openPicker) { v -> upd { it.copy(press = v) } }
+            TriggerBox(stringResource(R.string.hude_fcl_long), b.long, state, true, true, true, openPicker) { v -> upd { it.copy(long = v) } }
+            TriggerBox(stringResource(R.string.hude_fcl_click), b.tap, state, true, true, false, openPicker) { v -> upd { it.copy(tap = v) } }
+            TriggerBox(stringResource(R.string.hude_fcl_double), b.double, state, true, true, false, openPicker) { v -> upd { it.copy(double = v) } }
+            Section(stringResource(R.string.hude_options))
+            SwitchRow(stringResource(R.string.hude_fcl_pointer_follow), b.look, stringResource(R.string.hude_look_hint)) { v -> upd { it.copy(look = v) } }
+            SwitchRow(stringResource(R.string.hude_fcl_movable), b.movable, stringResource(R.string.hude_movable_hint)) { v -> upd { it.copy(movable = v) } }
+            SwitchRow(stringResource(R.string.hude_swipe), b.swipe, stringResource(R.string.hude_swipe_hint)) { v -> upd { it.copy(swipe = v) } }
         }
-        ActionsRow(stringResource(R.string.hude_pr_tap), b.tap.acts, state.layout.layers, false, openPicker = openPicker) { v -> upd { it.copy(tap = it.tap.copy(acts = v)) } }
-        ActionsRow(stringResource(R.string.hude_pr_toggle), b.toggle.acts, state.layout.layers, false, openPicker = openPicker) { v ->
-            upd { it.copy(toggle = HudTrigger(v, keep = true)) }
+        HudScheme.POJARUSH -> {
+            Section(stringResource(R.string.hude_actions))
+            TriggerBox(stringResource(R.string.hude_pr_press), b.press, state, false, false, true, openPicker) { v -> upd { it.copy(press = v) } }
+            if (b.press.repeat) SliderRow(stringResource(R.string.hude_spam_cps), b.repeatCps, 1f..40f, { "${it.roundToInt()}/s" }) { v ->
+                upd(false) { it.copy(repeatCps = v.roundToInt().toFloat()) }
+            }
+            ActionsRow(stringResource(R.string.hude_pr_tap), b.tap.acts, state.layout.layers, false, openPicker = openPicker) { v -> upd { it.copy(tap = it.tap.copy(acts = v)) } }
+            ActionsRow(stringResource(R.string.hude_pr_toggle), b.toggle.acts, state.layout.layers, false, openPicker = openPicker) { v ->
+                upd { it.copy(toggle = HudTrigger(v, keep = true)) }
+            }
+            Section(stringResource(R.string.hude_options))
+            SwitchRow(stringResource(R.string.hude_swipe), b.swipe, stringResource(R.string.hude_swipe_hint)) { v -> upd { it.copy(swipe = v) } }
+            SwitchRow(stringResource(R.string.hude_pr_penetrable), b.look, stringResource(R.string.hude_look_hint)) { v -> upd { it.copy(look = v) } }
+            SwitchRow(stringResource(R.string.hude_pr_interactive), b.interactive, stringResource(R.string.hude_interactive_hint)) { v -> upd { it.copy(interactive = v) } }
         }
-        Section(stringResource(R.string.hude_options))
-        SwitchRow(stringResource(R.string.hude_swipe), b.swipe, stringResource(R.string.hude_swipe_hint)) { v -> upd { it.copy(swipe = v) } }
-        SwitchRow(stringResource(R.string.hude_pr_penetrable), b.look, stringResource(R.string.hude_look_hint)) { v -> upd { it.copy(look = v) } }
-        SwitchRow(stringResource(R.string.hude_pr_interactive), b.interactive, stringResource(R.string.hude_interactive_hint)) { v -> upd { it.copy(interactive = v) } }
+        HudScheme.CRYOGENIC -> {
+            Section(stringResource(R.string.hude_actions))
+            ActionsRow(stringResource(R.string.hude_cryo_events), b.press.acts, state.layout.layers, false, openPicker = openPicker) { v ->
+                upd { it.copy(press = it.press.copy(acts = v)) }
+            }
+            Section(stringResource(R.string.hude_options))
+            SwitchRow(stringResource(R.string.hude_cryo_toggleable), b.press.keep, stringResource(R.string.hude_keep_hint)) { v -> upd { it.copy(press = it.press.copy(keep = v)) } }
+            SwitchRow(stringResource(R.string.hude_swipe), b.swipe, stringResource(R.string.hude_swipe_hint)) { v -> upd { it.copy(swipe = v) } }
+            SwitchRow(stringResource(R.string.hude_pr_penetrable), b.look, stringResource(R.string.hude_look_hint)) { v -> upd { it.copy(look = v) } }
+        }
+    }
+
+    Section(stringResource(R.string.hude_image))
+    ImageRow(stringResource(R.string.hude_image), scheme, b.style.image) { v -> upd { it.copy(style = it.style.copy(image = v)) } }
+    if (b.style.image.isNotEmpty()) ImageRow(stringResource(R.string.hude_image_pressed), scheme, b.style.imagePressed) { v ->
+        upd { it.copy(style = it.style.copy(imagePressed = v)) }
     }
 
     Section(stringResource(R.string.hude_style))
     if (fcl) TextRow(stringResource(R.string.hude_style_name), b.style.name) { v -> upd(false) { it.copy(style = it.style.copy(name = v)) } }
-    StyleRows(b.style, fcl, stick = false) { v -> upd { it.copy(style = v) } }
+    StyleRows(b.style, scheme, stick = false) { v -> upd { it.copy(style = v) } }
 }
 
 @Composable
-private fun StyleRows(st: HudStyle, fcl: Boolean, stick: Boolean, onChange: (HudStyle) -> Unit) {
+private fun StyleRows(st: HudStyle, scheme: HudScheme, stick: Boolean, onChange: (HudStyle) -> Unit) {
+    val fcl = scheme == HudScheme.FCL
+    val cryo = scheme == HudScheme.CRYOGENIC
     ColorRow(stringResource(R.string.hude_color_fill), st.fill) { onChange(st.copy(fill = it)) }
     ColorRow(stringResource(R.string.hude_color_fill_pressed), st.fillPressed) { onChange(st.copy(fillPressed = it)) }
     ColorRow(stringResource(R.string.hude_color_stroke), st.stroke) {
-        onChange(if (fcl) st.copy(stroke = it) else st.copy(stroke = it, strokePressed = it))
+        onChange(if (fcl || cryo) st.copy(stroke = it) else st.copy(stroke = it, strokePressed = it))
     }
-    if (fcl && !stick) ColorRow(stringResource(R.string.hude_color_stroke_pressed), st.strokePressed) { onChange(st.copy(strokePressed = it)) }
+    if ((fcl || cryo) && !stick) ColorRow(stringResource(R.string.hude_color_stroke_pressed), st.strokePressed) { onChange(st.copy(strokePressed = it)) }
     if (!stick) {
         ColorRow(stringResource(R.string.hude_color_text), st.text) { onChange(st.copy(text = it)) }
         ColorRow(stringResource(R.string.hude_color_text_pressed), st.textPressed) { onChange(st.copy(textPressed = it)) }
-        SliderRow(stringResource(R.string.hude_text_size), st.textSp, 6f..40f, { "${it.roundToInt()} sp" }) { onChange(st.copy(textSp = it.roundToInt().toFloat())) }
+        SliderRow(stringResource(R.string.hude_text_size), st.textSp, if (cryo) 2f..30f else 6f..40f, { "${it.roundToInt()} sp" }) {
+            onChange(st.copy(textSp = it.roundToInt().toFloat()))
+        }
     }
-    SliderRow(stringResource(R.string.hude_stroke_width), st.strokeDp, 0f..10f, { String.format("%.1f dp", it) }) {
-        onChange(st.copy(strokeDp = (it * 10).roundToInt() / 10f))
-    }
-    if (!stick) {
-        SliderRow(stringResource(R.string.hude_corner_radius), st.radiusDp.coerceAtMost(100f), 0f..100f, { if (it >= 100f) "○" else "${it.roundToInt()} dp" }) {
-            onChange(st.copy(radiusDp = if (it >= 99.5f) 500f else it.roundToInt().toFloat()))
+    if (cryo) {
+        SliderRow(stringResource(R.string.hude_stroke_width), st.strokeDp, 0f..20f, { "${it.roundToInt()} dp" }) {
+            onChange(st.copy(strokeDp = it.roundToInt().toFloat()))
+        }
+        SliderRow(stringResource(R.string.hude_corner_radius), (st.radiusPercent ?: 0f), 0f..50f, { "${it.roundToInt()}%" }) {
+            onChange(st.copy(radiusPercent = it.roundToInt().toFloat()))
+        }
+    } else {
+        SliderRow(stringResource(R.string.hude_stroke_width), st.strokeDp, 0f..10f, { String.format("%.1f dp", it) }) {
+            onChange(st.copy(strokeDp = (it * 10).roundToInt() / 10f))
+        }
+        if (!stick) {
+            SliderRow(stringResource(R.string.hude_corner_radius), st.radiusDp.coerceAtMost(100f), 0f..100f, { if (it >= 100f) "○" else "${it.roundToInt()} dp" }) {
+                onChange(st.copy(radiusDp = if (it >= 99.5f) 500f else it.roundToInt().toFloat()))
+            }
         }
     }
     if (!fcl) SliderRow(stringResource(R.string.hude_opacity), st.opacity, 0f..1f, { "${(it * 100).roundToInt()}%" }) {
@@ -826,16 +945,18 @@ private fun StyleRows(st: HudStyle, fcl: Boolean, stick: Boolean, onChange: (Hud
 private fun ColumnScope.StickProps(
     state: HudEditorState,
     s: HudStick,
-    fcl: Boolean,
+    scheme: HudScheme,
     openPicker: (Boolean, (HudAction) -> Unit) -> Unit
 ) {
+    val fcl = scheme == HudScheme.FCL
+    val cryo = scheme == HudScheme.CRYOGENIC
     fun upd(push: Boolean = true, f: (HudStick) -> HudStick) = state.updateStick(s.id, push, f)
     val layers = state.layout.layers
     Text(stringResource(if (fcl) R.string.hude_direction else R.string.hude_stick), color = Color.White, fontWeight = FontWeight.Black, fontSize = 16.sp)
     LayerChoice(state, fcl, s.layer) { v -> upd { it.copy(layer = v) } }
     ChoiceRow(stringResource(R.string.hude_visibility), visibilityOptions(), s.visibility) { v -> upd { it.copy(visibility = v) } }
     Section(stringResource(R.string.hude_size_position))
-    SliderRow(stringResource(R.string.hude_size) + " (%)", (if (s.size.dp == null) s.size.fraction else 0.45f) * 100f, 10f..100f, { String.format("%.1f%%", it) }) { v ->
+    SliderRow(stringResource(R.string.hude_size) + " (%)", (if (s.size.dp == null) s.size.fraction else 0.45f) * 100f, if (cryo) 20f..100f else 10f..100f, { String.format("%.1f%%", it) }) { v ->
         upd(false) { it.copy(size = HudSize(null, (v * 10).roundToInt() / 1000f, it.size.ofWidth)) }
     }
     SliderRow("X", s.x * 100f, 0f..100f, { String.format("%.1f%%", it) }) { v -> upd(false) { it.copy(x = (v * 10).roundToInt() / 1000f) } }
@@ -863,7 +984,7 @@ private fun ColumnScope.StickProps(
             upd { it.copy(doubleActs = if (v) listOf(HudAction.Key(340)) else emptyList(), doubleKeep = true) }
         }
         if (s.doubleActs.isNotEmpty()) ActionsRow(stringResource(R.string.hude_fcl_sneak_key), s.doubleActs.take(1), layers, true, keysOnly = true,
-            openPicker = { k, cb -> openPicker(k) { a -> cb(a) } }) { v -> upd { it.copy(doubleActs = v.takeLast(1)) } }
+            openPicker = openPicker) { v -> upd { it.copy(doubleActs = v.takeLast(1)) } }
     } else {
         Section(stringResource(R.string.hude_directions))
         val names = listOf(R.string.hude_dir_e, R.string.hude_dir_ne, R.string.hude_dir_n, R.string.hude_dir_nw,
@@ -874,8 +995,10 @@ private fun ColumnScope.StickProps(
             }
         }
         Section(stringResource(R.string.hude_options))
-        ActionsRow(stringResource(R.string.hude_pr_double_tap), s.doubleActs, layers, false, openPicker = openPicker) { v -> upd { it.copy(doubleActs = v, doubleKeep = true) } }
-        SwitchRow(stringResource(R.string.hude_pr_auto_run), s.autoRun, stringResource(R.string.hude_pr_auto_run_hint)) { v -> upd { it.copy(autoRun = v) } }
+        if (!cryo) {
+            ActionsRow(stringResource(R.string.hude_pr_double_tap), s.doubleActs, layers, false, openPicker = openPicker) { v -> upd { it.copy(doubleActs = v, doubleKeep = true) } }
+            SwitchRow(stringResource(R.string.hude_pr_auto_run), s.autoRun, stringResource(R.string.hude_pr_auto_run_hint)) { v -> upd { it.copy(autoRun = v) } }
+        }
     }
     SliderRow(stringResource(R.string.hude_dead_zone), s.deadZone * 100f, 0f..90f, { "${it.roundToInt()}%" }) { v -> upd(false) { it.copy(deadZone = v.roundToInt() / 100f) } }
     SwitchRow(stringResource(R.string.hude_can_lock), s.canLock, stringResource(R.string.hude_can_lock_hint)) { v -> upd { it.copy(canLock = v) } }
@@ -885,9 +1008,15 @@ private fun ColumnScope.StickProps(
         }
         if (!fcl) ActionsRow(stringResource(R.string.hude_pr_lock_actions), s.lockActs, layers, false, openPicker = openPicker) { v -> upd { it.copy(lockActs = v) } }
     }
+    if (cryo) return
+    if (s.mode == HudStickMode.ROCKER) {
+        Section(stringResource(R.string.hude_image))
+        ImageRow(stringResource(R.string.hude_image_stick_bg), scheme, s.style.image) { v -> upd { it.copy(style = it.style.copy(image = v)) } }
+        ImageRow(stringResource(R.string.hude_image_stick_knob), scheme, s.style.imagePressed) { v -> upd { it.copy(style = it.style.copy(imagePressed = v)) } }
+    }
     Section(stringResource(R.string.hude_style))
     if (fcl) TextRow(stringResource(R.string.hude_style_name), s.style.name) { v -> upd(false) { it.copy(style = it.style.copy(name = v)) } }
-    StyleRows(s.style, fcl, stick = true) { v -> upd { it.copy(style = v) } }
+    StyleRows(s.style, scheme, stick = true) { v -> upd { it.copy(style = v) } }
     if (s.mode == HudStickMode.ROCKER) {
         ColorRow(stringResource(R.string.hude_color_knob), s.style.knobFill) { v -> upd { it.copy(style = it.style.copy(knobFill = v)) } }
         ColorRow(stringResource(R.string.hude_color_knob_stroke), s.style.knobStroke) { v -> upd { it.copy(style = it.style.copy(knobStroke = v)) } }
@@ -987,7 +1116,7 @@ private fun ColumnScope.LayersPanel(state: HudEditorState, fcl: Boolean) {
 }
 
 @Composable
-private fun ColumnScope.InfoPanel(state: HudEditorState) {
+private fun ColumnScope.InfoPanel(state: HudEditorState, onClassic: (() -> Unit)?) {
     val l = state.layout
     Text(stringResource(R.string.hude_info), color = Color.White, fontWeight = FontWeight.Black, fontSize = 16.sp)
     TextRow(stringResource(R.string.control_manage_create_new_name), l.name) { v -> state.edit(false) { it.copy(name = v) } }
@@ -998,6 +1127,129 @@ private fun ColumnScope.InfoPanel(state: HudEditorState) {
         stringResource(R.string.hude_stats, l.buttons.size, l.sticks.size, l.layers.size),
         color = Frost.copy(alpha = 0.7f), fontSize = 11.sp
     )
+    if (onClassic != null) {
+        Section(stringResource(R.string.hude_classic_title))
+        Text(stringResource(R.string.hude_classic_hint), color = Frost.copy(alpha = 0.7f), fontSize = 11.sp)
+        Text(
+            stringResource(R.string.hude_classic_open), color = Color(0xFF05101C), fontWeight = FontWeight.Bold, fontSize = 13.sp,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(Ice).clickable(onClick = onClassic)
+                .padding(vertical = 10.dp)
+        )
+    }
+}
+
+// ---------------------------------------------------------------------- imagens
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ImageRow(label: String, scheme: HudScheme, value: String, onChange: (String) -> Unit) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    var gallery by remember { mutableStateOf(false) }
+    var version by remember { mutableStateOf(0) }
+    val launcher = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) runCatching {
+            val name = hudUriName(context, uri) ?: "image.png"
+            context.contentResolver.openInputStream(uri)?.use { HudImages.save(scheme, name, it) }
+        }.getOrNull()?.let { onChange(it); version++ }
+    }
+    val bmp = remember(value, version) { if (value.isEmpty()) null else HudImages.bitmap(scheme, value) }
+    Row(
+        Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(Color(0x14FFFFFF)).padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Box(
+            Modifier.size(44.dp).clip(RoundedCornerShape(8.dp)).background(Color(0x22FFFFFF)).border(1.dp, Line, RoundedCornerShape(8.dp)),
+            contentAlignment = Alignment.Center
+        ) {
+            if (bmp != null) androidx.compose.foundation.Image(bmp, null, Modifier.fillMaxSize(), contentScale = androidx.compose.ui.layout.ContentScale.Fit)
+            else Text(if (value.isEmpty()) "—" else "?", color = Frost, fontSize = 14.sp)
+        }
+        Column(Modifier.weight(1f)) {
+            Text(label, color = Color.White, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+            Text(
+                when {
+                    value.isEmpty() -> stringResource(R.string.hude_image_none)
+                    bmp == null -> stringResource(R.string.hude_image_missing, value)
+                    else -> value
+                },
+                color = if (value.isNotEmpty() && bmp == null) Color(0xFFFF8A80) else Frost.copy(alpha = 0.6f),
+                fontSize = 10.sp, maxLines = 1, overflow = TextOverflow.Ellipsis
+            )
+        }
+        Text("PNG", color = Color(0xFF05101C), fontWeight = FontWeight.Black, fontSize = 11.sp,
+            modifier = Modifier.clip(RoundedCornerShape(8.dp)).background(Ice).clickable { launcher.launch("image/*") }.padding(horizontal = 8.dp, vertical = 5.dp))
+        Icon(painterResource(R.drawable.ic_cryo_layers), stringResource(R.string.hude_image_gallery), tint = Ice,
+            modifier = Modifier.size(28.dp).clip(CircleShape).clickable { gallery = true }.padding(4.dp))
+        if (value.isNotEmpty()) Icon(painterResource(R.drawable.ic_close), stringResource(R.string.generic_delete), tint = Color(0xFFFF8A80),
+            modifier = Modifier.size(28.dp).clip(CircleShape).clickable { onChange("") }.padding(5.dp))
+    }
+    if (gallery) {
+        val files = remember(version) { runCatching { HudImages.list(scheme) }.getOrDefault(emptyList()) }
+        Dialog(onDismissRequest = { gallery = false }) {
+            Column(
+                Modifier.widthIn(max = 520.dp).heightIn(max = 460.dp).clip(RoundedCornerShape(20.dp)).background(PanelBg)
+                    .border(1.dp, Line, RoundedCornerShape(20.dp)).padding(14.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                Text(stringResource(R.string.hude_image_gallery), color = Color.White, fontWeight = FontWeight.Black, fontSize = 16.sp)
+                if (files.isEmpty()) Text(stringResource(R.string.hude_image_gallery_empty), color = Frost, fontSize = 12.sp)
+                FlowRow(
+                    Modifier.weight(1f, fill = false).verticalScroll(rememberScrollState()),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    files.forEach { f ->
+                        val ref = f.nameWithoutExtension
+                        val img = remember(f.absolutePath) { HudImages.bitmap(scheme, f.name) }
+                        Column(
+                            Modifier.width(78.dp).clip(RoundedCornerShape(10.dp))
+                                .background(if (ref == value) Ice.copy(alpha = 0.25f) else Color(0x14FFFFFF))
+                                .clickable { onChange(ref); gallery = false }.padding(6.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Box(Modifier.size(60.dp), contentAlignment = Alignment.Center) {
+                                if (img != null) androidx.compose.foundation.Image(img, null, Modifier.fillMaxSize(), contentScale = androidx.compose.ui.layout.ContentScale.Fit)
+                            }
+                            Text(ref, color = Frost, fontSize = 9.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        }
+                    }
+                }
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+                    TextButton(onClick = { gallery = false; launcher.launch("image/*") }) { Text("＋ PNG", color = Ice) }
+                    TextButton(onClick = { gallery = false }) { Text(stringResource(R.string.generic_close), color = Frost) }
+                }
+            }
+        }
+    }
+}
+
+/** Nome do arquivo escolhido pelo usuário. */
+fun hudUriName(context: android.content.Context, uri: android.net.Uri): String? = runCatching {
+    context.contentResolver.query(uri, arrayOf(android.provider.OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c ->
+        if (c.moveToFirst()) c.getString(0) else null
+    }
+}.getOrNull() ?: uri.lastPathSegment?.substringAfterLast('/')
+
+/** Esconde as barras do sistema (botões de navegação) enquanto o editor está aberto. */
+@Composable
+private fun HideSystemBars() {
+    val view = androidx.compose.ui.platform.LocalView.current
+    val context = androidx.compose.ui.platform.LocalContext.current
+    androidx.compose.runtime.DisposableEffect(view) {
+        val window = (view.parent as? androidx.compose.ui.window.DialogWindowProvider)?.window
+            ?: (context as? android.app.Activity)?.window
+            ?: generateSequence(context) { (it as? android.content.ContextWrapper)?.baseContext }
+                .filterIsInstance<android.app.Activity>().firstOrNull()?.window
+        if (window != null) {
+            val controller = androidx.core.view.WindowCompat.getInsetsController(window, window.decorView)
+            controller.systemBarsBehavior = androidx.core.view.WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller.hide(androidx.core.view.WindowInsetsCompat.Type.systemBars())
+        }
+        onDispose { }
+    }
 }
 
 // ---------------------------------------------------------------------- escolher ação
@@ -1005,16 +1257,19 @@ private fun ColumnScope.InfoPanel(state: HudEditorState) {
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ActionPickerDialog(
-    fcl: Boolean,
+    scheme: HudScheme,
     keysOnly: Boolean,
     layers: List<HudLayer>,
     onPick: (HudAction) -> Unit,
     onDismiss: () -> Unit
 ) {
+    val fcl = scheme == HudScheme.FCL
+    val cryo = scheme == HudScheme.CRYOGENIC
     var textMode by remember { mutableStateOf(false) }
     var layerMode by remember { mutableStateOf(false) }
     var text by remember { mutableStateOf("") }
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+        HideSystemBars()
         Column(
             Modifier.fillMaxWidth(0.92f).heightIn(max = 520.dp).clip(RoundedCornerShape(22.dp)).background(PanelBg)
                 .border(1.dp, Line, RoundedCornerShape(22.dp)).padding(14.dp)
@@ -1062,8 +1317,8 @@ private fun ActionPickerDialog(
                                 }
                                 chip("☰ " + stringResource(R.string.hude_act_menu)) { onPick(HudAction.Menu) }
                                 chip("⌨ " + stringResource(R.string.hude_act_keyboard)) { onPick(HudAction.Keyboard) }
-                                chip("🖱 " + stringResource(if (fcl) R.string.hude_act_mouse_mode else R.string.hude_act_virtual_mouse)) { onPick(HudAction.MouseMode) }
-                                if (!fcl) chip("◌ " + stringResource(R.string.hude_act_hide_hud)) { onPick(HudAction.HideHud) }
+                                if (!cryo) chip("🖱 " + stringResource(if (fcl) R.string.hude_act_mouse_mode else R.string.hude_act_virtual_mouse)) { onPick(HudAction.MouseMode) }
+                                if (scheme == HudScheme.POJARUSH) chip("◌ " + stringResource(R.string.hude_act_hide_hud)) { onPick(HudAction.HideHud) }
                                 chip("“…” " + stringResource(R.string.hude_act_text)) { textMode = true }
                                 chip("⇄ " + stringResource(if (fcl) R.string.hude_groups else R.string.hude_layers)) { layerMode = true }
                             }
@@ -1071,7 +1326,11 @@ private fun ActionPickerDialog(
                         Text(stringResource(R.string.hude_pick_keys), color = Ice, fontSize = 11.sp, fontWeight = FontWeight.Black)
                         FlowRow(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalArrangement = Arrangement.spacedBy(5.dp)) {
                             HudKeys.all.forEach { k ->
-                                val usable = if (fcl) k.evdev != null else k.android != null
+                                val usable = when (scheme) {
+                                    HudScheme.FCL -> k.evdev != null
+                                    HudScheme.POJARUSH -> k.android != null
+                                    HudScheme.CRYOGENIC -> true
+                                }
                                 if (usable) chip(k.label) { onPick(HudAction.Key(k.glfw)) }
                             }
                         }
@@ -1088,12 +1347,11 @@ private fun ActionPickerDialog(
 
 /** Editor em tela cheia (menu de HUDs fora do jogo). */
 @Composable
-fun HudEditorDialog(initial: HudLayout, onSave: (HudLayout) -> Boolean, onExit: () -> Unit) {
+fun HudEditorDialog(initial: HudLayout, onSave: (HudLayout) -> Boolean, onExit: () -> Unit, onClassicEditor: (() -> Unit)? = null) {
     Dialog(
         onDismissRequest = {},
         properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false, dismissOnBackPress = false, dismissOnClickOutside = false)
     ) {
-        HudEditor(initial, inGame = false, onSave = onSave, onExit = onExit)
+        HudEditor(initial, inGame = false, onSave = onSave, onExit = onExit, onClassicEditor = onClassicEditor)
     }
 }
-

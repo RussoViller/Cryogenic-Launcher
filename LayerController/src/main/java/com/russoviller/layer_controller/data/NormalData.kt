@@ -61,7 +61,13 @@ data class NormalData(
     @SerialName("isPenetrable")
     val isPenetrable: Boolean,
     @SerialName("isToggleable")
-    val isToggleable: Boolean
+    val isToggleable: Boolean,
+    /** Imagem (PNG) do botão, nome do arquivo na pasta de imagens dos HUDs (Cryogenic) */
+    @SerialName("cryoImage")
+    val image: String? = null,
+    /** Imagem do botão pressionado (opcional) */
+    @SerialName("cryoImagePressed")
+    val imagePressed: String? = null
 ): Widget, Modifiable<NormalData> {
     val clickEvents: List<ClickEvent> get() = _clickEvents
 
@@ -83,7 +89,9 @@ data class NormalData(
                 this._clickEvents.isModified(other._clickEvents) ||
                 this.isSwipple != other.isSwipple ||
                 this.isPenetrable != other.isPenetrable ||
-                this.isToggleable != other.isToggleable
+                this.isToggleable != other.isToggleable ||
+                this.image != other.image ||
+                this.imagePressed != other.imagePressed
     }
 }
 
@@ -123,5 +131,7 @@ fun NormalData.cloneNew(): NormalData = NormalData(
     _clickEvents = clickEvents,
     isSwipple = isSwipple,
     isPenetrable = isPenetrable,
-    isToggleable = isToggleable
+    isToggleable = isToggleable,
+    image = image,
+    imagePressed = imagePressed
 )
