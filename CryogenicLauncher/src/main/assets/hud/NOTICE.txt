@@ -1,0 +1,9 @@
+fcl_default.json
+  "Default" controller of Fold Craft Launcher (FCL), by Tungsten / FCL-Team.
+  Source: https://github.com/FCL-Team/FoldCraftLauncher (FCL/src/main/assets/controllers/00000000.json,
+  commit 00c17f8404d35b224b2d3767697d8eb56deceb69).
+  License: GNU General Public License v3.0. Included unmodified so the FCL HUD scheme of
+  Cryogenic Launcher (also GPLv3) has its usual default layout.
+
+The FCL and PojaRush HUD file formats are read and written by Cryogenic Launcher's own,
+independent implementation (com.russoviller.cryogenic.hud). No PojaRush code or layout is included.

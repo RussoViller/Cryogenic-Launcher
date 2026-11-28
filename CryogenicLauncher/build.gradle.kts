@@ -147,6 +147,7 @@ android {
                 System.getProperty("cryo.previewDir")?.let { dir -> it.systemProperty("cryo.previewDir", dir) }
                 System.getProperty("cryo.jreDir")?.let { dir -> it.systemProperty("cryo.jreDir", dir) }
                 System.getProperty("cryo.liveChatUser")?.let { u -> it.systemProperty("cryo.liveChatUser", u) }
+                System.getProperty("cryo.pojavSample")?.let { u -> it.systemProperty("cryo.pojavSample", u) }
                 //biblioteca do ChunkBase compilada para o PC (testes)
                 System.getProperty("cryoseed.path")?.let { lib -> it.systemProperty("cryoseed.path", lib) }
                 System.getProperty("robolectric.dependency.repo.url")?.let { url -> it.systemProperty("robolectric.dependency.repo.url", url) }

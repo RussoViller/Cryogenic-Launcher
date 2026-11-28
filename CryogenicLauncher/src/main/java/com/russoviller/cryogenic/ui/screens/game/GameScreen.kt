@@ -92,6 +92,12 @@ import com.russoviller.cryogenic.ui.components.MenuState
 import com.russoviller.cryogenic.ui.components.rememberBoxSize
 import com.russoviller.cryogenic.ui.control.MinecraftHotbar
 import com.russoviller.cryogenic.ui.control.event.launcherEvent
+import com.russoviller.cryogenic.ui.control.event.LAUNCHER_EVENT_SCROLL_DOWN
+import com.russoviller.cryogenic.ui.control.event.LAUNCHER_EVENT_SCROLL_DOWN_SINGLE
+import com.russoviller.cryogenic.ui.control.event.LAUNCHER_EVENT_SCROLL_UP
+import com.russoviller.cryogenic.ui.control.event.LAUNCHER_EVENT_SCROLL_UP_SINGLE
+import com.russoviller.cryogenic.ui.control.event.LAUNCHER_EVENT_SWITCH_IME
+import com.russoviller.cryogenic.ui.control.event.LAUNCHER_EVENT_SWITCH_MENU
 import com.russoviller.cryogenic.ui.control.event.lwjglEvent
 import com.russoviller.cryogenic.ui.control.gamepad.GamepadKeyListener
 import com.russoviller.cryogenic.ui.control.gamepad.GamepadOnActionListener
@@ -131,6 +137,16 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.lwjgl.glfw.CallbackBridge
+import com.russoviller.cryogenic.hud.HudAction
+import com.russoviller.cryogenic.hud.HudEditor
+import com.russoviller.cryogenic.hud.HudKeys
+import com.russoviller.cryogenic.hud.HudLayout
+import com.russoviller.cryogenic.hud.HudPickerDialog
+import com.russoviller.cryogenic.hud.HudRuntimeLayout
+import com.russoviller.cryogenic.hud.HudScheme
+import com.russoviller.cryogenic.hud.HudStore
+import com.russoviller.cryogenic.hud.rememberHudRuntime
+import com.russoviller.cryogenic.setting.enums.MouseControlMode
 import java.io.File
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -322,6 +338,96 @@ private class GameViewModel(
         }
     }
 
+    // ------------------------------------------------------------------ HUD FCL / PojaRush
+
+    /** Esquema de HUD desta partida (lido ao abrir o jogo). */
+    val hudScheme: HudScheme = HudScheme.of(AllSettings.hudScheme.getValue())
+    var hudLayout by mutableStateOf<HudLayout?>(null)
+        private set
+    var hudFile by mutableStateOf<File?>(null)
+        private set
+    var isEditingHud by mutableStateOf(false)
+        private set
+    var hudBackSignal by mutableIntStateOf(0)
+    var hudPickerVisible by mutableStateOf(false)
+
+    val isEditingAny: Boolean get() = isEditingLayout || isEditingHud
+
+    fun loadHud(file: File? = null) {
+        if (hudScheme == HudScheme.CRYOGENIC) return
+        viewModelScope.launch(Dispatchers.IO) {
+            val target = file ?: HudStore.selectedFile(hudScheme) ?: run {
+                HudStore.refreshNow(hudScheme)
+                HudStore.selectedFile(hudScheme)
+            }
+            val layout = target?.let {
+                runCatching { HudStore.load(hudScheme, it) }
+                    .onFailure { e -> Logger.warning(TAG, "Failed to load HUD: $target", e) }
+                    .getOrNull()
+            }
+            withContext(Dispatchers.Main) {
+                hudFile = target
+                hudLayout = layout
+            }
+        }
+    }
+
+    fun replaceHud(file: File) {
+        HudStore.select(hudScheme, file)
+        loadHud(file)
+    }
+
+    fun startHudEditor() {
+        if (hudScheme == HudScheme.CRYOGENIC || isEditingAny) return
+        clearState()
+        if (hudLayout == null) hudLayout = HudStore.codec(hudScheme).empty("HUD", "")
+        isEditingHud = true
+    }
+
+    fun exitHudEditor() {
+        isEditingHud = false
+        loadHud(hudFile)
+    }
+
+    fun saveHud(layout: HudLayout): Boolean {
+        val file = hudFile ?: File(HudStore.dir(hudScheme), "${java.util.UUID.randomUUID().toString().take(8)}.json").also {
+            hudFile = it
+            HudStore.select(hudScheme, it)
+        }
+        return runCatching { HudStore.save(file, layout) }
+            .onFailure { Logger.warning(TAG, "Failed to save HUD: $file", it) }
+            .isSuccess
+    }
+
+    /** Envia uma ação do HUD FCL / PojaRush para o jogo. */
+    fun onHudAction(action: HudAction, pressed: Boolean) {
+        when (action) {
+            is HudAction.Key -> HudKeys.byGlfw(action.glfw)?.let {
+                onKeyEvent(ClickEvent(ClickEvent.Type.Key, it.name), pressed)
+            }
+            is HudAction.Mouse -> onKeyEvent(ClickEvent(ClickEvent.Type.Key, HudKeys.mouseName(action.button)), pressed)
+            is HudAction.Scroll -> onKeyEvent(
+                ClickEvent(
+                    ClickEvent.Type.LauncherEvent,
+                    when {
+                        action.repeat && action.up -> LAUNCHER_EVENT_SCROLL_UP
+                        action.repeat -> LAUNCHER_EVENT_SCROLL_DOWN
+                        action.up -> LAUNCHER_EVENT_SCROLL_UP_SINGLE
+                        else -> LAUNCHER_EVENT_SCROLL_DOWN_SINGLE
+                    }
+                ), pressed
+            )
+            HudAction.Keyboard -> if (pressed) onKeyEvent(ClickEvent(ClickEvent.Type.LauncherEvent, LAUNCHER_EVENT_SWITCH_IME), true)
+            HudAction.Menu -> if (pressed) onKeyEvent(ClickEvent(ClickEvent.Type.LauncherEvent, LAUNCHER_EVENT_SWITCH_MENU), true)
+            HudAction.MouseMode -> if (pressed) {
+                val next = if (AllSettings.mouseControlMode.getValue() == MouseControlMode.CLICK) MouseControlMode.SLIDE else MouseControlMode.CLICK
+                AllSettings.mouseControlMode.save(next)
+            }
+            is HudAction.Text -> if (pressed) onKeyEvent(ClickEvent(ClickEvent.Type.SendText, action.text), true)
+            is HudAction.Layer, HudAction.HideHud -> {}
+        }
+    }
+
     fun replaceControlLayout(layoutFile: File) {
         viewModelScope.launch(Dispatchers.Main) {
             loadControlLayout(layoutFile)
@@ -402,6 +508,7 @@ private class GameViewModel(
         viewModelScope.launch(Dispatchers.Main) {
             loadControlLayout()
         }
+        loadHud()
     }
 
     override fun onCleared() {
@@ -590,14 +697,14 @@ fun GameScreen(
     LaunchedEffect(CryoMusicUi.openMenuPending) {
         if (CryoMusicUi.openMenuPending) {
             CryoMusicUi.openMenuPending = false
-            if (!viewModel.isEditingLayout) viewModel.gameMenuState = MenuState.SHOW
+            if (!viewModel.isEditingAny) viewModel.gameMenuState = MenuState.SHOW
             else com.russoviller.cryogenic.ui.components.XModePanelRequest.id = null
         }
     }
 
-    LaunchedEffect(viewModel.isEditingLayout, viewModel.gameMenuState) {
+    LaunchedEffect(viewModel.isEditingLayout, viewModel.isEditingHud, viewModel.gameMenuState) {
         //向VMActivity同步状态，编辑控制布局或打开游戏菜单时，不会继续处理按键事件
-        val allowKeyHandle = !viewModel.isEditingLayout && viewModel.gameMenuState != MenuState.SHOW
+        val allowKeyHandle = !viewModel.isEditingAny && viewModel.gameMenuState != MenuState.SHOW
         //o player de música flutuante some enquanto o menu ou o editor estão abertos
         CryoMusicUi.suppressed = !allowKeyHandle
         eventViewModel.sendEvent(EventViewModel.Event.Game.KeyHandle(allowKeyHandle))
@@ -625,13 +732,27 @@ fun GameScreen(
         replacementControl = { viewModel.replaceControlLayout(it) }
     )
 
+    if (viewModel.hudPickerVisible) {
+        HudPickerDialog(
+            scheme = viewModel.hudScheme,
+            current = viewModel.hudFile,
+            onPick = { viewModel.replaceHud(it) },
+            onDismiss = { viewModel.hudPickerVisible = false }
+        )
+    }
+
+    //HUD dos esquemas FCL / PojaRush
+    val hudRuntime = rememberHudRuntime(
+        viewModel.hudLayout.takeIf { viewModel.hudScheme != HudScheme.CRYOGENIC && !viewModel.isEditingHud }
+    ) { action, pressed -> viewModel.onHudAction(action, pressed) }
+
 
     BoxWithConstraints(
         modifier = Modifier.fillMaxSize()
     ) {
         val screenSize = rememberBoxSize()
 
-        if (!viewModel.isEditingLayout) {
+        if (!viewModel.isEditingAny) {
             if (AllSettings.gamepadControl.state) {
                 GamepadOnActionListener(
                     gamepadViewModel = gamepadViewModel,
@@ -665,20 +786,8 @@ fun GameScreen(
                 )
             }
 
-            //控制布局层
-            ControlBoxLayout(
-                modifier = Modifier.fillMaxSize(),
-                observedLayout = viewModel.observableLayout,
-                eventHandler = viewModel.eventHandler,
-                checkOccupiedPointers = { viewModel.occupiedPointers.contains(it) },
-                opacity = { (AllSettings.controlsOpacity.state.toFloat() / 100f).coerceIn(0f, 1f) },
-                markPointerAsMoveOnly = { viewModel.moveOnlyPointers.add(it) },
-                onOccupiedPointer = { viewModel.occupiedPointers.add(it) },
-                onReleasePointer = { viewModel.occupiedPointers.remove(it) },
-                isCursorGrabbing = isGrabbing,
-                hideLayerWhen = viewModel.controlLayerHideState,
-                isDark = isLauncherInDarkTheme()
-            ) {
+            //虚拟鼠标控制层
+            val mouseLayer: @Composable () -> Unit = {
                 //虚拟鼠标控制层
                 MouseControlLayout(
                     isTouchProxyEnabled = isTouchProxyEnabled,
@@ -697,6 +806,39 @@ fun GameScreen(
                     onTouch = { viewModel.switchControlLayer(HideLayerWhen.None) },
                     gamepadViewModel = gamepadViewModel.takeIf { AllSettings.gamepadControl.state }
                 )
+            }
+
+            if (viewModel.hudScheme == HudScheme.CRYOGENIC) {
+                //控制布局层
+                ControlBoxLayout(
+                    modifier = Modifier.fillMaxSize(),
+                    observedLayout = viewModel.observableLayout,
+                    eventHandler = viewModel.eventHandler,
+                    checkOccupiedPointers = { viewModel.occupiedPointers.contains(it) },
+                    opacity = { (AllSettings.controlsOpacity.state.toFloat() / 100f).coerceIn(0f, 1f) },
+                    markPointerAsMoveOnly = { viewModel.moveOnlyPointers.add(it) },
+                    onOccupiedPointer = { viewModel.occupiedPointers.add(it) },
+                    onReleasePointer = { viewModel.occupiedPointers.remove(it) },
+                    isCursorGrabbing = isGrabbing,
+                    hideLayerWhen = viewModel.controlLayerHideState,
+                    isDark = isLauncherInDarkTheme()
+                ) {
+                    mouseLayer()
+                }
+            } else {
+                //HUD FCL / PojaRush
+                val hudHidden = viewModel.controlLayerHideState != HideLayerWhen.None
+                HudRuntimeLayout(
+                    modifier = Modifier.fillMaxSize(),
+                    runtime = hudRuntime,
+                    opacity = { if (hudHidden) 0f else (AllSettings.controlsOpacity.state.toFloat() / 100f).coerceIn(0f, 1f) },
+                    isCursorGrabbing = isGrabbing,
+                    enabled = !hudHidden && viewModel.gameMenuState != MenuState.SHOW,
+                    checkOccupiedPointers = { viewModel.occupiedPointers.contains(it) },
+                    markPointerAsMoveOnly = { viewModel.moveOnlyPointers.add(it) }
+                ) {
+                    mouseLayer()
+                }
             }
 
             //物品栏触发层
@@ -744,7 +886,7 @@ fun GameScreen(
         )
 
         LogBox(
-            enableLog = !viewModel.isEditingLayout && logState.value && !(logState == LogState.SHOW_BEFORE_LOADING && showGameInfo),
+            enableLog = !viewModel.isEditingAny && logState.value && !(logState == LogState.SHOW_BEFORE_LOADING && showGameInfo),
             onClose = {
                 onLogStateChange(LogState.CLOSE)
             },
@@ -764,16 +906,24 @@ fun GameScreen(
                 eventViewModel.sendEvent(EventViewModel.Event.Game.SwitchIme(null))
             },
             onSendKeycode = { viewModel.sendKeycodeState = SendKeycodeState.ShowDialog },
-            onReplacementControl = { viewModel.replacementControlState = ReplacementControlState.Show },
+            onReplacementControl = {
+                if (viewModel.hudScheme == HudScheme.CRYOGENIC) viewModel.replacementControlState = ReplacementControlState.Show
+                else viewModel.hudPickerVisible = true
+            },
             onEditLayout = {
-                viewModel.startControlEditor(
-                    editorVM = editorViewModel
-                )
+                if (viewModel.hudScheme == HudScheme.CRYOGENIC) {
+                    viewModel.startControlEditor(
+                        editorVM = editorViewModel
+                    )
+                } else {
+                    viewModel.gameMenuState = MenuState.HIDE
+                    viewModel.startHudEditor()
+                }
             },
             onShowToast = { text, duration ->
                 eventViewModel.sendToast(text, duration)
             },
-            controlLayout = viewModel.observableLayout,
+            controlLayout = viewModel.observableLayout.takeIf { viewModel.hudScheme == HudScheme.CRYOGENIC },
             version = version
         )
 
@@ -792,7 +942,17 @@ fun GameScreen(
             }
         )
 
-        if (viewModel.isEditingLayout) {
+        if (viewModel.isEditingHud) {
+            viewModel.hudLayout?.let { layout ->
+                HudEditor(
+                    initial = layout,
+                    inGame = true,
+                    onSave = { viewModel.saveHud(it) },
+                    onExit = { viewModel.exitHudEditor() },
+                    backSignal = viewModel.hudBackSignal
+                )
+            }
+        } else if (viewModel.isEditingLayout) {
             viewModel.currentControlFile?.let {
                 ControlEditor(
                     viewModel = editorViewModel,
@@ -853,7 +1013,9 @@ fun GameScreen(
             .collect { event ->
                 when (event) {
                     is EventViewModel.Event.Game.OnBack -> {
-                        if (viewModel.isEditingLayout) {
+                        if (viewModel.isEditingHud) {
+                            viewModel.hudBackSignal++
+                        } else if (viewModel.isEditingLayout) {
                             //处于控制布局编辑模式
                             editorViewModel.onBackPressed(
                                 context = context,

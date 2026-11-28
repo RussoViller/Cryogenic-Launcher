@@ -570,6 +570,21 @@ object AllSettings : SettingsRegistry() {
      */
     val controlLayout = stringSetting("controlLayout", "")
 
+    /**
+     * Esquema de HUD em uso: cryogenic / fcl / pojarush
+     */
+    val hudScheme = stringSetting("hudScheme", "cryogenic")
+
+    /**
+     * Arquivo de HUD escolhido no esquema FCL
+     */
+    val hudLayoutFcl = stringSetting("hudLayoutFcl", "")
+
+    /**
+     * Arquivo de HUD escolhido no esquema PojaRush
+     */
+    val hudLayoutPojarush = stringSetting("hudLayoutPojarush", "")
+
     //Other
     /**
      * 当前选择的账号

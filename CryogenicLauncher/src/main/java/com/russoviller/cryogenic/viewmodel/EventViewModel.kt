@@ -82,7 +82,13 @@ class EventViewModel : ViewModel() {
         /** 让 MainActivity 防止熄屏 */
         data class KeepScreen(val on: Boolean) : Event
         /** 导入控制布局 */
-        data class ImportControls(val uris: List<Uri>) : Event
+        data class ImportControls(
+            val uris: List<Uri>,
+            /** Esquema de HUD que vai receber os arquivos */
+            val scheme: com.russoviller.cryogenic.hud.HudScheme = com.russoviller.cryogenic.hud.HudScheme.CRYOGENIC,
+            /** Botão "Converter do Zalith 1 / Pojav / Mojo" */
+            val pojavOnly: Boolean = false
+        ) : Event
         /** 打开下载插件的链接窗口 */
         data class DownloadPlugins(val link: Links): Event {
             data class Links(

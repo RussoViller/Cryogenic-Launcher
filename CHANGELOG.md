@@ -13,6 +13,10 @@ Updates:
   - CryoMods page
 - Settings:
   - Launcher tab
+- HUDs:
+  - HUD system choice (Cryogenic, FCL, PojaRush)
+  - FCL and PojaRush HUDs with their own editors
+  - Zalith 1 / Pojav / Mojo HUD conversion
 - Live:
   - TikTok live streaming (up to 720p 60 FPS)
   - Microphone and internal audio controls
@@ -27,6 +31,8 @@ Updates:
   - Live microphone choice (phone, Bluetooth, wired)
 
 Adjustments:
+- HUDs:
+  - Redesigned HUD menu
 - Presets:
   - Wallpaper volume is now saved
 - Rest Mode:

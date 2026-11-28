@@ -288,11 +288,24 @@ fun ControlManageScreen(
     ) { isVisible ->
         val selectedLayout by ControlManager.selectedLayout.collectAsStateWithLifecycle()
         val isRefreshing by ControlManager.isRefreshing.collectAsStateWithLifecycle()
+        val scheme = com.russoviller.cryogenic.hud.HudScheme.of(AllSettings.hudScheme.state)
 
+        Column(modifier = Modifier.fillMaxSize().padding(all = 12.dp)) {
+        com.russoviller.cryogenic.hud.HudSchemeSelector(
+            selected = scheme,
+            onSelect = { AllSettings.hudScheme.save(it.id) },
+            modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)
+        )
+        if (scheme != com.russoviller.cryogenic.hud.HudScheme.CRYOGENIC) {
+            com.russoviller.cryogenic.hud.HudSchemeManager(
+                scheme = scheme,
+                eventViewModel = eventViewModel,
+                modifier = Modifier.fillMaxSize()
+            )
+        } else
         AnimatedRow(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(all = 12.dp),
+                .fillMaxSize(),
             isVisible = isVisible
         ) {
             AnimatedItem { ctx ->
@@ -353,6 +366,7 @@ fun ControlManageScreen(
                     }
                 )
             }
+        }
         }
     }
 }
@@ -584,6 +598,24 @@ private fun ControlListHeader(
                 extension = "json",
                 progressUris = { uris ->
                     eventViewModel.sendEvent(EventViewModel.Event.ImportControls(uris))
+                }
+            )
+        }
+        Spacer(Modifier.height(6.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(14.dp))
+                .background(CryoGlassColors.Aurora.copy(alpha = 0.08f))
+                .border(1.dp, CryoGlassColors.Aurora.copy(alpha = 0.35f), RoundedCornerShape(14.dp))
+        ) {
+            //HUDs do Zalith 1 / Pojav / Mojo: convertidos automaticamente para o formato do Cryogenic
+            ImportMultipleFileButton(
+                extension = "json",
+                painter = painterResource(R.drawable.ic_cryo_swap),
+                text = stringResource(R.string.cryo_hud_convert_pojav),
+                progressUris = { uris ->
+                    eventViewModel.sendEvent(EventViewModel.Event.ImportControls(uris, pojavOnly = true))
                 }
             )
         }

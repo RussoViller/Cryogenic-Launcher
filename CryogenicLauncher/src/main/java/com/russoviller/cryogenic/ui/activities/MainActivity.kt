@@ -18,6 +18,8 @@
 
 package com.russoviller.cryogenic.ui.activities
 
+import com.russoviller.cryogenic.hud.title
+import com.russoviller.cryogenic.utils.file.readString
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
@@ -269,7 +271,7 @@ class MainActivity : BaseAppCompatActivity() {
                         keepScreen(event.on)
                     }
                     is EventViewModel.Event.ImportControls -> {
-                        importControlFiles(event.uris)
+                        importControlFiles(event.uris, event.scheme, event.pojavOnly)
                     }
                     is EventViewModel.Event.DownloadPlugins -> {
                         showDownloadPlugins(event.link)
@@ -632,7 +634,11 @@ class MainActivity : BaseAppCompatActivity() {
     /**
      * 导入控制布局
      */
-    private fun importControlFiles(uris: List<Uri>) {
+    private fun importControlFiles(
+        uris: List<Uri>,
+        scheme: com.russoviller.cryogenic.hud.HudScheme = com.russoviller.cryogenic.hud.HudScheme.CRYOGENIC,
+        pojavOnly: Boolean = false
+    ) {
         fun showError(
             title: AndroidStringText = androidText(R.string.control_manage_import_failed),
             message: AndroidStringText
@@ -644,41 +650,104 @@ class MainActivity : BaseAppCompatActivity() {
                 )
             )
         }
+        fun mismatch(found: com.russoviller.cryogenic.hud.HudFormat, target: com.russoviller.cryogenic.hud.HudScheme) = showError(
+            title = androidText(R.string.cryo_hud_import_denied),
+            message = androidText(R.string.cryo_hud_import_mismatch, found.label, target.title)
+        )
+        val metrics = resources.displayMetrics
+        val screen = com.russoviller.cryogenic.hud.PojavConverter.Screen(
+            width = maxOf(metrics.widthPixels, metrics.heightPixels),
+            height = minOf(metrics.widthPixels, metrics.heightPixels),
+            density = metrics.density
+        )
         TaskSystem.submitTask(
             Task.runTask(
                 dispatcher = Dispatchers.IO,
                 task = {
-                    var done = false
+                    var done = 0
+                    var converted: com.russoviller.cryogenic.hud.PojavConverter.Result? = null
                     uris.forEach { uri ->
-                        val inputStream = contentResolver.openInputStream(uri) ?: run {
+                        val text = try {
+                            contentResolver.openInputStream(uri)?.use { it.readString() }
+                        } catch (e: Exception) {
+                            showError(message = androidText(e.getMessageOrToString()))
+                            return@forEach
+                        } ?: run {
                             showError(message = androidText(R.string.multirt_runtime_import_failed_input_stream))
                             return@forEach
                         }
-                        ControlManager.importControl(
-                            inputStream = inputStream,
-                            onSerializationError = {
-                                showError(
+                        val fileName = uri.lastPathSegment?.substringAfterLast('/') ?: "HUD"
+                        val format = com.russoviller.cryogenic.hud.HudDetector.detect(text)
+                        if (scheme == com.russoviller.cryogenic.hud.HudScheme.CRYOGENIC) {
+                            when (format) {
+                                com.russoviller.cryogenic.hud.HudFormat.FCL,
+                                com.russoviller.cryogenic.hud.HudFormat.POJARUSH -> {
+                                    mismatch(format, scheme)
+                                    return@forEach
+                                }
+                                com.russoviller.cryogenic.hud.HudFormat.CRYOGENIC -> if (pojavOnly) {
+                                    showError(
+                                        title = androidText(R.string.cryo_hud_import_denied),
+                                        message = androidText(R.string.cryo_hud_import_not_pojav)
+                                    )
+                                    return@forEach
+                                }
+                                else -> {}
+                            }
+                            val json = if (format == com.russoviller.cryogenic.hud.HudFormat.POJAV) {
+                                try {
+                                    com.russoviller.cryogenic.hud.PojavConverter.convert(text, fileName.substringBeforeLast('.'), screen)
+                                        .also { converted = it }.json
+                                } catch (e: Exception) {
+                                    showError(message = buildAppendedText {
+                                        append(R.string.cryo_hud_convert_failed)
+                                        append("\n")
+                                        append(e.getMessageOrToString())
+                                    })
+                                    return@forEach
+                                }
+                            } else text
+                            ControlManager.importControl(
+                                inputStream = json.byteInputStream(),
+                                onSerializationError = {
+                                    showError(
+                                        message = buildAppendedText {
+                                            append(R.string.control_manage_import_failed_to_parse)
+                                            append("\n")
+                                            append(it.getMessageOrToString())
+                                        }
+                                    )
+                                },
+                                catchedError = {
+                                    showError(message = androidText(it.getMessageOrToString()))
+                                },
+                                onFinished = {
+                                    done++
+                                }
+                            )
+                        } else {
+                            when (val r = com.russoviller.cryogenic.hud.HudStore.import(scheme, text, fileName)) {
+                                is com.russoviller.cryogenic.hud.HudStore.ImportResult.Ok -> done++
+                                is com.russoviller.cryogenic.hud.HudStore.ImportResult.Mismatch -> mismatch(r.found, r.target)
+                                is com.russoviller.cryogenic.hud.HudStore.ImportResult.Invalid -> showError(
                                     message = buildAppendedText {
                                         append(R.string.control_manage_import_failed_to_parse)
                                         append("\n")
-                                        append(it.getMessageOrToString())
+                                        append(r.message)
                                     }
                                 )
-                            },
-                            catchedError =  {
-                                showError(message = androidText(it.getMessageOrToString()))
-                            },
-                            onFinished = {
-                                done = true
                             }
-                        )
+                        }
                     }
-                    ControlManager.refresh()
-                    if (done) {
+                    if (scheme == com.russoviller.cryogenic.hud.HudScheme.CRYOGENIC) ControlManager.refresh()
+                    else com.russoviller.cryogenic.hud.HudStore.refresh(scheme)
+                    if (done > 0) {
+                        val conv = converted
                         withContext(Dispatchers.Main) {
                             Toast.makeText(
                                 this@MainActivity,
-                                getString(R.string.generic_done),
+                                if (conv != null) getString(R.string.cryo_hud_converted, conv.buttons, conv.joysticks)
+                                else getString(R.string.generic_done),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -781,6 +850,7 @@ class MainActivity : BaseAppCompatActivity() {
         //De volta ao Launcher: as animações voltam
         com.russoviller.cryogenic.ui.components.CryoTheme.inGame = false
         ControlManager.checkDefaultAndRefresh(this@MainActivity)
+        com.russoviller.cryogenic.hud.HudStore.init(this@MainActivity)
         com.russoviller.cryogenic.discord.CryoDiscordPresence.inLauncher(
             this,
             getString(R.string.cryo_discord_in_launcher),
