@@ -19,7 +19,9 @@ Updates:
   - Screen lock with custom PNG
   - Live chat in the game
   - Floating live button with viewers and latest comment
-  - TikTok page login for the live chat
+  - Direct live chat connection (optional Euler Stream key)
+  - Direct screen encoding (lighter on the game)
+  - Automatic bitrate on weak connections
   - Live preview on the TikTok Live screen
   - Voice Chat voice on the live
   - Live microphone choice (phone, Bluetooth, wired)

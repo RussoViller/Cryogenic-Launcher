@@ -2715,10 +2715,10 @@
     <string name="cryo_live_section_chat">Live chat</string>
     <string name="cryo_live_user_hint">Your TikTok @username</string>
     <string name="cryo_live_chat_help">Enter your @username to show the live chat here and in the game.</string>
-    <string name="cryo_live_chat_loading">Chat: opening your live page…</string>
+    <string name="cryo_live_chat_loading">Chat: connecting to your live…</string>
     <string name="cryo_live_chat_waiting">Chat: connected, waiting for messages</string>
     <string name="cryo_live_chat_ok">Chat: receiving messages</string>
-    <string name="cryo_live_chat_not_found">Chat: your live isn\'t showing on the TikTok page yet (it can take a minute after starting; check the @username). Trying again…</string>
+    <string name="cryo_live_chat_not_found">Chat: your live isn’t on TikTok yet (it can take a minute after starting; check the @username). Trying again…</string>
     <string name="cryo_live_chat_blocked">Chat: TikTok asked for a verification. Tap “Open the TikTok page” on the launcher\'s TikTok Live screen and solve it.</string>
     <string name="cryo_live_chat_open_page">Open the TikTok page (log in / verification)</string>
     <string name="cryo_live_chat_page_note">Log in or solve the verification if TikTok asks, then tap Done. The live video is muted here.</string>
@@ -2868,4 +2868,7 @@
     <string name="cryo_cmods_args_note">Adds to the game launch: %1$s</string>
     <string name="cryo_cmods_copy">Copy</string>
     <string name="cryo_cmods_clear">Clear</string>
+    <string name="cryo_live_chat_limit">Chat: the free chat server reached its limit for today. Add a free Euler Stream key below or wait; trying again in a few minutes…</string>
+    <string name="cryo_live_chat_key_hint">Euler Stream API key (optional)</string>
+    <string name="cryo_live_chat_key_note">The chat connects straight to TikTok through the Euler Stream signing server (TikTok has no public chat API). It’s free for a few connections a day; a free key from eulerstream.com raises the limit.</string>
 </resources>

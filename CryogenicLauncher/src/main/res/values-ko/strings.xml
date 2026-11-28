@@ -2687,10 +2687,10 @@
     <string name="cryo_live_section_chat">라이브 채팅</string>
     <string name="cryo_live_user_hint">TikTok @사용자 이름</string>
     <string name="cryo_live_chat_help">\@사용자 이름을 입력하면 여기와 게임에 라이브 채팅이 표시됩니다.</string>
-    <string name="cryo_live_chat_loading">채팅: 라이브 페이지를 여는 중…</string>
+    <string name="cryo_live_chat_loading">채팅: 라이브에 연결 중…</string>
     <string name="cryo_live_chat_waiting">채팅: 연결됨, 메시지를 기다리는 중</string>
     <string name="cryo_live_chat_ok">채팅: 메시지를 받는 중</string>
-    <string name="cryo_live_chat_not_found">채팅: 라이브가 아직 TikTok 페이지에 표시되지 않습니다(시작 후 1분 정도 걸릴 수 있으니 @사용자 이름을 확인하세요). 다시 시도하는 중…</string>
+    <string name="cryo_live_chat_not_found">채팅: 라이브가 아직 TikTok에 표시되지 않습니다(시작 후 1분 정도 걸릴 수 있습니다. @사용자명을 확인하세요). 다시 시도하는 중…</string>
     <string name="cryo_live_chat_blocked">채팅: TikTok이 인증을 요청했습니다. 런처의 TikTok 라이브 화면에서 \'TikTok 페이지 열기\'를 눌러 인증하세요.</string>
     <string name="cryo_live_chat_open_page">TikTok 페이지 열기 (로그인 / 인증)</string>
     <string name="cryo_live_chat_page_note">TikTok이 요청하면 로그인하거나 인증한 뒤 완료를 누르세요. 여기서 라이브 영상은 음소거됩니다.</string>
@@ -2840,4 +2840,7 @@
     <string name="cryo_cmods_args_note">게임 실행에 추가: %1$s</string>
     <string name="cryo_cmods_copy">복사</string>
     <string name="cryo_cmods_clear">지우기</string>
+    <string name="cryo_live_chat_limit">채팅: 무료 채팅 서버가 오늘 한도에 도달했습니다. 아래에 무료 Euler Stream 키를 넣거나 기다려 주세요. 몇 분 후 다시 시도합니다…</string>
+    <string name="cryo_live_chat_key_hint">Euler Stream API 키(선택)</string>
+    <string name="cryo_live_chat_key_note">채팅은 Euler Stream 서명 서버를 통해 TikTok에 바로 연결됩니다(TikTok에는 공개 채팅 API가 없습니다). 하루 몇 번의 연결은 무료이며, eulerstream.com의 무료 키로 한도를 늘릴 수 있습니다.</string>
 </resources>

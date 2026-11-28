@@ -2686,10 +2686,10 @@
     <string name="cryo_live_section_chat">Чат эфира</string>
     <string name="cryo_live_user_hint">Ваш @ник в TikTok</string>
     <string name="cryo_live_chat_help">Введите свой @ник, чтобы показывать чат эфира здесь и в игре.</string>
-    <string name="cryo_live_chat_loading">Чат: открываю страницу вашего эфира…</string>
+    <string name="cryo_live_chat_loading">Чат: подключение к эфиру…</string>
     <string name="cryo_live_chat_waiting">Чат: подключено, жду сообщений</string>
     <string name="cryo_live_chat_ok">Чат: сообщения приходят</string>
-    <string name="cryo_live_chat_not_found">Чат: ваш эфир ещё не появился на странице TikTok (после запуска это может занять минуту; проверьте @ник). Пробую снова…</string>
+    <string name="cryo_live_chat_not_found">Чат: ваш эфир ещё не появился в TikTok (после начала это может занять минуту; проверьте @имя). Повторная попытка…</string>
     <string name="cryo_live_chat_blocked">Чат: TikTok запросил проверку. Нажмите «Открыть страницу TikTok» на экране TikTok Live в лаунчере и пройдите её.</string>
     <string name="cryo_live_chat_open_page">Открыть страницу TikTok (вход / проверка)</string>
     <string name="cryo_live_chat_page_note">Войдите или пройдите проверку, если TikTok попросит, затем нажмите «Готово». Видео эфира здесь без звука.</string>
@@ -2839,4 +2839,7 @@
     <string name="cryo_cmods_args_note">Добавляет к запуску игры: %1$s</string>
     <string name="cryo_cmods_copy">Копировать</string>
     <string name="cryo_cmods_clear">Очистить</string>
+    <string name="cryo_live_chat_limit">Чат: бесплатный сервер чата исчерпал лимит на сегодня. Добавьте ниже бесплатный ключ Euler Stream или подождите; повтор через несколько минут…</string>
+    <string name="cryo_live_chat_key_hint">API-ключ Euler Stream (необязательно)</string>
+    <string name="cryo_live_chat_key_note">Чат подключается напрямую к TikTok через сервер подписи Euler Stream (у TikTok нет публичного API чата). Несколько подключений в день бесплатны; бесплатный ключ с eulerstream.com повышает лимит.</string>
 </resources>

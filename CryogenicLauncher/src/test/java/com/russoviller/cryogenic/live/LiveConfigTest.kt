@@ -60,29 +60,25 @@ class LiveConfigTest {
 
     @Test
     fun blocksOnlyLiveMedia() {
-        assertTrue(TikTokChatReader.isMediaStream("https://pull-f5-sg01.tiktokcdn.com/stage/stream-123.flv?expire=1"))
-        assertTrue(TikTokChatReader.isMediaStream("https://pull-hls-f16.tiktokcdn.com/game/stream-1/index.m3u8"))
-        assertFalse(TikTokChatReader.isMediaStream("https://www.tiktok.com/@user/live"))
-        assertFalse(TikTokChatReader.isMediaStream("https://webcast.tiktok.com/webcast/im/fetch/?room_id=1"))
-        assertFalse(TikTokChatReader.isMediaStream("https://sf16-website-login.neutral.ttwstatic.com/obj/main.js"))
+        assertTrue(TikTokLiveChat.isMediaStream("https://pull-f5-sg01.tiktokcdn.com/stage/stream-123.flv?expire=1"))
+        assertTrue(TikTokLiveChat.isMediaStream("https://pull-hls-f16.tiktokcdn.com/game/stream-1/index.m3u8"))
+        assertFalse(TikTokLiveChat.isMediaStream("https://www.tiktok.com/@user/live"))
+        assertFalse(TikTokLiveChat.isMediaStream("https://webcast.tiktok.com/webcast/im/fetch/?room_id=1"))
+        assertFalse(TikTokLiveChat.isMediaStream("https://sf16-website-login.neutral.ttwstatic.com/obj/main.js"))
     }
 
     @Test
     fun roomInfoViewersAndStatus() {
-        val live = TikTokChatReader.parseRoomInfo(
+        val live = TikTokLiveChat.parseRoomInfo(
             """{"data":{"liveRoom":{"status":2,"liveRoomStats":{"enterCount":900,"userCount":57}},
                "user":{"status":2,"avatarThumb":"https://p16.tiktokcdn.com/a.webp","roomId":"7"}},"statusCode":0}"""
         )
         assertEquals(57L, live.viewers)
         assertTrue(live.live)
         assertEquals("https://p16.tiktokcdn.com/a.webp", live.avatar)
-        val ended = TikTokChatReader.parseRoomInfo("""{"data":{"liveRoom":{"status":4},"user":{"status":4}},"statusCode":0}""")
+        val ended = TikTokLiveChat.parseRoomInfo("""{"data":{"liveRoom":{"status":4},"user":{"status":4}},"statusCode":0}""")
         assertFalse(ended.live)
-        val err = TikTokChatReader.parseRoomInfo("""{"statusCode":19881007,"data":{}}""")
+        val err = TikTokLiveChat.parseRoomInfo("""{"statusCode":19881007,"data":{}}""")
         assertEquals(19881007, err.statusCode)
-        assertTrue(TikTokChatReader.isHeavyResource("https://p16-sign.tiktokcdn.com/x/y.webp?x-expires=1"))
-        assertTrue(TikTokChatReader.isHeavyResource("https://sf16.tiktokcdn.com/obj/font.woff2"))
-        assertFalse(TikTokChatReader.isHeavyResource("https://www.tiktok.com/webcast/im/fetch/?room_id=1"))
-        assertFalse(TikTokChatReader.isHeavyResource("https://sf16-website-login.neutral.ttwstatic.com/main/app.js"))
     }
 }

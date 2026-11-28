@@ -2686,10 +2686,10 @@
     <string name="cryo_live_section_chat">直播聊天</string>
     <string name="cryo_live_user_hint">你的 TikTok @使用者名稱</string>
     <string name="cryo_live_chat_help">輸入你的 @使用者名稱，在這裡和遊戲中顯示直播聊天。</string>
-    <string name="cryo_live_chat_loading">聊天：正在開啟你的直播頁面…</string>
+    <string name="cryo_live_chat_loading">聊天：正在連線到你的直播…</string>
     <string name="cryo_live_chat_waiting">聊天：已連線，等待訊息</string>
     <string name="cryo_live_chat_ok">聊天：正在接收訊息</string>
-    <string name="cryo_live_chat_not_found">聊天：你的直播還沒出現在 TikTok 頁面上（開播後可能需要一分鐘；請檢查 @使用者名稱）。正在重試…</string>
+    <string name="cryo_live_chat_not_found">聊天：你的直播還沒有出現在 TikTok 上（開播後可能需要一分鐘；請檢查 @使用者名稱）。正在重試…</string>
     <string name="cryo_live_chat_blocked">聊天：TikTok 要求驗證。請在啟動器的 TikTok 直播畫面點選「開啟 TikTok 頁面」並完成驗證。</string>
     <string name="cryo_live_chat_open_page">開啟 TikTok 頁面（登入 / 驗證）</string>
     <string name="cryo_live_chat_page_note">如果 TikTok 要求，請登入或完成驗證，然後點選完成。這裡的直播影片已靜音。</string>
@@ -2839,4 +2839,7 @@
     <string name="cryo_cmods_args_note">加入遊戲啟動參數：%1$s</string>
     <string name="cryo_cmods_copy">複製</string>
     <string name="cryo_cmods_clear">清空</string>
+    <string name="cryo_live_chat_limit">聊天：免費聊天伺服器已達到今天的上限。請在下方填寫免費的 Euler Stream 金鑰，或稍候；幾分鐘後重試…</string>
+    <string name="cryo_live_chat_key_hint">Euler Stream API 金鑰（選填）</string>
+    <string name="cryo_live_chat_key_note">聊天透過 Euler Stream 簽章伺服器直接連線 TikTok（TikTok 沒有公開的聊天 API）。每天少量連線免費；使用 eulerstream.com 的免費金鑰可提高上限。</string>
 </resources>

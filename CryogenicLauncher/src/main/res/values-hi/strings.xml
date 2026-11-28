@@ -2687,10 +2687,10 @@
     <string name="cryo_live_section_chat">लाइव चैट</string>
     <string name="cryo_live_user_hint">आपका TikTok @यूज़रनेम</string>
     <string name="cryo_live_chat_help">लाइव चैट यहाँ और गेम में दिखाने के लिए अपना @यूज़रनेम डालें।</string>
-    <string name="cryo_live_chat_loading">चैट: आपका लाइव पेज खुल रहा है…</string>
+    <string name="cryo_live_chat_loading">चैट: आपकी लाइव से जुड़ रहा है…</string>
     <string name="cryo_live_chat_waiting">चैट: कनेक्ट है, संदेशों का इंतज़ार</string>
     <string name="cryo_live_chat_ok">चैट: संदेश आ रहे हैं</string>
-    <string name="cryo_live_chat_not_found">चैट: आपका लाइव अभी TikTok पेज पर नहीं दिख रहा (शुरू होने के बाद एक मिनट लग सकता है; @यूज़रनेम जाँचें)। फिर से कोशिश कर रहे हैं…</string>
+    <string name="cryo_live_chat_not_found">चैट: आपकी लाइव अभी TikTok पर नहीं दिख रही (शुरू होने के बाद एक मिनट लग सकता है; @यूज़रनेम जाँचें)। फिर से कोशिश कर रहा है…</string>
     <string name="cryo_live_chat_blocked">चैट: TikTok ने सत्यापन माँगा है। लॉन्चर की TikTok Live स्क्रीन पर “TikTok पेज खोलें” दबाएँ और इसे पूरा करें।</string>
     <string name="cryo_live_chat_open_page">TikTok पेज खोलें (लॉग इन / सत्यापन)</string>
     <string name="cryo_live_chat_page_note">TikTok माँगे तो लॉग इन करें या सत्यापन पूरा करें, फिर हो गया दबाएँ। यहाँ लाइव वीडियो म्यूट है।</string>
@@ -2840,4 +2840,7 @@
     <string name="cryo_cmods_args_note">गेम लॉन्च में जोड़ता है: %1$s</string>
     <string name="cryo_cmods_copy">कॉपी</string>
     <string name="cryo_cmods_clear">साफ़ करें</string>
+    <string name="cryo_live_chat_limit">चैट: मुफ़्त चैट सर्वर आज की सीमा तक पहुँच गया। नीचे मुफ़्त Euler Stream कुंजी डालें या इंतज़ार करें; कुछ मिनट में फिर कोशिश होगी…</string>
+    <string name="cryo_live_chat_key_hint">Euler Stream API कुंजी (वैकल्पिक)</string>
+    <string name="cryo_live_chat_key_note">चैट Euler Stream के सिग्नेचर सर्वर के ज़रिए सीधे TikTok से जुड़ती है (TikTok की कोई सार्वजनिक चैट API नहीं है)। रोज़ कुछ कनेक्शन मुफ़्त हैं; eulerstream.com की मुफ़्त कुंजी सीमा बढ़ाती है।</string>
 </resources>

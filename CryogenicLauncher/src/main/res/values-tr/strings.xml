@@ -2686,10 +2686,10 @@
     <string name="cryo_live_section_chat">Canlı yayın sohbeti</string>
     <string name="cryo_live_user_hint">TikTok @kullanıcı adın</string>
     <string name="cryo_live_chat_help">Canlı yayın sohbetini burada ve oyunda göstermek için @kullanıcı adını gir.</string>
-    <string name="cryo_live_chat_loading">Sohbet: canlı yayın sayfan açılıyor…</string>
+    <string name="cryo_live_chat_loading">Sohbet: yayınına bağlanılıyor…</string>
     <string name="cryo_live_chat_waiting">Sohbet: bağlandı, mesaj bekleniyor</string>
     <string name="cryo_live_chat_ok">Sohbet: mesajlar alınıyor</string>
-    <string name="cryo_live_chat_not_found">Sohbet: canlı yayının TikTok sayfasında henüz görünmüyor (başladıktan sonra bir dakika sürebilir; @kullanıcı adını kontrol et). Yeniden deneniyor…</string>
+    <string name="cryo_live_chat_not_found">Sohbet: yayının henüz TikTok’ta görünmüyor (başladıktan sonra bir dakika sürebilir; @kullanıcı adını kontrol et). Yeniden deneniyor…</string>
     <string name="cryo_live_chat_blocked">Sohbet: TikTok doğrulama istedi. Başlatıcının TikTok Canlı ekranında “TikTok sayfasını aç”a dokun ve doğrulamayı çöz.</string>
     <string name="cryo_live_chat_open_page">TikTok sayfasını aç (giriş / doğrulama)</string>
     <string name="cryo_live_chat_page_note">TikTok isterse giriş yap veya doğrulamayı çöz, sonra Bitti\'ye dokun. Canlı yayın videosu burada sessizdir.</string>
@@ -2839,4 +2839,7 @@
     <string name="cryo_cmods_args_note">Oyun başlatmaya ekler: %1$s</string>
     <string name="cryo_cmods_copy">Kopyala</string>
     <string name="cryo_cmods_clear">Temizle</string>
+    <string name="cryo_live_chat_limit">Sohbet: ücretsiz sohbet sunucusu bugünkü sınırına ulaştı. Aşağıya ücretsiz bir Euler Stream anahtarı ekle ya da bekle; birkaç dakika içinde yeniden denenecek…</string>
+    <string name="cryo_live_chat_key_hint">Euler Stream API anahtarı (isteğe bağlı)</string>
+    <string name="cryo_live_chat_key_note">Sohbet, Euler Stream imza sunucusu üzerinden doğrudan TikTok’a bağlanır (TikTok’un herkese açık sohbet API’si yoktur). Günde birkaç bağlantı ücretsizdir; eulerstream.com’dan ücretsiz bir anahtar sınırı artırır.</string>
 </resources>

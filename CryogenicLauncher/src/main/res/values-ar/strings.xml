@@ -2687,10 +2687,10 @@
     <string name="cryo_live_section_chat">دردشة البث</string>
     <string name="cryo_live_user_hint">اسم المستخدم @ في TikTok</string>
     <string name="cryo_live_chat_help">أدخل @اسم المستخدم لعرض دردشة البث هنا وفي اللعبة.</string>
-    <string name="cryo_live_chat_loading">الدردشة: جارٍ فتح صفحة بثك…</string>
+    <string name="cryo_live_chat_loading">الدردشة: جارٍ الاتصال ببثك…</string>
     <string name="cryo_live_chat_waiting">الدردشة: متصل، بانتظار الرسائل</string>
     <string name="cryo_live_chat_ok">الدردشة: يتم استلام الرسائل</string>
-    <string name="cryo_live_chat_not_found">الدردشة: بثك لا يظهر بعد في صفحة TikTok (قد يستغرق دقيقة بعد البدء؛ تحقق من @اسم المستخدم). جارٍ إعادة المحاولة…</string>
+    <string name="cryo_live_chat_not_found">الدردشة: بثك لم يظهر على TikTok بعد (قد يستغرق دقيقة بعد البدء؛ تحقق من @اسم المستخدم). جارٍ المحاولة مرة أخرى…</string>
     <string name="cryo_live_chat_blocked">الدردشة: طلب TikTok التحقق. اضغط «فتح صفحة TikTok» في شاشة TikTok Live في المشغّل وأكمله.</string>
     <string name="cryo_live_chat_open_page">فتح صفحة TikTok (تسجيل الدخول / التحقق)</string>
     <string name="cryo_live_chat_page_note">سجّل الدخول أو أكمل التحقق إذا طلب TikTok ذلك، ثم اضغط تم. فيديو البث مكتوم هنا.</string>
@@ -2840,4 +2840,7 @@
     <string name="cryo_cmods_args_note">يضيف إلى تشغيل اللعبة: %1$s</string>
     <string name="cryo_cmods_copy">نسخ</string>
     <string name="cryo_cmods_clear">مسح</string>
+    <string name="cryo_live_chat_limit">الدردشة: وصل خادم الدردشة المجاني إلى حد اليوم. أضف مفتاح Euler Stream مجانيًا بالأسفل أو انتظر؛ ستتم المحاولة مرة أخرى خلال دقائق…</string>
+    <string name="cryo_live_chat_key_hint">مفتاح API لـ Euler Stream (اختياري)</string>
+    <string name="cryo_live_chat_key_note">تتصل الدردشة مباشرة بـ TikTok عبر خادم التوقيع من Euler Stream (لا يملك TikTok واجهة دردشة عامة). بعض الاتصالات يوميًا مجانية؛ والمفتاح المجاني من eulerstream.com يرفع الحد.</string>
 </resources>

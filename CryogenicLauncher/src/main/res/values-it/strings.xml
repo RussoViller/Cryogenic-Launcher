@@ -2687,10 +2687,10 @@
     <string name="cryo_live_section_chat">Chat della live</string>
     <string name="cryo_live_user_hint">Il tuo @nomeutente di TikTok</string>
     <string name="cryo_live_chat_help">Inserisci il tuo @nomeutente per mostrare la chat della live qui e nel gioco.</string>
-    <string name="cryo_live_chat_loading">Chat: apertura della pagina della tua live…</string>
+    <string name="cryo_live_chat_loading">Chat: connessione alla tua live…</string>
     <string name="cryo_live_chat_waiting">Chat: connessa, in attesa di messaggi</string>
     <string name="cryo_live_chat_ok">Chat: ricezione dei messaggi</string>
-    <string name="cryo_live_chat_not_found">Chat: la tua live non appare ancora sulla pagina di TikTok (può volerci un minuto dopo l\'inizio; controlla il @nomeutente). Nuovo tentativo…</string>
+    <string name="cryo_live_chat_not_found">Chat: la tua live non è ancora su TikTok (può servire un minuto dopo l’avvio; controlla il @nome). Nuovo tentativo…</string>
     <string name="cryo_live_chat_blocked">Chat: TikTok ha chiesto una verifica. Tocca “Apri la pagina di TikTok” nella schermata TikTok Live del launcher e risolvila.</string>
     <string name="cryo_live_chat_open_page">Apri la pagina di TikTok (accesso / verifica)</string>
     <string name="cryo_live_chat_page_note">Accedi o risolvi la verifica se TikTok la chiede, poi tocca Fatto. Il video della live qui è muto.</string>
@@ -2840,4 +2840,7 @@
     <string name="cryo_cmods_args_note">Aggiunge all’avvio del gioco: %1$s</string>
     <string name="cryo_cmods_copy">Copia</string>
     <string name="cryo_cmods_clear">Svuota</string>
+    <string name="cryo_live_chat_limit">Chat: il server gratuito della chat ha raggiunto il limite di oggi. Aggiungi qui sotto una chiave gratuita di Euler Stream o attendi; nuovo tentativo tra qualche minuto…</string>
+    <string name="cryo_live_chat_key_hint">Chiave API di Euler Stream (facoltativa)</string>
+    <string name="cryo_live_chat_key_note">La chat si collega direttamente a TikTok tramite il server di firma di Euler Stream (TikTok non ha un’API pubblica per la chat). È gratis per alcune connessioni al giorno; una chiave gratuita di eulerstream.com aumenta il limite.</string>
 </resources>

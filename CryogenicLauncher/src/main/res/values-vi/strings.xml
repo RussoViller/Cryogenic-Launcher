@@ -2686,10 +2686,10 @@
     <string name="cryo_live_section_chat">Trò chuyện livestream</string>
     <string name="cryo_live_user_hint">\@tên người dùng TikTok của bạn</string>
     <string name="cryo_live_chat_help">Nhập @tên người dùng để hiện trò chuyện livestream ở đây và trong trò chơi.</string>
-    <string name="cryo_live_chat_loading">Trò chuyện: đang mở trang live của bạn…</string>
+    <string name="cryo_live_chat_loading">Chat: đang kết nối với buổi live…</string>
     <string name="cryo_live_chat_waiting">Trò chuyện: đã kết nối, đang chờ tin nhắn</string>
     <string name="cryo_live_chat_ok">Trò chuyện: đang nhận tin nhắn</string>
-    <string name="cryo_live_chat_not_found">Trò chuyện: buổi live của bạn chưa hiện trên trang TikTok (có thể mất một phút sau khi bắt đầu; kiểm tra @tên người dùng). Đang thử lại…</string>
+    <string name="cryo_live_chat_not_found">Chat: buổi live của bạn chưa xuất hiện trên TikTok (có thể mất một phút sau khi bắt đầu; kiểm tra @tên người dùng). Đang thử lại…</string>
     <string name="cryo_live_chat_blocked">Trò chuyện: TikTok yêu cầu xác minh. Nhấn “Mở trang TikTok” trên màn hình TikTok Live của launcher và hoàn tất xác minh.</string>
     <string name="cryo_live_chat_open_page">Mở trang TikTok (đăng nhập / xác minh)</string>
     <string name="cryo_live_chat_page_note">Đăng nhập hoặc hoàn tất xác minh nếu TikTok yêu cầu, rồi nhấn Xong. Video live ở đây đã tắt tiếng.</string>
@@ -2839,4 +2839,7 @@
     <string name="cryo_cmods_args_note">Thêm vào lúc mở game: %1$s</string>
     <string name="cryo_cmods_copy">Sao chép</string>
     <string name="cryo_cmods_clear">Xóa</string>
+    <string name="cryo_live_chat_limit">Chat: máy chủ chat miễn phí đã đạt giới hạn hôm nay. Thêm khóa Euler Stream miễn phí bên dưới hoặc chờ; sẽ thử lại sau vài phút…</string>
+    <string name="cryo_live_chat_key_hint">Khóa API Euler Stream (tùy chọn)</string>
+    <string name="cryo_live_chat_key_note">Chat kết nối thẳng tới TikTok qua máy chủ ký của Euler Stream (TikTok không có API chat công khai). Miễn phí cho vài lần kết nối mỗi ngày; khóa miễn phí từ eulerstream.com giúp tăng giới hạn.</string>
 </resources>

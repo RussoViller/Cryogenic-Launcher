@@ -2686,10 +2686,10 @@
     <string name="cryo_live_section_chat">Chat da live</string>
     <string name="cryo_live_user_hint">Seu @usuário do TikTok</string>
     <string name="cryo_live_chat_help">Coloque o seu @usuário para o chat da live aparecer aqui e no jogo.</string>
-    <string name="cryo_live_chat_loading">Chat: abrindo a página da sua live…</string>
+    <string name="cryo_live_chat_loading">Chat: conectando à sua live…</string>
     <string name="cryo_live_chat_waiting">Chat: conectado, esperando mensagens</string>
     <string name="cryo_live_chat_ok">Chat: recebendo mensagens</string>
-    <string name="cryo_live_chat_not_found">Chat: sua live ainda não aparece na página do TikTok (pode levar um minuto depois de começar; confira o @usuário). Tentando de novo…</string>
+    <string name="cryo_live_chat_not_found">Chat: sua live ainda não apareceu no TikTok (pode levar um minuto depois de começar; confira o @usuário). Tentando de novo…</string>
     <string name="cryo_live_chat_blocked">Chat: o TikTok pediu uma verificação. Toque em “Abrir a página do TikTok” na tela Live TikTok do launcher e resolva.</string>
     <string name="cryo_live_chat_open_page">Abrir a página do TikTok (entrar / verificação)</string>
     <string name="cryo_live_chat_page_note">Entre na conta ou resolva a verificação se o TikTok pedir e toque em Pronto. O vídeo da live fica sem som aqui.</string>
@@ -2839,4 +2839,7 @@
     <string name="cryo_cmods_args_note">Adiciona na abertura do jogo: %1$s</string>
     <string name="cryo_cmods_copy">Copiar</string>
     <string name="cryo_cmods_clear">Limpar</string>
+    <string name="cryo_live_chat_limit">Chat: o servidor grátis do chat chegou ao limite de hoje. Coloque uma chave grátis do Euler Stream abaixo ou aguarde; tentando de novo em alguns minutos…</string>
+    <string name="cryo_live_chat_key_hint">Chave da API do Euler Stream (opcional)</string>
+    <string name="cryo_live_chat_key_note">O chat conecta direto no TikTok pelo servidor de assinatura do Euler Stream (o TikTok não tem API pública de chat). É grátis para algumas conexões por dia; uma chave grátis do eulerstream.com aumenta o limite.</string>
 </resources>

@@ -2687,10 +2687,10 @@
     <string name="cryo_live_section_chat">Spjall útsendingar</string>
     <string name="cryo_live_user_hint">TikTok-@notandanafnið þitt</string>
     <string name="cryo_live_chat_help">Sláðu inn @notandanafnið þitt til að sýna spjall útsendingarinnar hér og í leiknum.</string>
-    <string name="cryo_live_chat_loading">Spjall: opna síðu útsendingarinnar…</string>
+    <string name="cryo_live_chat_loading">Spjall: tengist útsendingunni…</string>
     <string name="cryo_live_chat_waiting">Spjall: tengt, bíð eftir skilaboðum</string>
     <string name="cryo_live_chat_ok">Spjall: tek á móti skilaboðum</string>
-    <string name="cryo_live_chat_not_found">Spjall: útsendingin þín sést ekki enn á TikTok-síðunni (það getur tekið mínútu eftir að hún hefst; athugaðu @notandanafnið). Reyni aftur…</string>
+    <string name="cryo_live_chat_not_found">Spjall: útsendingin þín sést ekki enn á TikTok (það getur tekið mínútu eftir að hún hefst; athugaðu @notandanafnið). Reyni aftur…</string>
     <string name="cryo_live_chat_blocked">Spjall: TikTok bað um staðfestingu. Ýttu á „Opna TikTok-síðuna“ á TikTok Live-skjá ræsiforritsins og leystu hana.</string>
     <string name="cryo_live_chat_open_page">Opna TikTok-síðuna (innskráning / staðfesting)</string>
     <string name="cryo_live_chat_page_note">Skráðu þig inn eða leystu staðfestinguna ef TikTok biður um það og ýttu svo á Lokið. Myndband útsendingarinnar er hljóðlaust hér.</string>
@@ -2840,4 +2840,7 @@
     <string name="cryo_cmods_args_note">Bætir við ræsingu leiksins: %1$s</string>
     <string name="cryo_cmods_copy">Afrita</string>
     <string name="cryo_cmods_clear">Hreinsa</string>
+    <string name="cryo_live_chat_limit">Spjall: ókeypis spjallþjónninn hefur náð hámarki dagsins. Bættu við ókeypis Euler Stream-lykli hér fyrir neðan eða bíddu; reyni aftur eftir nokkrar mínútur…</string>
+    <string name="cryo_live_chat_key_hint">Euler Stream API-lykill (valfrjálst)</string>
+    <string name="cryo_live_chat_key_note">Spjallið tengist beint við TikTok í gegnum undirskriftarþjón Euler Stream (TikTok er ekki með opið spjall-API). Nokkrar tengingar á dag eru ókeypis; ókeypis lykill frá eulerstream.com hækkar hámarkið.</string>
 </resources>

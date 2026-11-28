@@ -98,7 +98,7 @@ class LiveFloatingWindowTest {
         val ctx = RuntimeEnvironment.getApplication()
         val window = LiveFloatingWindow(ctx, noop)
         window.show(85)
-        window.update(LiveFloatingWindow.State(status = LiveStatus.LIVE, startedAt = System.currentTimeMillis(), viewers = "57", chatState = TikTokChatReader.STATE_OK))
+        window.update(LiveFloatingWindow.State(status = LiveStatus.LIVE, startedAt = System.currentTimeMillis(), viewers = "57", chatState = TikTokLiveChat.STATE_OK))
         val root = window.rootView!! as ViewGroup
         // toque na pílula abre o painel
         val bubble = (root.getChildAt(1) as ViewGroup).getChildAt(0)

@@ -2687,10 +2687,10 @@
     <string name="cryo_live_section_chat">Livechat</string>
     <string name="cryo_live_user_hint">Je TikTok-@gebruikersnaam</string>
     <string name="cryo_live_chat_help">Vul je @gebruikersnaam in om de livechat hier en in het spel te tonen.</string>
-    <string name="cryo_live_chat_loading">Chat: je livepagina wordt geopend…</string>
+    <string name="cryo_live_chat_loading">Chat: verbinden met je live…</string>
     <string name="cryo_live_chat_waiting">Chat: verbonden, wacht op berichten</string>
     <string name="cryo_live_chat_ok">Chat: berichten worden ontvangen</string>
-    <string name="cryo_live_chat_not_found">Chat: je live staat nog niet op de TikTok-pagina (dat kan na het starten een minuut duren; controleer de @gebruikersnaam). Opnieuw proberen…</string>
+    <string name="cryo_live_chat_not_found">Chat: je live staat nog niet op TikTok (dat kan na het starten een minuut duren; controleer de @gebruikersnaam). Opnieuw proberen…</string>
     <string name="cryo_live_chat_blocked">Chat: TikTok vroeg om een verificatie. Tik op het TikTok Live-scherm van de launcher op ‘TikTok-pagina openen’ en los het op.</string>
     <string name="cryo_live_chat_open_page">TikTok-pagina openen (inloggen / verificatie)</string>
     <string name="cryo_live_chat_page_note">Log in of los de verificatie op als TikTok erom vraagt en tik daarna op Klaar. De livevideo is hier gedempt.</string>
@@ -2840,4 +2840,7 @@
     <string name="cryo_cmods_args_note">Voegt toe aan de spelstart: %1$s</string>
     <string name="cryo_cmods_copy">Kopiëren</string>
     <string name="cryo_cmods_clear">Wissen</string>
+    <string name="cryo_live_chat_limit">Chat: de gratis chatserver heeft zijn limiet voor vandaag bereikt. Voeg hieronder een gratis Euler Stream-sleutel toe of wacht; over een paar minuten opnieuw…</string>
+    <string name="cryo_live_chat_key_hint">Euler Stream API-sleutel (optioneel)</string>
+    <string name="cryo_live_chat_key_note">De chat verbindt rechtstreeks met TikTok via de ondertekeningsserver van Euler Stream (TikTok heeft geen openbare chat-API). Een paar verbindingen per dag zijn gratis; een gratis sleutel van eulerstream.com verhoogt de limiet.</string>
 </resources>

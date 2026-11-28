@@ -224,19 +224,16 @@ private class LiveUi(
     val update: ((LiveConfig) -> LiveConfig) -> Unit,
     val start: () -> Unit,
     val stop: () -> Unit,
-    val pickImage: () -> Unit,
-    /** abrir a página do TikTok (só no launcher) */
-    val openPage: (() -> Unit)?
+    val pickImage: () -> Unit
 )
 
 @Composable
-private fun rememberLiveUi(webLogin: Boolean): LiveUi {
+private fun rememberLiveUi(): LiveUi {
     val context = LocalContext.current
     LaunchedEffect(Unit) {
         LiveConfigStore.reload(context)
         LiveClient.connect(context)
     }
-    var pageOpen by remember { mutableStateOf(false) }
     val start = rememberLiveStarter()
     val scope = rememberCoroutineScope()
     val imageFailed = stringResource(R.string.cryo_stream_image_failed)
@@ -250,20 +247,13 @@ private fun rememberLiveUi(webLogin: Boolean): LiveUi {
         }
     }
     val config = LiveConfigStore.config
-    if (pageOpen) {
-        TikTokPageDialog(user = config.tiktokUser) {
-            pageOpen = false
-            LiveClient.reloadChat()
-        }
-    }
     return LiveUi(
         config = config,
         active = LiveClient.active,
         update = { change -> LiveConfigStore.update(context, change) },
         start = start,
         stop = { LiveClient.stop(context) },
-        pickImage = { runCatching { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) } },
-        openPage = if (webLogin) ({ pageOpen = true }) else null
+        pickImage = { runCatching { picker.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) } }
     )
 }
 
@@ -292,8 +282,8 @@ private fun tabTag(tab: LiveTab, ui: LiveUi): String {
  * aviso de testes, cartão de status com os botões e as seções em abas.
  */
 @Composable
-fun TikTokLivePanel(modifier: Modifier, color: Color, contentColor: Color, webLogin: Boolean = false) {
-    val ui = rememberLiveUi(webLogin)
+fun TikTokLivePanel(modifier: Modifier, color: Color, contentColor: Color) {
+    val ui = rememberLiveUi()
     var tab by rememberSaveable { mutableStateOf(LiveTab.STREAM) }
     Column(
         modifier = modifier
@@ -351,7 +341,7 @@ private fun LiveTabChip(tab: LiveTab, selected: Boolean, onClick: () -> Unit) {
  */
 @Composable
 fun TikTokLiveLauncherContent(modifier: Modifier, color: Color, contentColor: Color) {
-    val ui = rememberLiveUi(webLogin = true)
+    val ui = rememberLiveUi()
     var tab by rememberSaveable { mutableStateOf(LiveTab.STREAM) }
     Column(
         modifier = modifier
@@ -879,11 +869,12 @@ private fun LiveTabContent(tab: LiveTab, ui: LiveUi) {
                 )
                 LiveHint(
                     when (LiveClient.chatState) {
-                        TikTokChatReader.STATE_LOADING -> stringResource(R.string.cryo_live_chat_loading)
-                        TikTokChatReader.STATE_WAITING -> stringResource(R.string.cryo_live_chat_waiting)
-                        TikTokChatReader.STATE_OK -> stringResource(R.string.cryo_live_chat_ok)
-                        TikTokChatReader.STATE_NOT_FOUND -> stringResource(R.string.cryo_live_chat_not_found)
-                        TikTokChatReader.STATE_BLOCKED -> stringResource(R.string.cryo_live_chat_blocked)
+                        TikTokLiveChat.STATE_LOADING -> stringResource(R.string.cryo_live_chat_loading)
+                        TikTokLiveChat.STATE_WAITING -> stringResource(R.string.cryo_live_chat_waiting)
+                        TikTokLiveChat.STATE_OK -> stringResource(R.string.cryo_live_chat_ok)
+                        TikTokLiveChat.STATE_NOT_FOUND -> stringResource(R.string.cryo_live_chat_not_found)
+                        TikTokLiveChat.STATE_BLOCKED -> stringResource(R.string.cryo_live_chat_blocked)
+                        TikTokLiveChat.STATE_LIMIT -> stringResource(R.string.cryo_live_chat_limit)
                         else -> stringResource(R.string.cryo_live_chat_help)
                     }
                 )
@@ -895,12 +886,14 @@ private fun LiveTabContent(tab: LiveTab, ui: LiveUi) {
                         fontSize = 10.sp
                     )
                 }
-                val openPage = ui.openPage
-                if (openPage != null && c.tiktokUser.isNotBlank()) {
-                    CryoTonalButton(modifier = Modifier.fillMaxWidth(), onClick = openPage) {
-                        MarqueeText(text = stringResource(R.string.cryo_live_chat_open_page))
-                    }
-                }
+                // chave opcional do servidor de assinatura do chat (mais conexões por dia)
+                LiveTextField(
+                    value = c.chatApiKey,
+                    hint = stringResource(R.string.cryo_live_chat_key_hint),
+                    password = true,
+                    onApply = { v -> ui.update { it.copy(chatApiKey = v.trim()) } }
+                )
+                LiveHint(stringResource(R.string.cryo_live_chat_key_note))
                 LiveSwitchRow(
                     title = stringResource(R.string.cryo_live_chat_in_game),
                     checked = c.chatInGame
@@ -1255,97 +1248,3 @@ fun LiveChatOverlay(modifier: Modifier = Modifier) {
     }
 }
 
-/**
- * Página da live no TikTok (visível), para entrar na conta ou resolver uma verificação.
- * Os cookies ficam com o leitor do chat (mesmo processo). O vídeo da live é bloqueado para o som
- * não ir para a transmissão.
- */
-@android.annotation.SuppressLint("SetJavaScriptEnabled")
-@Composable
-private fun TikTokPageDialog(user: String, onDismiss: () -> Unit) {
-    var webView by remember { mutableStateOf<android.webkit.WebView?>(null) }
-    val close = {
-        runCatching { android.webkit.CookieManager.getInstance().flush() }
-        webView?.let { v -> runCatching { v.stopLoading(); v.destroy() } }
-        webView = null
-        onDismiss()
-    }
-    androidx.compose.ui.window.Dialog(
-        onDismissRequest = close,
-        properties = androidx.compose.ui.window.DialogProperties(usePlatformDefaultWidth = false)
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp)
-                .clip(RoundedCornerShape(18.dp))
-                .background(CryoGlassColors.Deep)
-                .border(1.dp, TikTokCyan.copy(alpha = 0.5f), RoundedCornerShape(18.dp))
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.weight(1f),
-                    text = stringResource(R.string.cryo_live_chat_page_note),
-                    color = Color.White.copy(alpha = 0.75f),
-                    style = MaterialTheme.typography.labelSmall
-                )
-                Spacer(Modifier.width(8.dp))
-                Text(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(TikTokPink)
-                        .clickable { close() }
-                        .padding(horizontal = 14.dp, vertical = 8.dp),
-                    text = stringResource(R.string.cryo_live_chat_page_done),
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 13.sp
-                )
-            }
-            androidx.compose.ui.viewinterop.AndroidView(
-                modifier = Modifier.fillMaxWidth().weight(1f),
-                factory = { ctx ->
-                    android.webkit.WebView(ctx).apply {
-                        settings.javaScriptEnabled = true
-                        settings.domStorageEnabled = true
-                        settings.mediaPlaybackRequiresUserGesture = true
-                        settings.useWideViewPort = true
-                        settings.loadWithOverviewMode = true
-                        settings.builtInZoomControls = true
-                        settings.displayZoomControls = false
-                        settings.userAgentString = TikTokChatReader.DESKTOP_UA
-                        android.webkit.CookieManager.getInstance().setAcceptCookie(true)
-                        runCatching { android.webkit.CookieManager.getInstance().setAcceptThirdPartyCookies(this, true) }
-                        webViewClient = object : android.webkit.WebViewClient() {
-                            override fun shouldInterceptRequest(
-                                view: android.webkit.WebView?,
-                                request: android.webkit.WebResourceRequest?
-                            ): android.webkit.WebResourceResponse? {
-                                val url = request?.url?.toString() ?: return null
-                                if (TikTokChatReader.isMediaStream(url)) {
-                                    return android.webkit.WebResourceResponse(
-                                        "text/plain", "utf-8", 204, "No Content", emptyMap(),
-                                        java.io.ByteArrayInputStream(ByteArray(0))
-                                    )
-                                }
-                                return null
-                            }
-
-                            override fun onPageFinished(view: android.webkit.WebView?, url: String?) {
-                                view?.evaluateJavascript(
-                                    "document.querySelectorAll('video,audio').forEach(function(v){try{v.muted=true;v.pause();}catch(e){}});",
-                                    null
-                                )
-                            }
-                        }
-                        loadUrl("https://www.tiktok.com/@${LiveConfig.normalizeUser(user)}/live")
-                        webView = this
-                    }
-                }
-            )
-        }
-    }
-}

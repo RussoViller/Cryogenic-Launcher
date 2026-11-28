@@ -2687,10 +2687,10 @@
     <string name="cryo_live_section_chat">Livechatt</string>
     <string name="cryo_live_user_hint">Ditt TikTok-@användarnamn</string>
     <string name="cryo_live_chat_help">Ange ditt @användarnamn för att visa livechatten här och i spelet.</string>
-    <string name="cryo_live_chat_loading">Chatt: öppnar din livesida…</string>
+    <string name="cryo_live_chat_loading">Chatt: ansluter till din live…</string>
     <string name="cryo_live_chat_waiting">Chatt: ansluten, väntar på meddelanden</string>
     <string name="cryo_live_chat_ok">Chatt: tar emot meddelanden</string>
-    <string name="cryo_live_chat_not_found">Chatt: din live syns inte på TikTok-sidan än (det kan ta en minut efter starten; kontrollera @användarnamnet). Försöker igen…</string>
+    <string name="cryo_live_chat_not_found">Chatt: din live syns inte på TikTok än (det kan ta en minut efter starten; kontrollera @användarnamnet). Försöker igen…</string>
     <string name="cryo_live_chat_blocked">Chatt: TikTok bad om en verifiering. Tryck på ”Öppna TikTok-sidan” på launcherns TikTok Live-skärm och lös den.</string>
     <string name="cryo_live_chat_open_page">Öppna TikTok-sidan (logga in / verifiering)</string>
     <string name="cryo_live_chat_page_note">Logga in eller lös verifieringen om TikTok frågar och tryck sedan på Klar. Livevideon är ljudlös här.</string>
@@ -2840,4 +2840,7 @@
     <string name="cryo_cmods_args_note">Lägger till vid spelstart: %1$s</string>
     <string name="cryo_cmods_copy">Kopiera</string>
     <string name="cryo_cmods_clear">Rensa</string>
+    <string name="cryo_live_chat_limit">Chatt: den gratis chattservern har nått dagens gräns. Lägg till en gratis Euler Stream-nyckel nedan eller vänta; nytt försök om några minuter…</string>
+    <string name="cryo_live_chat_key_hint">Euler Stream API-nyckel (valfri)</string>
+    <string name="cryo_live_chat_key_note">Chatten ansluter direkt till TikTok via Euler Streams signeringsserver (TikTok har inget offentligt chatt-API). Några anslutningar per dag är gratis; en gratis nyckel från eulerstream.com höjer gränsen.</string>
 </resources>

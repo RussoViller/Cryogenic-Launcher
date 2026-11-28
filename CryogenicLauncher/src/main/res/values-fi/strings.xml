@@ -2687,10 +2687,10 @@
     <string name="cryo_live_section_chat">Liven chat</string>
     <string name="cryo_live_user_hint">TikTok-@käyttäjänimesi</string>
     <string name="cryo_live_chat_help">Anna @käyttäjänimesi, niin liven chat näkyy täällä ja pelissä.</string>
-    <string name="cryo_live_chat_loading">Chat: avataan livesi sivua…</string>
+    <string name="cryo_live_chat_loading">Chat: yhdistetään liveesi…</string>
     <string name="cryo_live_chat_waiting">Chat: yhdistetty, odotetaan viestejä</string>
     <string name="cryo_live_chat_ok">Chat: vastaanotetaan viestejä</string>
-    <string name="cryo_live_chat_not_found">Chat: livesi ei vielä näy TikTokin sivulla (aloituksen jälkeen voi kestää minuutin; tarkista @käyttäjänimi). Yritetään uudelleen…</string>
+    <string name="cryo_live_chat_not_found">Chat: livesi ei vielä näy TikTokissa (alkamisen jälkeen voi kestää minuutin; tarkista @käyttäjänimi). Yritetään uudelleen…</string>
     <string name="cryo_live_chat_blocked">Chat: TikTok pyysi vahvistusta. Napauta käynnistimen TikTok Live -näytöllä ”Avaa TikTokin sivu” ja ratkaise se.</string>
     <string name="cryo_live_chat_open_page">Avaa TikTokin sivu (kirjautuminen / vahvistus)</string>
     <string name="cryo_live_chat_page_note">Kirjaudu sisään tai ratkaise vahvistus, jos TikTok pyytää, ja napauta sitten Valmis. Liven video on täällä mykistetty.</string>
@@ -2840,4 +2840,7 @@
     <string name="cryo_cmods_args_note">Lisää pelin käynnistykseen: %1$s</string>
     <string name="cryo_cmods_copy">Kopioi</string>
     <string name="cryo_cmods_clear">Tyhjennä</string>
+    <string name="cryo_live_chat_limit">Chat: ilmainen chat-palvelin on saavuttanut tämän päivän rajan. Lisää alle ilmainen Euler Stream -avain tai odota; uusi yritys muutaman minuutin päästä…</string>
+    <string name="cryo_live_chat_key_hint">Euler Stream -API-avain (valinnainen)</string>
+    <string name="cryo_live_chat_key_note">Chat yhdistää suoraan TikTokiin Euler Streamin allekirjoituspalvelimen kautta (TikTokilla ei ole julkista chat-rajapintaa). Muutama yhteys päivässä on ilmainen; ilmainen avain eulerstream.comista nostaa rajaa.</string>
 </resources>

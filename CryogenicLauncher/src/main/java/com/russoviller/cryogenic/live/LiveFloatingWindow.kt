@@ -611,11 +611,12 @@ class LiveFloatingWindow(
             LiveStatus.IDLE -> context.getString(R.string.cryo_live_status_idle)
         }
         val chatLine = when (s.chatState) {
-            TikTokChatReader.STATE_OK -> ""
-            TikTokChatReader.STATE_LOADING -> context.getString(R.string.cryo_live_chat_loading)
-            TikTokChatReader.STATE_WAITING -> context.getString(R.string.cryo_live_chat_waiting)
-            TikTokChatReader.STATE_NOT_FOUND -> context.getString(R.string.cryo_live_chat_not_found)
-            TikTokChatReader.STATE_BLOCKED -> context.getString(R.string.cryo_live_chat_blocked)
+            TikTokLiveChat.STATE_OK -> ""
+            TikTokLiveChat.STATE_LOADING -> context.getString(R.string.cryo_live_chat_loading)
+            TikTokLiveChat.STATE_WAITING -> context.getString(R.string.cryo_live_chat_waiting)
+            TikTokLiveChat.STATE_NOT_FOUND -> context.getString(R.string.cryo_live_chat_not_found)
+            TikTokLiveChat.STATE_BLOCKED -> context.getString(R.string.cryo_live_chat_blocked)
+            TikTokLiveChat.STATE_LIMIT -> context.getString(R.string.cryo_live_chat_limit)
             else -> context.getString(R.string.cryo_live_chat_help)
         }
         chatStateText.text = if (chatLine.isNotEmpty() && s.chatDetail.isNotEmpty()) chatLine + "\n" + s.chatDetail else chatLine

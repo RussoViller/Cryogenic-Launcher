@@ -37,9 +37,6 @@ import com.pedro.encoder.input.sources.audio.InternalAudioSource
 import com.pedro.encoder.input.sources.audio.MicrophoneSource
 import com.pedro.encoder.input.sources.audio.MixAudioSource
 import com.pedro.encoder.input.sources.audio.SilenceAudioSource
-import com.pedro.encoder.input.sources.video.ScreenSource
-import com.pedro.encoder.utils.gl.AspectRatioMode
-import com.pedro.library.generic.GenericStream
 import com.russoviller.cryogenic.R
 import com.russoviller.cryogenic.utils.logging.Logger
 import java.io.File
@@ -90,14 +87,17 @@ class LiveService : Service(), ConnectChecker {
     private var userStopped = false
 
     private var projection: MediaProjection? = null
-    private var stream: GenericStream? = null
+    private var stream: CryoScreenStream? = null
+    /** prévia da live aberta no launcher (precisa do modo GL) */
+    private var previewOn = false
+    /** último texto mostrado na notificação (só atualiza quando muda) */
+    private var notificationKey = ""
     @Volatile
     private var audio: AudioSource? = null
-    private var privacyFilter: ImageObjectFilterRender? = null
 
     private val chat = ArrayDeque<LiveChatMessage>()
     private var nextChatId = 1L
-    private var chatReader: TikTokChatReader? = null
+    private var chatReader: TikTokLiveChat? = null
     private var floating: LiveFloatingWindow? = null
     private var lastStateBroadcast = 0L
 
@@ -196,6 +196,7 @@ class LiveService : Service(), ConnectChecker {
         privacy = config.privacyEnabled
         status = LiveStatus.CONNECTING
         startedAt = 0L
+        notificationKey = ""
 
         // Android 14+: o serviço precisa estar em primeiro plano (tipo mediaProjection) antes de pegar a projeção
         var types = 0
@@ -247,29 +248,17 @@ class LiveService : Service(), ConnectChecker {
                 else -> SilenceAudioSource()
             }
             audio = audioSource
-            val s = GenericStream(this, this, ScreenSource(applicationContext, mp), audioSource)
+            // tela direto no codificador de vídeo (sem cópia pela GPU do app): ver CryoScreenStream
+            val s = CryoScreenStream(applicationContext, this, audioSource)
             stream = s
-            val videoOk = s.prepareVideo(w, h, config.effectiveBitrateKbps() * 1000, config.fps, 2, 0)
-            val audioOk = s.prepareAudio(AUDIO_SAMPLE_RATE, true, AUDIO_BITRATE)
-            if (!videoOk || !audioOk) {
+            if (!s.prepare(w, h, config.fps, config.effectiveBitrateKbps() * 1000, AUDIO_SAMPLE_RATE, true, AUDIO_BITRATE)) {
                 fail(getString(R.string.cryo_live_error_encoder))
                 return
             }
-            s.getGlInterface().apply {
-                // a projeção já entrega a tela na orientação certa
-                setCameraOrientation(0)
-                autoHandleOrientation = false
-                setAspectRatioMode(AspectRatioMode.Adjust)
-                // a MediaProjection só gera quadros quando a tela muda: mantém o FPS constante
-                setForceRender(true, config.fps)
-                // a tela pode gerar 120 quadros/s (jogo a 120 FPS): só desenha para o codificador o FPS
-                // da live, sem gastar GPU com quadros que seriam descartados
-                forceFpsLimit(config.fps)
-            }
-            s.getStreamClient().setReTries(10)
             applyAudio()
-            s.startStream(config.fullUrl())
-            // filtros só depois que o GL começou (startStream)
+            // tela bloqueada desde o início: o modo GL já começa ligado
+            if (privacy) s.setGlNeeded(true)
+            s.start(config.fullUrl(), mp)
             applyPrivacy()
             // prévia na tela do launcher (se ela estiver aberta)
             LivePreview.listener = { surface, pw, ph -> applyPreview(surface, pw, ph) }
@@ -296,14 +285,12 @@ class LiveService : Service(), ConnectChecker {
         userStopped = byUser
         val s = stream
         LivePreview.listener = null
-        runCatching { s?.getGlInterface()?.deAttachPreview() }
+        previewOn = false
         stream = null
-        runCatching { if (s?.isStreaming == true) s.stopStream() }
         runCatching { s?.release() }
         audio = null
         releaseMicRoute()
         voiceShared = false
-        privacyFilter = null
         runCatching { projection?.stop() }
         projection = null
         chatReader?.stop()
@@ -338,13 +325,15 @@ class LiveService : Service(), ConnectChecker {
 
     /** Liga/desliga a prévia da transmissão numa superfície da tela do launcher. */
     private fun applyPreview(surface: android.view.Surface?, w: Int, h: Int) {
-        val gl = stream?.getGlInterface() ?: return
+        val s = stream ?: return
         runCatching {
             if (surface == null || !surface.isValid || w <= 0 || h <= 0) {
-                gl.deAttachPreview()
+                previewOn = false
+                // sem prévia e sem privacidade: volta ao modo direto (o mais leve)
+                s.detachPreview(stillNeedGl = privacy)
             } else {
-                gl.setPreviewResolution(w, h)
-                gl.attachPreview(surface)
+                previewOn = true
+                s.attachPreview(surface, w, h)
             }
         }.onFailure { Logger.error(TAG, "Live preview failed", it) }
     }
@@ -476,32 +465,34 @@ class LiveService : Service(), ConnectChecker {
     /** Tela bloqueada: quem assiste vê preto ou o PNG escolhido; o áudio continua. */
     private fun applyPrivacy() {
         val s = stream ?: return
-        val gl = s.getGlInterface()
-        runCatching {
-            if (!privacy) {
-                privacyFilter?.let { gl.removeFilter(it) }
-                privacyFilter = null
+        if (!privacy) {
+            s.withGl { gl ->
+                runCatching { gl.clearFilters() }
                 if (gl.isVideoMuted()) gl.unMuteVideo()
-                return
             }
-            val (w, h) = config.videoSize()
-            val image = buildPrivacyBitmap(w, h, config.privacyImagePath)
-            privacyFilter?.let { gl.removeFilter(it) }
-            privacyFilter = null
-            if (image != null) {
-                if (gl.isVideoMuted()) gl.unMuteVideo()
-                val filter = ImageObjectFilterRender()
-                gl.addFilter(filter)
-                filter.setImage(image)
-                filter.setScale(100f, 100f)
-                filter.setPosition(0f, 0f)
-                privacyFilter = filter
-            } else {
-                gl.muteVideo()
+            s.setGlNeeded(previewOn)
+            return
+        }
+        val (w, h) = config.videoSize()
+        val image = buildPrivacyBitmap(w, h, config.privacyImagePath)
+        // a tela bloqueada é desenhada pelo GL: liga o modo GL só enquanto ela estiver ativa
+        s.setGlNeeded(true) { gl ->
+            runCatching {
+                gl.clearFilters()
+                if (image != null) {
+                    if (gl.isVideoMuted()) gl.unMuteVideo()
+                    val filter = ImageObjectFilterRender()
+                    gl.addFilter(filter)
+                    filter.setImage(image)
+                    filter.setScale(100f, 100f)
+                    filter.setPosition(0f, 0f)
+                } else {
+                    gl.muteVideo()
+                }
+            }.onFailure {
+                Logger.error(TAG, "Privacy screen failed", it)
+                runCatching { gl.muteVideo() }
             }
-        }.onFailure {
-            Logger.error(TAG, "Privacy screen failed", it)
-            runCatching { gl.muteVideo() }
         }
     }
 
@@ -531,7 +522,7 @@ class LiveService : Service(), ConnectChecker {
         val old = config
         config = LiveConfig.load(this)
         if (stream != null) {
-            if (old.tiktokUser != config.tiktokUser) restartChat()
+            if (old.tiktokUser != config.tiktokUser || old.chatApiKey != config.chatApiKey) restartChat()
             if (old.privacyImagePath != config.privacyImagePath && privacy) applyPrivacy()
             updateFloating()
         }
@@ -554,8 +545,7 @@ class LiveService : Service(), ConnectChecker {
             return
         }
         chatReader = runCatching {
-            TikTokChatReader(
-                context = this,
+            TikTokLiveChat(
                 onMessage = { user, text -> addChat(user, text) },
                 onState = { state ->
                     if (state != chatState) {
@@ -573,7 +563,8 @@ class LiveService : Service(), ConnectChecker {
                 onDetail = { d ->
                     chatDetail = d
                     broadcastState(force = false)
-                }
+                },
+                apiKey = { config.chatApiKey }
             ).also { it.start(config.tiktokUser) }
         }.onFailure { Logger.error(TAG, "Chat reader failed", it) }.getOrNull()
     }
@@ -718,7 +709,10 @@ class LiveService : Service(), ConnectChecker {
         lastStateBroadcast = now
         sendToClients { stateMessage() }
         floating?.update(floatingState())
-        if (stream != null) {
+        // a notificação só muda com o estado (atualizar toda hora faz o sistema redesenhar à toa)
+        val key = "$status|$privacy|$startedAt|$error"
+        if (stream != null && key != notificationKey) {
+            notificationKey = key
             runCatching { getSystemService(NotificationManager::class.java).notify(NOTIFICATION_ID, buildNotification()) }
         }
     }
@@ -773,6 +767,8 @@ class LiveService : Service(), ConnectChecker {
     }
 
     override fun onConnectionSuccess() {
+        // primeiro quadro completo logo na (re)conexão: quem assiste não espera o próximo quadro-chave
+        stream?.requestKeyframe()
         main.post {
             status = LiveStatus.LIVE
             error = null
@@ -784,8 +780,9 @@ class LiveService : Service(), ConnectChecker {
     override fun onConnectionFailed(reason: String) {
         main.post {
             val s = stream ?: return@post
-            val retry = runCatching { s.getStreamClient().reTry(5000L, reason, null) }.getOrDefault(false)
+            val retry = runCatching { s.shouldRetry(reason) }.getOrDefault(false)
             if (retry) {
+                runCatching { s.reConnect(5000L) }
                 status = LiveStatus.RECONNECTING
                 error = reason
                 broadcastState(force = true)
@@ -811,6 +808,7 @@ class LiveService : Service(), ConnectChecker {
     override fun onAuthSuccess() {}
 
     override fun onNewBitrate(bitrate: Long) {
+        stream?.onBitrateTick()
         main.post {
             bitrateKbps = bitrate / 1000L
             broadcastState(force = false)

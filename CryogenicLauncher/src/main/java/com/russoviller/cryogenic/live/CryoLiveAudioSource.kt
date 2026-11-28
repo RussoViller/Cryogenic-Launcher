@@ -215,7 +215,8 @@ class CryoLiveAudioSource(
             }
             val size = frameCount * channels * 2
             runCatching {
-                target?.inputPCMData(Frame(out.copyOf(size), 0, size, System.nanoTime() / 1000))
+                // relógio do codificador (elapsedRealtime): áudio e vídeo no mesmo tempo
+                target?.inputPCMData(Frame(out.copyOf(size), 0, size, android.os.SystemClock.elapsedRealtimeNanos() / 1000))
             }
         }
     }

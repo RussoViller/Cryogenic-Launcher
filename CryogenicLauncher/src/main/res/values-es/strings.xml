@@ -2686,10 +2686,10 @@
     <string name="cryo_live_section_chat">Chat del directo</string>
     <string name="cryo_live_user_hint">Tu @usuario de TikTok</string>
     <string name="cryo_live_chat_help">Escribe tu @usuario para mostrar el chat del directo aquí y en el juego.</string>
-    <string name="cryo_live_chat_loading">Chat: abriendo la página de tu directo…</string>
+    <string name="cryo_live_chat_loading">Chat: conectando a tu directo…</string>
     <string name="cryo_live_chat_waiting">Chat: conectado, esperando mensajes</string>
     <string name="cryo_live_chat_ok">Chat: recibiendo mensajes</string>
-    <string name="cryo_live_chat_not_found">Chat: tu directo aún no aparece en la página de TikTok (puede tardar un minuto después de empezar; revisa el @usuario). Intentando de nuevo…</string>
+    <string name="cryo_live_chat_not_found">Chat: tu directo aún no aparece en TikTok (puede tardar un minuto después de empezar; revisa el @usuario). Reintentando…</string>
     <string name="cryo_live_chat_blocked">Chat: TikTok pidió una verificación. Toca “Abrir la página de TikTok” en la pantalla TikTok Live del launcher y resuélvela.</string>
     <string name="cryo_live_chat_open_page">Abrir la página de TikTok (iniciar sesión / verificación)</string>
     <string name="cryo_live_chat_page_note">Inicia sesión o resuelve la verificación si TikTok lo pide y luego toca Listo. El vídeo del directo está silenciado aquí.</string>
@@ -2839,4 +2839,7 @@
     <string name="cryo_cmods_args_note">Añade al iniciar el juego: %1$s</string>
     <string name="cryo_cmods_copy">Copiar</string>
     <string name="cryo_cmods_clear">Limpiar</string>
+    <string name="cryo_live_chat_limit">Chat: el servidor gratuito del chat llegó a su límite de hoy. Añade abajo una clave gratuita de Euler Stream o espera; reintentando en unos minutos…</string>
+    <string name="cryo_live_chat_key_hint">Clave de API de Euler Stream (opcional)</string>
+    <string name="cryo_live_chat_key_note">El chat se conecta directo a TikTok mediante el servidor de firmas de Euler Stream (TikTok no tiene API pública de chat). Es gratis para algunas conexiones al día; una clave gratuita de eulerstream.com amplía el límite.</string>
 </resources>

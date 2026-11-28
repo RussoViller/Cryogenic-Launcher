@@ -2686,10 +2686,10 @@
     <string name="cryo_live_section_chat">Chat live</string>
     <string name="cryo_live_user_hint">\@username TikTok-mu</string>
     <string name="cryo_live_chat_help">Masukkan @username-mu untuk menampilkan chat live di sini dan di dalam game.</string>
-    <string name="cryo_live_chat_loading">Chat: membuka halaman live-mu…</string>
+    <string name="cryo_live_chat_loading">Chat: menghubungkan ke live kamu…</string>
     <string name="cryo_live_chat_waiting">Chat: terhubung, menunggu pesan</string>
     <string name="cryo_live_chat_ok">Chat: menerima pesan</string>
-    <string name="cryo_live_chat_not_found">Chat: live-mu belum muncul di halaman TikTok (bisa butuh satu menit setelah mulai; periksa @username). Mencoba lagi…</string>
+    <string name="cryo_live_chat_not_found">Chat: live kamu belum muncul di TikTok (bisa butuh satu menit setelah mulai; periksa @nama pengguna). Mencoba lagi…</string>
     <string name="cryo_live_chat_blocked">Chat: TikTok meminta verifikasi. Ketuk “Buka halaman TikTok” di layar TikTok Live launcher lalu selesaikan.</string>
     <string name="cryo_live_chat_open_page">Buka halaman TikTok (login / verifikasi)</string>
     <string name="cryo_live_chat_page_note">Login atau selesaikan verifikasi jika TikTok memintanya, lalu ketuk Selesai. Video live di sini dibisukan.</string>
@@ -2839,4 +2839,7 @@
     <string name="cryo_cmods_args_note">Menambahkan saat game dibuka: %1$s</string>
     <string name="cryo_cmods_copy">Salin</string>
     <string name="cryo_cmods_clear">Bersihkan</string>
+    <string name="cryo_live_chat_limit">Chat: server chat gratis sudah mencapai batas hari ini. Tambahkan kunci Euler Stream gratis di bawah atau tunggu; akan dicoba lagi dalam beberapa menit…</string>
+    <string name="cryo_live_chat_key_hint">Kunci API Euler Stream (opsional)</string>
+    <string name="cryo_live_chat_key_note">Chat terhubung langsung ke TikTok melalui server tanda tangan Euler Stream (TikTok tidak punya API chat publik). Gratis untuk beberapa koneksi per hari; kunci gratis dari eulerstream.com menaikkan batasnya.</string>
 </resources>

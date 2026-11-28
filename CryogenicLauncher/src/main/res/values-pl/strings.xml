@@ -2687,10 +2687,10 @@
     <string name="cryo_live_section_chat">Czat transmisji</string>
     <string name="cryo_live_user_hint">Twoja @nazwa użytkownika na TikToku</string>
     <string name="cryo_live_chat_help">Wpisz swoją @nazwę użytkownika, aby pokazać czat transmisji tutaj i w grze.</string>
-    <string name="cryo_live_chat_loading">Czat: otwieranie strony twojej transmisji…</string>
+    <string name="cryo_live_chat_loading">Czat: łączenie z transmisją…</string>
     <string name="cryo_live_chat_waiting">Czat: połączono, czekam na wiadomości</string>
     <string name="cryo_live_chat_ok">Czat: odbieranie wiadomości</string>
-    <string name="cryo_live_chat_not_found">Czat: twoja transmisja jeszcze nie pojawia się na stronie TikToka (po starcie może to zająć minutę; sprawdź @nazwę użytkownika). Ponawiam…</string>
+    <string name="cryo_live_chat_not_found">Czat: twoja transmisja jeszcze nie pojawiła się na TikToku (po starcie może to potrwać minutę; sprawdź @nazwę). Ponawianie…</string>
     <string name="cryo_live_chat_blocked">Czat: TikTok poprosił o weryfikację. Dotknij „Otwórz stronę TikToka” na ekranie TikTok Live w launcherze i ją rozwiąż.</string>
     <string name="cryo_live_chat_open_page">Otwórz stronę TikToka (logowanie / weryfikacja)</string>
     <string name="cryo_live_chat_page_note">Zaloguj się lub rozwiąż weryfikację, jeśli TikTok poprosi, a potem dotknij Gotowe. Wideo transmisji jest tu wyciszone.</string>
@@ -2840,4 +2840,7 @@
     <string name="cryo_cmods_args_note">Dodaje do uruchomienia gry: %1$s</string>
     <string name="cryo_cmods_copy">Kopiuj</string>
     <string name="cryo_cmods_clear">Wyczyść</string>
+    <string name="cryo_live_chat_limit">Czat: darmowy serwer czatu osiągnął dzisiejszy limit. Dodaj poniżej darmowy klucz Euler Stream lub poczekaj; ponowna próba za kilka minut…</string>
+    <string name="cryo_live_chat_key_hint">Klucz API Euler Stream (opcjonalnie)</string>
+    <string name="cryo_live_chat_key_note">Czat łączy się bezpośrednio z TikTokiem przez serwer podpisów Euler Stream (TikTok nie ma publicznego API czatu). Kilka połączeń dziennie jest za darmo; darmowy klucz z eulerstream.com zwiększa limit.</string>
 </resources>

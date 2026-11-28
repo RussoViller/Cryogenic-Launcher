@@ -51,7 +51,9 @@ data class LiveConfig(
     val chatCorner: LiveChatCorner = LiveChatCorner.TOP_LEFT,
     /** botão flutuante com chat e controles quando o app sai da tela */
     val floatingBubble: Boolean = true,
-    val micDevice: LiveMicDevice = LiveMicDevice.AUTO
+    val micDevice: LiveMicDevice = LiveMicDevice.AUTO,
+    /** chave (opcional) do Euler Stream para o chat: mais conexões por dia que o grátis */
+    val chatApiKey: String = ""
 ) {
     /** Endereço completo para o RTMP: servidor + chave. */
     fun fullUrl(): String {
@@ -102,6 +104,7 @@ data class LiveConfig(
         .put("chatCorner", chatCorner.name)
         .put("floatingBubble", floatingBubble)
         .put("micDevice", micDevice.name)
+        .put("chatApiKey", chatApiKey)
 
     companion object {
         val RESOLUTIONS = listOf(480, 540, 720)
@@ -128,7 +131,8 @@ data class LiveConfig(
                 chatWidth = o.optInt("chatWidth", d.chatWidth).coerceIn(20, 60),
                 chatCorner = runCatching { LiveChatCorner.valueOf(o.optString("chatCorner")) }.getOrDefault(d.chatCorner),
                 floatingBubble = o.optBoolean("floatingBubble", d.floatingBubble),
-                micDevice = runCatching { LiveMicDevice.valueOf(o.optString("micDevice")) }.getOrDefault(d.micDevice)
+                micDevice = runCatching { LiveMicDevice.valueOf(o.optString("micDevice")) }.getOrDefault(d.micDevice),
+                chatApiKey = o.optString("chatApiKey", d.chatApiKey).trim().take(200)
             )
         }
 
