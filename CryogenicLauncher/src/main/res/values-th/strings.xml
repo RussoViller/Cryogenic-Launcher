@@ -2724,7 +2724,7 @@
     <string name="cryo_live_error_foreground">Android ไม่อนุญาตให้เริ่มไลฟ์: %1$s</string>
     <string name="cryo_live_error_encoder">อุปกรณ์นี้ไม่รองรับคุณภาพวิดีโอนี้ ลอง 540p หรือ 30 FPS</string>
     <string name="cryo_live_error_start">ไม่สามารถเริ่มไลฟ์: %1$s</string>
-    <string name="cryo_live_error_connection">ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ไลฟ์: %1$s</string>
+    <string name="cryo_live_error_connection">เชื่อมต่อเซิร์ฟเวอร์ไลฟ์ไม่ได้: %1$s คีย์ของไลฟ์ที่จบแล้วใช้ไม่ได้ ให้สร้างคีย์ใหม่ใน TikTok</string>
     <string name="cryo_live_error_auth">เซิร์ฟเวอร์ปฏิเสธคีย์สตรีม สร้างคีย์ใหม่ใน TikTok</string>
     <string name="cryo_live_notification_channel">ไลฟ์</string>
     <string name="cryo_live_notification_title">ไลฟ์ TikTok</string>
@@ -2842,4 +2842,7 @@
     <string name="cryo_live_chat_limit">แชท: เซิร์ฟเวอร์แชทฟรีถึงขีดจำกัดของวันนี้แล้ว ใส่คีย์ Euler Stream ฟรีด้านล่างหรือรอสักครู่ จะลองใหม่ในไม่กี่นาที…</string>
     <string name="cryo_live_chat_key_hint">คีย์ API ของ Euler Stream (ไม่บังคับ)</string>
     <string name="cryo_live_chat_key_note">แชทเชื่อมต่อกับ TikTok โดยตรงผ่านเซิร์ฟเวอร์ลายเซ็นของ Euler Stream (TikTok ไม่มี API แชทสาธารณะ) ใช้ฟรีได้ไม่กี่ครั้งต่อวัน คีย์ฟรีจาก eulerstream.com จะเพิ่มขีดจำกัด</string>
+    <string name="cryo_live_chat_ended">TikTok ปิดไลฟ์นี้แล้ว (การเชื่อมต่อหลุดหรือไลฟ์ถูกปิดบน TikTok) คีย์ของไลฟ์ที่จบแล้วใช้ไม่ได้อีก ให้สร้างคีย์ใหม่ใน TikTok (ถ้าใช้ Restream ให้เปลี่ยนที่นั่นด้วย) แล้วเริ่มไลฟ์ใหม่</string>
+    <string name="cryo_live_chat_suspended">TikTok ปิดไลฟ์นี้เอง (คำเตือนหรือข้อจำกัด) ตรวจสอบในแอป TikTok</string>
+    <string name="cryo_live_ended_short">TikTok ปิดไลฟ์แล้ว</string>
 </resources>

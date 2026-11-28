@@ -2725,7 +2725,7 @@
     <string name="cryo_live_error_foreground">Android가 라이브 시작을 허용하지 않았습니다: %1$s</string>
     <string name="cryo_live_error_encoder">이 기기는 이 화질을 지원하지 않습니다. 540p 또는 30 FPS를 시도하세요.</string>
     <string name="cryo_live_error_start">라이브를 시작할 수 없습니다: %1$s</string>
-    <string name="cryo_live_error_connection">라이브 서버에 연결할 수 없습니다: %1$s</string>
+    <string name="cryo_live_error_connection">라이브 서버에 연결할 수 없습니다: %1$s. 이미 끝난 라이브의 키는 작동하지 않습니다. TikTok에서 새 키를 받으세요.</string>
     <string name="cryo_live_error_auth">서버가 스트림 키를 거부했습니다. TikTok에서 새 키를 만드세요.</string>
     <string name="cryo_live_notification_channel">라이브</string>
     <string name="cryo_live_notification_title">TikTok 라이브</string>
@@ -2843,4 +2843,7 @@
     <string name="cryo_live_chat_limit">채팅: 무료 채팅 서버가 오늘 한도에 도달했습니다. 아래에 무료 Euler Stream 키를 넣거나 기다려 주세요. 몇 분 후 다시 시도합니다…</string>
     <string name="cryo_live_chat_key_hint">Euler Stream API 키(선택)</string>
     <string name="cryo_live_chat_key_note">채팅은 Euler Stream 서명 서버를 통해 TikTok에 바로 연결됩니다(TikTok에는 공개 채팅 API가 없습니다). 하루 몇 번의 연결은 무료이며, eulerstream.com의 무료 키로 한도를 늘릴 수 있습니다.</string>
+    <string name="cryo_live_chat_ended">TikTok이 이 라이브를 종료했습니다(연결이 끊겼거나 TikTok에서 라이브가 닫혔습니다). 종료된 라이브의 키는 더 이상 작동하지 않습니다. TikTok에서 새 키를 받아(Restream을 쓴다면 거기서도 변경) 라이브를 다시 시작하세요.</string>
+    <string name="cryo_live_chat_suspended">TikTok이 자체적으로 이 라이브를 종료했습니다(경고 또는 제한). TikTok 앱을 확인하세요.</string>
+    <string name="cryo_live_ended_short">TikTok이 라이브를 종료했습니다</string>
 </resources>

@@ -2725,7 +2725,7 @@
     <string name="cryo_live_error_foreground">لم يسمح Android ببدء البث: %1$s</string>
     <string name="cryo_live_error_encoder">لم يقبل هذا الجهاز جودة الفيديو هذه. جرّب 540p أو 30 FPS.</string>
     <string name="cryo_live_error_start">تعذر بدء البث: %1$s</string>
-    <string name="cryo_live_error_connection">تعذر الاتصال بخادم البث: %1$s</string>
+    <string name="cryo_live_error_connection">تعذّر الاتصال بخادم البث: %1$s. مفتاح بث انتهى لم يعد يعمل: احصل على مفتاح جديد من TikTok.</string>
     <string name="cryo_live_error_auth">رفض الخادم مفتاح البث. أنشئ مفتاحًا جديدًا في TikTok.</string>
     <string name="cryo_live_notification_channel">البث</string>
     <string name="cryo_live_notification_title">بث TikTok</string>
@@ -2843,4 +2843,7 @@
     <string name="cryo_live_chat_limit">الدردشة: وصل خادم الدردشة المجاني إلى حد اليوم. أضف مفتاح Euler Stream مجانيًا بالأسفل أو انتظر؛ ستتم المحاولة مرة أخرى خلال دقائق…</string>
     <string name="cryo_live_chat_key_hint">مفتاح API لـ Euler Stream (اختياري)</string>
     <string name="cryo_live_chat_key_note">تتصل الدردشة مباشرة بـ TikTok عبر خادم التوقيع من Euler Stream (لا يملك TikTok واجهة دردشة عامة). بعض الاتصالات يوميًا مجانية؛ والمفتاح المجاني من eulerstream.com يرفع الحد.</string>
+    <string name="cryo_live_chat_ended">أنهى TikTok هذا البث (انقطع الاتصال أو أُغلق البث على TikTok). مفتاح البث المنتهي لم يعد يعمل: احصل على مفتاح جديد من TikTok (وغيّره في Restream أيضًا إن كنت تستخدمه) وابدأ البث من جديد.</string>
+    <string name="cryo_live_chat_suspended">أنهى TikTok هذا البث من جهته (تحذير أو تقييد). راجع تطبيق TikTok.</string>
+    <string name="cryo_live_ended_short">أنهى TikTok البث</string>
 </resources>

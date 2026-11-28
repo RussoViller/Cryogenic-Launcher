@@ -2725,7 +2725,7 @@
     <string name="cryo_live_error_foreground">Android tillot ikke at liven startet: %1$s</string>
     <string name="cryo_live_error_encoder">Denne enheten godtok ikke denne videokvaliteten. Prøv 540p eller 30 FPS.</string>
     <string name="cryo_live_error_start">Kunne ikke starte liven: %1$s</string>
-    <string name="cryo_live_error_connection">Kunne ikke koble til liveserveren: %1$s</string>
+    <string name="cryo_live_error_connection">Kunne ikke koble til liveserveren: %1$s. Nøkkelen til en live som er avsluttet virker ikke: hent en ny på TikTok.</string>
     <string name="cryo_live_error_auth">Serveren avviste strømmenøkkelen. Lag en ny nøkkel på TikTok.</string>
     <string name="cryo_live_notification_channel">Live</string>
     <string name="cryo_live_notification_title">TikTok-live</string>
@@ -2843,4 +2843,7 @@
     <string name="cryo_live_chat_limit">Chat: den gratis chatserveren har nådd dagens grense. Legg inn en gratis Euler Stream-nøkkel nedenfor eller vent; prøver igjen om noen minutter…</string>
     <string name="cryo_live_chat_key_hint">Euler Stream API-nøkkel (valgfri)</string>
     <string name="cryo_live_chat_key_note">Chatten kobler seg direkte til TikTok via signeringsserveren til Euler Stream (TikTok har ikke noe offentlig chat-API). Noen tilkoblinger per dag er gratis; en gratis nøkkel fra eulerstream.com øker grensen.</string>
+    <string name="cryo_live_chat_ended">TikTok avsluttet denne liven (tilkoblingen falt ut eller liven ble lukket på TikTok). Nøkkelen til en avsluttet live virker ikke lenger: hent en ny nøkkel på TikTok (bytt den i Restream også hvis du bruker det) og start liven på nytt.</string>
+    <string name="cryo_live_chat_suspended">TikTok avsluttet denne liven selv (varsel eller begrensning). Sjekk TikTok-appen.</string>
+    <string name="cryo_live_ended_short">TikTok avsluttet liven</string>
 </resources>

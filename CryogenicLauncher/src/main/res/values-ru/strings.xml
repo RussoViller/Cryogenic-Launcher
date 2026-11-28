@@ -2724,7 +2724,7 @@
     <string name="cryo_live_error_foreground">Android не разрешил начать эфир: %1$s</string>
     <string name="cryo_live_error_encoder">Это устройство не приняло такое качество видео. Попробуйте 540p или 30 FPS.</string>
     <string name="cryo_live_error_start">Не удалось начать эфир: %1$s</string>
-    <string name="cryo_live_error_connection">Не удалось подключиться к серверу эфира: %1$s</string>
+    <string name="cryo_live_error_connection">Не удалось подключиться к серверу эфира: %1$s. Ключ уже завершённого эфира не работает: получите новый ключ в TikTok.</string>
     <string name="cryo_live_error_auth">Сервер отклонил ключ трансляции. Создайте новый ключ в TikTok.</string>
     <string name="cryo_live_notification_channel">Эфир</string>
     <string name="cryo_live_notification_title">Эфир TikTok</string>
@@ -2842,4 +2842,7 @@
     <string name="cryo_live_chat_limit">Чат: бесплатный сервер чата исчерпал лимит на сегодня. Добавьте ниже бесплатный ключ Euler Stream или подождите; повтор через несколько минут…</string>
     <string name="cryo_live_chat_key_hint">API-ключ Euler Stream (необязательно)</string>
     <string name="cryo_live_chat_key_note">Чат подключается напрямую к TikTok через сервер подписи Euler Stream (у TikTok нет публичного API чата). Несколько подключений в день бесплатны; бесплатный ключ с eulerstream.com повышает лимит.</string>
+    <string name="cryo_live_chat_ended">TikTok завершил этот эфир (связь оборвалась или эфир закрыт в TikTok). Ключ завершённого эфира больше не работает: получите новый ключ в TikTok (замените его и в Restream, если используете) и начните эфир заново.</string>
+    <string name="cryo_live_chat_suspended">TikTok сам завершил этот эфир (предупреждение или ограничение). Проверьте приложение TikTok.</string>
+    <string name="cryo_live_ended_short">TikTok завершил эфир</string>
 </resources>

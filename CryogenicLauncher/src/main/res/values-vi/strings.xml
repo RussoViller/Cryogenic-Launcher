@@ -2724,7 +2724,7 @@
     <string name="cryo_live_error_foreground">Android không cho phép bắt đầu live: %1$s</string>
     <string name="cryo_live_error_encoder">Thiết bị này không chấp nhận chất lượng video này. Hãy thử 540p hoặc 30 FPS.</string>
     <string name="cryo_live_error_start">Không thể bắt đầu live: %1$s</string>
-    <string name="cryo_live_error_connection">Không thể kết nối máy chủ live: %1$s</string>
+    <string name="cryo_live_error_connection">Không kết nối được máy chủ live: %1$s. Khóa của buổi live đã kết thúc không còn dùng được: lấy khóa mới trên TikTok.</string>
     <string name="cryo_live_error_auth">Máy chủ đã từ chối khóa luồng. Hãy tạo khóa mới trên TikTok.</string>
     <string name="cryo_live_notification_channel">Live</string>
     <string name="cryo_live_notification_title">Live TikTok</string>
@@ -2842,4 +2842,7 @@
     <string name="cryo_live_chat_limit">Chat: máy chủ chat miễn phí đã đạt giới hạn hôm nay. Thêm khóa Euler Stream miễn phí bên dưới hoặc chờ; sẽ thử lại sau vài phút…</string>
     <string name="cryo_live_chat_key_hint">Khóa API Euler Stream (tùy chọn)</string>
     <string name="cryo_live_chat_key_note">Chat kết nối thẳng tới TikTok qua máy chủ ký của Euler Stream (TikTok không có API chat công khai). Miễn phí cho vài lần kết nối mỗi ngày; khóa miễn phí từ eulerstream.com giúp tăng giới hạn.</string>
+    <string name="cryo_live_chat_ended">TikTok đã kết thúc buổi live này (mất kết nối hoặc live bị đóng trên TikTok). Khóa của buổi live đã kết thúc không còn dùng được: lấy khóa mới trên TikTok (đổi cả trong Restream nếu bạn dùng) rồi bắt đầu live lại.</string>
+    <string name="cryo_live_chat_suspended">TikTok đã tự kết thúc buổi live này (cảnh báo hoặc hạn chế). Hãy kiểm tra ứng dụng TikTok.</string>
+    <string name="cryo_live_ended_short">TikTok đã kết thúc live</string>
 </resources>

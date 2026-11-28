@@ -2724,7 +2724,7 @@
     <string name="cryo_live_error_foreground">Android canlı yayının başlamasına izin vermedi: %1$s</string>
     <string name="cryo_live_error_encoder">Bu cihaz bu video kalitesini kabul etmedi. 540p veya 30 FPS deneyin.</string>
     <string name="cryo_live_error_start">Canlı yayın başlatılamadı: %1$s</string>
-    <string name="cryo_live_error_connection">Canlı yayın sunucusuna bağlanılamadı: %1$s</string>
+    <string name="cryo_live_error_connection">Yayın sunucusuna bağlanılamadı: %1$s. Bitmiş bir yayının anahtarı artık çalışmaz: TikTok’tan yeni bir anahtar al.</string>
     <string name="cryo_live_error_auth">Sunucu yayın anahtarını reddetti. TikTok\'ta yeni bir anahtar oluşturun.</string>
     <string name="cryo_live_notification_channel">Canlı yayın</string>
     <string name="cryo_live_notification_title">TikTok canlı yayını</string>
@@ -2842,4 +2842,7 @@
     <string name="cryo_live_chat_limit">Sohbet: ücretsiz sohbet sunucusu bugünkü sınırına ulaştı. Aşağıya ücretsiz bir Euler Stream anahtarı ekle ya da bekle; birkaç dakika içinde yeniden denenecek…</string>
     <string name="cryo_live_chat_key_hint">Euler Stream API anahtarı (isteğe bağlı)</string>
     <string name="cryo_live_chat_key_note">Sohbet, Euler Stream imza sunucusu üzerinden doğrudan TikTok’a bağlanır (TikTok’un herkese açık sohbet API’si yoktur). Günde birkaç bağlantı ücretsizdir; eulerstream.com’dan ücretsiz bir anahtar sınırı artırır.</string>
+    <string name="cryo_live_chat_ended">TikTok bu yayını sonlandırdı (bağlantı koptu ya da yayın TikTok’ta kapatıldı). Biten bir yayının anahtarı artık çalışmaz: TikTok’tan yeni bir anahtar al (Restream kullanıyorsan orada da değiştir) ve yayını yeniden başlat.</string>
+    <string name="cryo_live_chat_suspended">TikTok bu yayını kendi tarafında sonlandırdı (uyarı ya da kısıtlama). TikTok uygulamasına bak.</string>
+    <string name="cryo_live_ended_short">TikTok yayını sonlandırdı</string>
 </resources>

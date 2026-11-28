@@ -2725,7 +2725,7 @@
     <string name="cryo_live_error_foreground">Android ने लाइव शुरू करने नहीं दिया: %1$s</string>
     <string name="cryo_live_error_encoder">इस डिवाइस ने यह वीडियो क्वालिटी स्वीकार नहीं की। 540p या 30 FPS आज़माएँ।</string>
     <string name="cryo_live_error_start">लाइव शुरू नहीं हो सका: %1$s</string>
-    <string name="cryo_live_error_connection">लाइव सर्वर से कनेक्ट नहीं हो सका: %1$s</string>
+    <string name="cryo_live_error_connection">लाइव सर्वर से कनेक्ट नहीं हो सका: %1$s। खत्म हो चुकी लाइव की कुंजी काम नहीं करती: TikTok पर नई कुंजी लें।</string>
     <string name="cryo_live_error_auth">सर्वर ने स्ट्रीम की अस्वीकार कर दी। TikTok पर नई की बनाएँ।</string>
     <string name="cryo_live_notification_channel">लाइव</string>
     <string name="cryo_live_notification_title">TikTok लाइव</string>
@@ -2843,4 +2843,7 @@
     <string name="cryo_live_chat_limit">चैट: मुफ़्त चैट सर्वर आज की सीमा तक पहुँच गया। नीचे मुफ़्त Euler Stream कुंजी डालें या इंतज़ार करें; कुछ मिनट में फिर कोशिश होगी…</string>
     <string name="cryo_live_chat_key_hint">Euler Stream API कुंजी (वैकल्पिक)</string>
     <string name="cryo_live_chat_key_note">चैट Euler Stream के सिग्नेचर सर्वर के ज़रिए सीधे TikTok से जुड़ती है (TikTok की कोई सार्वजनिक चैट API नहीं है)। रोज़ कुछ कनेक्शन मुफ़्त हैं; eulerstream.com की मुफ़्त कुंजी सीमा बढ़ाती है।</string>
+    <string name="cryo_live_chat_ended">TikTok ने यह लाइव खत्म कर दिया (कनेक्शन टूट गया या TikTok पर लाइव बंद हुआ)। खत्म हुई लाइव की स्ट्रीम कुंजी अब काम नहीं करती: TikTok पर नई कुंजी लें (Restream इस्तेमाल करते हैं तो वहाँ भी बदलें) और लाइव फिर शुरू करें।</string>
+    <string name="cryo_live_chat_suspended">TikTok ने अपनी ओर से यह लाइव खत्म किया (चेतावनी या प्रतिबंध)। TikTok ऐप देखें।</string>
+    <string name="cryo_live_ended_short">TikTok ने लाइव खत्म कर दिया</string>
 </resources>

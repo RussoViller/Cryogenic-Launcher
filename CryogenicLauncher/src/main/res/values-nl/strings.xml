@@ -2725,7 +2725,7 @@
     <string name="cryo_live_error_foreground">Android stond niet toe dat de live startte: %1$s</string>
     <string name="cryo_live_error_encoder">Dit apparaat accepteerde deze videokwaliteit niet. Probeer 540p of 30 FPS.</string>
     <string name="cryo_live_error_start">Kon de live niet starten: %1$s</string>
-    <string name="cryo_live_error_connection">Kon niet verbinden met de liveserver: %1$s</string>
+    <string name="cryo_live_error_connection">Kan geen verbinding maken met de liveserver: %1$s. De sleutel van een al beëindigde live werkt niet meer: haal een nieuwe op bij TikTok.</string>
     <string name="cryo_live_error_auth">De server weigerde de streamsleutel. Maak een nieuwe sleutel aan op TikTok.</string>
     <string name="cryo_live_notification_channel">Live</string>
     <string name="cryo_live_notification_title">TikTok-live</string>
@@ -2843,4 +2843,7 @@
     <string name="cryo_live_chat_limit">Chat: de gratis chatserver heeft zijn limiet voor vandaag bereikt. Voeg hieronder een gratis Euler Stream-sleutel toe of wacht; over een paar minuten opnieuw…</string>
     <string name="cryo_live_chat_key_hint">Euler Stream API-sleutel (optioneel)</string>
     <string name="cryo_live_chat_key_note">De chat verbindt rechtstreeks met TikTok via de ondertekeningsserver van Euler Stream (TikTok heeft geen openbare chat-API). Een paar verbindingen per dag zijn gratis; een gratis sleutel van eulerstream.com verhoogt de limiet.</string>
+    <string name="cryo_live_chat_ended">TikTok heeft deze live beëindigd (verbinding weggevallen of live gesloten op TikTok). De sleutel van een beëindigde live werkt niet meer: haal een nieuwe sleutel op bij TikTok (wijzig hem ook in Restream als je dat gebruikt) en start de live opnieuw.</string>
+    <string name="cryo_live_chat_suspended">TikTok heeft deze live zelf beëindigd (melding of beperking). Kijk in de TikTok-app.</string>
+    <string name="cryo_live_ended_short">TikTok heeft de live beëindigd</string>
 </resources>

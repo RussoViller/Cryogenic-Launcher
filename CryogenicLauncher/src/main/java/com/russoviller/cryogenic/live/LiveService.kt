@@ -711,7 +711,7 @@ class LiveService : Service(), ConnectChecker {
         sendToClients { stateMessage() }
         floating?.update(floatingState())
         // a notificação só muda com o estado (atualizar toda hora faz o sistema redesenhar à toa)
-        val key = "$status|$privacy|$startedAt|$error"
+        val key = "$status|$privacy|$startedAt|$error|$chatState"
         if (stream != null && key != notificationKey) {
             notificationKey = key
             runCatching { getSystemService(NotificationManager::class.java).notify(NOTIFICATION_ID, buildNotification()) }
@@ -731,19 +731,31 @@ class LiveService : Service(), ConnectChecker {
     }
 
     private fun buildNotification(): Notification {
+        val tiktokEnded = chatState == TikTokLiveChat.STATE_ENDED || chatState == TikTokLiveChat.STATE_SUSPENDED
+        val text = when {
+            status == LiveStatus.LIVE && tiktokEnded -> getString(R.string.cryo_live_ended_short)
+            else -> statusText()
+        }
+        return notificationBuilder(text)
+    }
+
+    private fun statusText(): String {
+        return when (status) {
+            LiveStatus.LIVE -> getString(if (privacy) R.string.cryo_live_notification_live_private else R.string.cryo_live_notification_live)
+            LiveStatus.CONNECTING -> getString(R.string.cryo_live_status_connecting)
+            LiveStatus.RECONNECTING -> getString(R.string.cryo_live_status_reconnecting)
+            LiveStatus.ERROR -> error ?: getString(R.string.cryo_live_status_error)
+            LiveStatus.IDLE -> getString(R.string.cryo_live_status_idle)
+        }
+    }
+
+    private fun notificationBuilder(text: String): Notification {
         val stopIntent = PendingIntent.getService(
             this, 1, Intent(this, LiveService::class.java).setAction(ACTION_STOP),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         val open = packageManager.getLaunchIntentForPackage(packageName)?.let {
             PendingIntent.getActivity(this, 2, it, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-        }
-        val text = when (status) {
-            LiveStatus.LIVE -> getString(if (privacy) R.string.cryo_live_notification_live_private else R.string.cryo_live_notification_live)
-            LiveStatus.CONNECTING -> getString(R.string.cryo_live_status_connecting)
-            LiveStatus.RECONNECTING -> getString(R.string.cryo_live_status_reconnecting)
-            LiveStatus.ERROR -> error ?: getString(R.string.cryo_live_status_error)
-            LiveStatus.IDLE -> getString(R.string.cryo_live_status_idle)
         }
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
@@ -783,7 +795,7 @@ class LiveService : Service(), ConnectChecker {
             val s = stream ?: return@post
             val retry = runCatching { s.shouldRetry(reason) }.getOrDefault(false)
             if (retry) {
-                runCatching { s.reConnect(5000L) }
+                runCatching { s.reConnect(2000L) }
                 status = LiveStatus.RECONNECTING
                 error = reason
                 broadcastState(force = true)

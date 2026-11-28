@@ -80,5 +80,10 @@ class LiveConfigTest {
         assertFalse(ended.live)
         val err = TikTokLiveChat.parseRoomInfo("""{"statusCode":19881007,"data":{}}""")
         assertEquals(19881007, err.statusCode)
+        // fim da live só com resposta real do TikTok (erro da consulta não conta como fim)
+        assertTrue(ended.notLive)
+        assertFalse(err.notLive)
+        assertFalse(live.notLive)
+        assertEquals("7", live.roomId)
     }
 }

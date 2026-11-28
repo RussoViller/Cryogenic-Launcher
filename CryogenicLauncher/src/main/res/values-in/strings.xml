@@ -2724,7 +2724,7 @@
     <string name="cryo_live_error_foreground">Android tidak mengizinkan live dimulai: %1$s</string>
     <string name="cryo_live_error_encoder">Perangkat ini tidak menerima kualitas video ini. Coba 540p atau 30 FPS.</string>
     <string name="cryo_live_error_start">Tidak bisa memulai live: %1$s</string>
-    <string name="cryo_live_error_connection">Tidak bisa terhubung ke server live: %1$s</string>
+    <string name="cryo_live_error_connection">Tidak bisa terhubung ke server live: %1$s. Kunci dari live yang sudah berakhir tidak berlaku lagi: ambil kunci baru di TikTok.</string>
     <string name="cryo_live_error_auth">Server menolak kunci streaming. Buat kunci baru di TikTok.</string>
     <string name="cryo_live_notification_channel">Live</string>
     <string name="cryo_live_notification_title">Live TikTok</string>
@@ -2842,4 +2842,7 @@
     <string name="cryo_live_chat_limit">Chat: server chat gratis sudah mencapai batas hari ini. Tambahkan kunci Euler Stream gratis di bawah atau tunggu; akan dicoba lagi dalam beberapa menit…</string>
     <string name="cryo_live_chat_key_hint">Kunci API Euler Stream (opsional)</string>
     <string name="cryo_live_chat_key_note">Chat terhubung langsung ke TikTok melalui server tanda tangan Euler Stream (TikTok tidak punya API chat publik). Gratis untuk beberapa koneksi per hari; kunci gratis dari eulerstream.com menaikkan batasnya.</string>
+    <string name="cryo_live_chat_ended">TikTok mengakhiri live ini (koneksi terputus atau live ditutup di TikTok). Kunci dari live yang sudah berakhir tidak berlaku lagi: ambil kunci baru di TikTok (ganti juga di Restream jika kamu memakainya) lalu mulai live lagi.</string>
+    <string name="cryo_live_chat_suspended">TikTok mengakhiri live ini dari pihaknya (peringatan atau pembatasan). Periksa aplikasi TikTok.</string>
+    <string name="cryo_live_ended_short">TikTok mengakhiri live</string>
 </resources>

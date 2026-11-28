@@ -2753,7 +2753,7 @@
     <string name="cryo_live_error_foreground">Android did not allow the live to start: %1$s</string>
     <string name="cryo_live_error_encoder">This device did not accept this video quality. Try 540p or 30 FPS.</string>
     <string name="cryo_live_error_start">Could not start the live: %1$s</string>
-    <string name="cryo_live_error_connection">Could not connect to the live server: %1$s</string>
+    <string name="cryo_live_error_connection">Could not connect to the live server: %1$s. A key from a live that already ended no longer works: get a new key on TikTok.</string>
     <string name="cryo_live_error_auth">The server refused the stream key. Generate a new key on TikTok.</string>
     <string name="cryo_live_notification_channel">Live</string>
     <string name="cryo_live_notification_title">TikTok live</string>
@@ -2871,4 +2871,7 @@
     <string name="cryo_live_chat_limit">Chat: the free chat server reached its limit for today. Add a free Euler Stream key below or wait; trying again in a few minutes…</string>
     <string name="cryo_live_chat_key_hint">Euler Stream API key (optional)</string>
     <string name="cryo_live_chat_key_note">The chat connects straight to TikTok through the Euler Stream signing server (TikTok has no public chat API). It’s free for a few connections a day; a free key from eulerstream.com raises the limit.</string>
+    <string name="cryo_live_chat_ended">TikTok ended this live (the connection dropped or the live was closed on TikTok). The stream key of an ended live no longer works: get a new key on TikTok (update it in Restream too if you use it) and start the live again.</string>
+    <string name="cryo_live_chat_suspended">TikTok ended this live on its side (notice or restriction). Check the TikTok app.</string>
+    <string name="cryo_live_ended_short">TikTok ended the live</string>
 </resources>

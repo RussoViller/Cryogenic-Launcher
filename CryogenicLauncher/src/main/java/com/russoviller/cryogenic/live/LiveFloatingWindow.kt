@@ -617,6 +617,8 @@ class LiveFloatingWindow(
             TikTokLiveChat.STATE_NOT_FOUND -> context.getString(R.string.cryo_live_chat_not_found)
             TikTokLiveChat.STATE_BLOCKED -> context.getString(R.string.cryo_live_chat_blocked)
             TikTokLiveChat.STATE_LIMIT -> context.getString(R.string.cryo_live_chat_limit)
+            TikTokLiveChat.STATE_ENDED -> context.getString(R.string.cryo_live_chat_ended)
+            TikTokLiveChat.STATE_SUSPENDED -> context.getString(R.string.cryo_live_chat_suspended)
             else -> context.getString(R.string.cryo_live_chat_help)
         }
         chatStateText.text = if (chatLine.isNotEmpty() && s.chatDetail.isNotEmpty()) chatLine + "\n" + s.chatDetail else chatLine

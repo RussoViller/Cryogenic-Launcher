@@ -56,6 +56,7 @@ class TikTokLiveChat(
     @Volatile private var generation = 0
     private var executor: ScheduledExecutorService? = null
     private var heartbeat: ScheduledFuture<*>? = null
+    private var roomCheck: ScheduledFuture<*>? = null
     @Volatile private var socket: WebSocket? = null
 
     // diagnóstico (só na thread do leitor; publicados na principal)
@@ -65,6 +66,11 @@ class TikTokLiveChat(
     @Volatile private var roomId = ""
     @Volatile private var signInfo = ""
     @Volatile private var failures = 0
+    /** sala que estava ao vivo nesta sessão (para saber quando o TikTok encerrou a live) */
+    @Volatile private var liveRoomId = ""
+    /** o TikTok encerrou a live da sala [endedRoomId]: espera uma live nova (outra sala) */
+    @Volatile private var ended = false
+    @Volatile private var endedRoomId = ""
     private var state = ""
     private var lastDetail = ""
 
@@ -82,6 +88,9 @@ class TikTokLiveChat(
         user = normalized
         val gen = ++generation
         failures = 0
+        liveRoomId = ""
+        ended = false
+        endedRoomId = ""
         executor = Executors.newSingleThreadScheduledExecutor { r ->
             Thread({
                 runCatching { android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_LOWEST) }
@@ -96,6 +105,8 @@ class TikTokLiveChat(
         generation++
         heartbeat?.cancel(false)
         heartbeat = null
+        roomCheck?.cancel(false)
+        roomCheck = null
         socket?.let { runCatching { it.close(1000, null) } }
         socket = null
         executor?.shutdownNow()
@@ -122,6 +133,7 @@ class TikTokLiveChat(
         failures++
         val delay = when {
             state == STATE_NOT_FOUND -> 20_000L
+            state == STATE_ENDED || state == STATE_SUSPENDED -> 30_000L
             state == STATE_LIMIT -> 5 * 60_000L
             else -> (10_000L shl (failures - 1).coerceIn(0, 4)).coerceAtMost(120_000L)
         }
@@ -142,15 +154,32 @@ class TikTokLiveChat(
         }
         if (room.avatar.startsWith("https://")) post { onAvatar(room.avatar) }
         if (room.viewers >= 0 && room.live) post { onViewers(LiveFloatingWindow.formatCount(room.viewers.coerceAtMost(Int.MAX_VALUE.toLong()).toInt())) }
+        if (ended) {
+            // depois do fim: só volta quando o TikTok abrir uma live nova (outra sala)
+            if (!room.live || room.roomId.isEmpty() || room.roomId == endedRoomId) {
+                signInfo = "ended ${endedRoomId.takeLast(6)}"
+                publishDetail()
+                retry(gen, if (state == STATE_SUSPENDED) STATE_SUSPENDED else STATE_ENDED)
+                return
+            }
+            ended = false
+            endedRoomId = ""
+        }
         if (!room.live || room.roomId.isEmpty()) {
-            // a live ainda não começou no TikTok (ou @ errado): tenta de novo
             roomId = room.roomId
             signInfo = "status ${room.status}"
             publishDetail()
+            if (liveRoomId.isNotEmpty() && room.notLive) {
+                // estava ao vivo e a sala fechou: o TikTok encerrou a live
+                markEnded(gen, STATE_ENDED)
+                return
+            }
+            // a live ainda não começou no TikTok (ou @ errado): tenta de novo
             retry(gen, STATE_NOT_FOUND)
             return
         }
         roomId = room.roomId
+        liveRoomId = room.roomId
         // 2) assinatura + pacote inicial
         val sign = runCatching { fetchSigned(room.roomId) }.getOrElse {
             val limit = it is SignLimit
@@ -185,6 +214,9 @@ class TikTokLiveChat(
             heartbeat = executor?.scheduleWithFixedDelay({
                 if (gen == generation) webSocket.send(HEARTBEAT.toByteString())
             }, 0L, 10_000L, TimeUnit.MILLISECONDS)
+            // confere a sala de vez em quando: se o TikTok fechar a live sem avisar pelo chat
+            roomCheck?.cancel(false)
+            roomCheck = executor?.scheduleWithFixedDelay({ checkRoom(gen) }, 60_000L, 60_000L, TimeUnit.MILLISECONDS)
         }
 
         override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
@@ -204,6 +236,9 @@ class TikTokLiveChat(
             socket = null
             socketOpen = false
             heartbeat?.cancel(false)
+            roomCheck?.cancel(false)
+            // fechada por nós porque a live acabou: markEnded já agendou a próxima checagem
+            if (ended) return
             signInfo = "ws: $why"
             publishDetail()
             retry(gen, STATE_LOADING)
@@ -239,13 +274,39 @@ class TikTokLiveChat(
                 "WebcastRoomUserSeqMessage" -> Proto.decodeViewers(m.payload)?.let { total ->
                     post { onViewers(LiveFloatingWindow.formatCount(total.coerceAtMost(Int.MAX_VALUE.toLong()).toInt())) }
                 }
-                "WebcastControlMessage" -> if (Proto.decodeControlAction(m.payload) == 3L) {
-                    // a live acabou no TikTok: espera a próxima
-                    post { setState(STATE_NOT_FOUND) }
+                "WebcastControlMessage" -> when (Proto.decodeControlAction(m.payload)) {
+                    // 3 = live encerrada; 4 = encerrada pelo TikTok (aviso/restrição)
+                    3L -> markEnded(generation, STATE_ENDED)
+                    4L -> markEnded(generation, STATE_SUSPENDED)
+                    else -> Unit
                 }
             }
         }
         publishDetail()
+    }
+
+    private fun checkRoom(gen: Int) {
+        if (gen != generation || ended) return
+        val u = user.ifEmpty { return }
+        val room = runCatching { fetchRoom(u) }.getOrNull() ?: return
+        if (room.notLive || (room.live && liveRoomId.isNotEmpty() && room.roomId.isNotEmpty() && room.roomId != liveRoomId)) markEnded(gen, STATE_ENDED)
+    }
+
+    /** O TikTok encerrou a live: avisa, fecha a conexão e passa a esperar uma live nova. */
+    private fun markEnded(gen: Int, why: String) {
+        if (gen != generation || ended) return
+        ended = true
+        endedRoomId = liveRoomId.ifEmpty { roomId }
+        liveRoomId = ""
+        socketOpen = false
+        heartbeat?.cancel(false)
+        roomCheck?.cancel(false)
+        socket?.let { ws -> socket = null; runCatching { ws.close(1000, null) } }
+        signInfo = "ended"
+        publishDetail()
+        Logger.warning(TAG, "TikTok ended the live ($why) room=$endedRoomId")
+        failures = 0
+        retry(gen, why)
     }
 
     // ------------------------------------------------------------------ HTTP
@@ -338,6 +399,8 @@ class TikTokLiveChat(
     internal data class RoomInfo(val statusCode: Int, val status: Int, val viewers: Long, val avatar: String, val roomId: String = "") {
         /** 2 = ao vivo (status da sala no TikTok) */
         val live: Boolean get() = status == 2 || status < 0 && viewers >= 0
+        /** o TikTok respondeu de verdade que a sala não está ao vivo (não é erro/limite da consulta) */
+        val notLive: Boolean get() = statusCode == 0 && status >= 0 && status != 2
     }
 
     /** Leitura mínima de protobuf para as mensagens do chat (sem biblioteca). */
@@ -465,6 +528,10 @@ class TikTokLiveChat(
         const val STATE_OK = "ok"
         /** a live/sala não foi encontrada (live ainda não reconhecida pelo TikTok ou @ errado) */
         const val STATE_NOT_FOUND = "notfound"
+        /** o TikTok encerrou a live (queda longa ou live fechada): a chave dessa live não vale mais */
+        const val STATE_ENDED = "ended"
+        /** o TikTok encerrou a live por conta própria (aviso/restrição) */
+        const val STATE_SUSPENDED = "suspended"
         /** o TikTok pediu verificação (página aberta à mão) */
         const val STATE_BLOCKED = "blocked"
         /** limite do servidor de assinatura grátis (sem chave) */

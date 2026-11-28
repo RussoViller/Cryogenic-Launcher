@@ -875,6 +875,8 @@ private fun LiveTabContent(tab: LiveTab, ui: LiveUi) {
                         TikTokLiveChat.STATE_NOT_FOUND -> stringResource(R.string.cryo_live_chat_not_found)
                         TikTokLiveChat.STATE_BLOCKED -> stringResource(R.string.cryo_live_chat_blocked)
                         TikTokLiveChat.STATE_LIMIT -> stringResource(R.string.cryo_live_chat_limit)
+                        TikTokLiveChat.STATE_ENDED -> stringResource(R.string.cryo_live_chat_ended)
+                        TikTokLiveChat.STATE_SUSPENDED -> stringResource(R.string.cryo_live_chat_suspended)
                         else -> stringResource(R.string.cryo_live_chat_help)
                     }
                 )
@@ -1220,6 +1222,15 @@ fun LiveChatOverlay(modifier: Modifier = Modifier) {
                 if (LiveClient.privacy) {
                     Text("  🔒", color = Color.White.copy(alpha = bg), fontSize = (11 * scale).sp)
                 }
+            }
+            // o TikTok encerrou a live (a transmissão daqui continua, mas ninguém está vendo)
+            if (LiveClient.chatState == TikTokLiveChat.STATE_ENDED || LiveClient.chatState == TikTokLiveChat.STATE_SUSPENDED) {
+                Text(
+                    text = "⚠ " + stringResource(R.string.cryo_live_ended_short),
+                    color = Color(0xFFFF6B6B),
+                    fontWeight = FontWeight.Black,
+                    fontSize = (12 * scale).sp
+                )
             }
             val messages = LiveClient.chat.takeLast(8)
             if (messages.isEmpty()) {

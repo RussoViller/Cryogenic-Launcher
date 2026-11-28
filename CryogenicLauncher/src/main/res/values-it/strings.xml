@@ -2725,7 +2725,7 @@
     <string name="cryo_live_error_foreground">Android non ha permesso l\'avvio della live: %1$s</string>
     <string name="cryo_live_error_encoder">Questo dispositivo non ha accettato questa qualità video. Prova 540p o 30 FPS.</string>
     <string name="cryo_live_error_start">Impossibile avviare la live: %1$s</string>
-    <string name="cryo_live_error_connection">Impossibile connettersi al server della live: %1$s</string>
+    <string name="cryo_live_error_connection">Impossibile connettersi al server della live: %1$s. La chiave di una live già terminata non funziona più: generane una nuova su TikTok.</string>
     <string name="cryo_live_error_auth">Il server ha rifiutato la chiave di trasmissione. Genera una nuova chiave su TikTok.</string>
     <string name="cryo_live_notification_channel">Live</string>
     <string name="cryo_live_notification_title">Live su TikTok</string>
@@ -2843,4 +2843,7 @@
     <string name="cryo_live_chat_limit">Chat: il server gratuito della chat ha raggiunto il limite di oggi. Aggiungi qui sotto una chiave gratuita di Euler Stream o attendi; nuovo tentativo tra qualche minuto…</string>
     <string name="cryo_live_chat_key_hint">Chiave API di Euler Stream (facoltativa)</string>
     <string name="cryo_live_chat_key_note">La chat si collega direttamente a TikTok tramite il server di firma di Euler Stream (TikTok non ha un’API pubblica per la chat). È gratis per alcune connessioni al giorno; una chiave gratuita di eulerstream.com aumenta il limite.</string>
+    <string name="cryo_live_chat_ended">TikTok ha chiuso questa live (connessione caduta o live chiusa su TikTok). La chiave di una live terminata non funziona più: genera una nuova chiave su TikTok (cambiala anche su Restream se lo usi) e riavvia la live.</string>
+    <string name="cryo_live_chat_suspended">TikTok ha chiuso questa live per conto suo (avviso o restrizione). Controlla l’app di TikTok.</string>
+    <string name="cryo_live_ended_short">TikTok ha chiuso la live</string>
 </resources>

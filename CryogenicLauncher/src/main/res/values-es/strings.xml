@@ -2724,7 +2724,7 @@
     <string name="cryo_live_error_foreground">Android no permitió que empezara el directo: %1$s</string>
     <string name="cryo_live_error_encoder">Este dispositivo no aceptó esta calidad de vídeo. Prueba 540p o 30 FPS.</string>
     <string name="cryo_live_error_start">No se pudo iniciar el directo: %1$s</string>
-    <string name="cryo_live_error_connection">No se pudo conectar al servidor del directo: %1$s</string>
+    <string name="cryo_live_error_connection">No se pudo conectar al servidor del directo: %1$s. La clave de un directo que ya terminó no sirve: genera una nueva en TikTok.</string>
     <string name="cryo_live_error_auth">El servidor rechazó la clave de transmisión. Genera una clave nueva en TikTok.</string>
     <string name="cryo_live_notification_channel">Directo</string>
     <string name="cryo_live_notification_title">Directo de TikTok</string>
@@ -2842,4 +2842,7 @@
     <string name="cryo_live_chat_limit">Chat: el servidor gratuito del chat llegó a su límite de hoy. Añade abajo una clave gratuita de Euler Stream o espera; reintentando en unos minutos…</string>
     <string name="cryo_live_chat_key_hint">Clave de API de Euler Stream (opcional)</string>
     <string name="cryo_live_chat_key_note">El chat se conecta directo a TikTok mediante el servidor de firmas de Euler Stream (TikTok no tiene API pública de chat). Es gratis para algunas conexiones al día; una clave gratuita de eulerstream.com amplía el límite.</string>
+    <string name="cryo_live_chat_ended">TikTok terminó este directo (se cayó la conexión o se cerró en TikTok). La clave de un directo terminado ya no sirve: genera una clave nueva en TikTok (cámbiala también en Restream si lo usas) y vuelve a empezar.</string>
+    <string name="cryo_live_chat_suspended">TikTok terminó este directo por su cuenta (aviso o restricción). Revisa la app de TikTok.</string>
+    <string name="cryo_live_ended_short">TikTok terminó el directo</string>
 </resources>

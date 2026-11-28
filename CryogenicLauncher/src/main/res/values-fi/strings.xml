@@ -2725,7 +2725,7 @@
     <string name="cryo_live_error_foreground">Android ei sallinut liven aloittamista: %1$s</string>
     <string name="cryo_live_error_encoder">Tämä laite ei hyväksynyt tätä videolaatua. Kokeile 540p:tä tai 30 FPS:ää.</string>
     <string name="cryo_live_error_start">Liveä ei voitu aloittaa: %1$s</string>
-    <string name="cryo_live_error_connection">Livepalvelimeen ei saatu yhteyttä: %1$s</string>
+    <string name="cryo_live_error_connection">Live-palvelimeen ei saatu yhteyttä: %1$s. Jo päättyneen liven avain ei toimi: hae uusi TikTokista.</string>
     <string name="cryo_live_error_auth">Palvelin hylkäsi lähetysavaimen. Luo uusi avain TikTokissa.</string>
     <string name="cryo_live_notification_channel">Live</string>
     <string name="cryo_live_notification_title">TikTok-live</string>
@@ -2843,4 +2843,7 @@
     <string name="cryo_live_chat_limit">Chat: ilmainen chat-palvelin on saavuttanut tämän päivän rajan. Lisää alle ilmainen Euler Stream -avain tai odota; uusi yritys muutaman minuutin päästä…</string>
     <string name="cryo_live_chat_key_hint">Euler Stream -API-avain (valinnainen)</string>
     <string name="cryo_live_chat_key_note">Chat yhdistää suoraan TikTokiin Euler Streamin allekirjoituspalvelimen kautta (TikTokilla ei ole julkista chat-rajapintaa). Muutama yhteys päivässä on ilmainen; ilmainen avain eulerstream.comista nostaa rajaa.</string>
+    <string name="cryo_live_chat_ended">TikTok lopetti tämän liven (yhteys katkesi tai live suljettiin TikTokissa). Päättyneen liven avain ei enää toimi: hae TikTokista uusi avain (vaihda se myös Restreamiin, jos käytät sitä) ja aloita live uudelleen.</string>
+    <string name="cryo_live_chat_suspended">TikTok lopetti tämän liven omalta puoleltaan (ilmoitus tai rajoitus). Tarkista TikTok-sovellus.</string>
+    <string name="cryo_live_ended_short">TikTok lopetti liven</string>
 </resources>

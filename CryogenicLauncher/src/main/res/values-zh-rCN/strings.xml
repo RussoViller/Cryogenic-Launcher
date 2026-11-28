@@ -2724,7 +2724,7 @@
     <string name="cryo_live_error_foreground">Android 不允许开始直播：%1$s</string>
     <string name="cryo_live_error_encoder">此设备不支持该视频画质。请尝试 540p 或 30 FPS。</string>
     <string name="cryo_live_error_start">无法开始直播：%1$s</string>
-    <string name="cryo_live_error_connection">无法连接到直播服务器：%1$s</string>
+    <string name="cryo_live_error_connection">无法连接到直播服务器：%1$s。已结束直播的密钥不再有效：请在 TikTok 获取新密钥。</string>
     <string name="cryo_live_error_auth">服务器拒绝了推流密钥。请在 TikTok 上生成新的密钥。</string>
     <string name="cryo_live_notification_channel">直播</string>
     <string name="cryo_live_notification_title">TikTok 直播</string>
@@ -2842,4 +2842,7 @@
     <string name="cryo_live_chat_limit">聊天：免费聊天服务器已达到今天的上限。请在下方填写免费的 Euler Stream 密钥，或稍候；几分钟后重试…</string>
     <string name="cryo_live_chat_key_hint">Euler Stream API 密钥（可选）</string>
     <string name="cryo_live_chat_key_note">聊天通过 Euler Stream 签名服务器直接连接 TikTok（TikTok 没有公开的聊天 API）。每天少量连接免费；使用 eulerstream.com 的免费密钥可提高上限。</string>
+    <string name="cryo_live_chat_ended">TikTok 已结束这场直播（连接中断或直播在 TikTok 上被关闭）。已结束直播的推流密钥不再有效：请在 TikTok 获取新密钥（如使用 Restream，也要在那里更换），然后重新开播。</string>
+    <string name="cryo_live_chat_suspended">TikTok 主动结束了这场直播（警告或限制）。请查看 TikTok 应用。</string>
+    <string name="cryo_live_ended_short">TikTok 已结束直播</string>
 </resources>

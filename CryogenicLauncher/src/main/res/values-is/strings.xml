@@ -2725,7 +2725,7 @@
     <string name="cryo_live_error_foreground">Android leyfði ekki að útsendingin hæfist: %1$s</string>
     <string name="cryo_live_error_encoder">Þetta tæki samþykkti ekki þessi myndgæði. Prófaðu 540p eða 30 FPS.</string>
     <string name="cryo_live_error_start">Ekki tókst að hefja útsendinguna: %1$s</string>
-    <string name="cryo_live_error_connection">Ekki tókst að tengjast útsendingarþjóninum: %1$s</string>
+    <string name="cryo_live_error_connection">Tókst ekki að tengjast útsendingarþjóninum: %1$s. Lykill útsendingar sem er lokið virkar ekki: sæktu nýjan á TikTok.</string>
     <string name="cryo_live_error_auth">Þjónninn hafnaði útsendingarlyklinum. Búðu til nýjan lykil á TikTok.</string>
     <string name="cryo_live_notification_channel">Útsending</string>
     <string name="cryo_live_notification_title">TikTok-útsending</string>
@@ -2843,4 +2843,7 @@
     <string name="cryo_live_chat_limit">Spjall: ókeypis spjallþjónninn hefur náð hámarki dagsins. Bættu við ókeypis Euler Stream-lykli hér fyrir neðan eða bíddu; reyni aftur eftir nokkrar mínútur…</string>
     <string name="cryo_live_chat_key_hint">Euler Stream API-lykill (valfrjálst)</string>
     <string name="cryo_live_chat_key_note">Spjallið tengist beint við TikTok í gegnum undirskriftarþjón Euler Stream (TikTok er ekki með opið spjall-API). Nokkrar tengingar á dag eru ókeypis; ókeypis lykill frá eulerstream.com hækkar hámarkið.</string>
+    <string name="cryo_live_chat_ended">TikTok lauk þessari útsendingu (tengingin rofnaði eða henni var lokað á TikTok). Lykill útsendingar sem er lokið virkar ekki lengur: sæktu nýjan lykil á TikTok (skiptu honum líka út í Restream ef þú notar það) og byrjaðu aftur.</string>
+    <string name="cryo_live_chat_suspended">TikTok lauk þessari útsendingu sjálft (tilkynning eða takmörkun). Athugaðu TikTok-forritið.</string>
+    <string name="cryo_live_ended_short">TikTok lauk útsendingunni</string>
 </resources>

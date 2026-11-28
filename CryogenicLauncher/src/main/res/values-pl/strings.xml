@@ -2725,7 +2725,7 @@
     <string name="cryo_live_error_foreground">Android nie pozwolił rozpocząć transmisji: %1$s</string>
     <string name="cryo_live_error_encoder">To urządzenie nie przyjęło tej jakości wideo. Spróbuj 540p lub 30 FPS.</string>
     <string name="cryo_live_error_start">Nie udało się rozpocząć transmisji: %1$s</string>
-    <string name="cryo_live_error_connection">Nie udało się połączyć z serwerem transmisji: %1$s</string>
+    <string name="cryo_live_error_connection">Nie można połączyć się z serwerem transmisji: %1$s. Klucz zakończonej transmisji już nie działa: wygeneruj nowy w TikToku.</string>
     <string name="cryo_live_error_auth">Serwer odrzucił klucz transmisji. Wygeneruj nowy klucz na TikToku.</string>
     <string name="cryo_live_notification_channel">Transmisja</string>
     <string name="cryo_live_notification_title">Transmisja TikTok</string>
@@ -2843,4 +2843,7 @@
     <string name="cryo_live_chat_limit">Czat: darmowy serwer czatu osiągnął dzisiejszy limit. Dodaj poniżej darmowy klucz Euler Stream lub poczekaj; ponowna próba za kilka minut…</string>
     <string name="cryo_live_chat_key_hint">Klucz API Euler Stream (opcjonalnie)</string>
     <string name="cryo_live_chat_key_note">Czat łączy się bezpośrednio z TikTokiem przez serwer podpisów Euler Stream (TikTok nie ma publicznego API czatu). Kilka połączeń dziennie jest za darmo; darmowy klucz z eulerstream.com zwiększa limit.</string>
+    <string name="cryo_live_chat_ended">TikTok zakończył tę transmisję (połączenie zerwane lub transmisja zamknięta na TikToku). Klucz zakończonej transmisji już nie działa: wygeneruj nowy w TikToku (zmień go też w Restream, jeśli go używasz) i zacznij od nowa.</string>
+    <string name="cryo_live_chat_suspended">TikTok sam zakończył tę transmisję (ostrzeżenie lub ograniczenie). Sprawdź aplikację TikTok.</string>
+    <string name="cryo_live_ended_short">TikTok zakończył transmisję</string>
 </resources>

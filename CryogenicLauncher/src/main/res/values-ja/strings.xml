@@ -2724,7 +2724,7 @@
     <string name="cryo_live_error_foreground">Android がライブの開始を許可しませんでした：%1$s</string>
     <string name="cryo_live_error_encoder">この端末はこの画質に対応していません。540p または 30 FPS を試してください。</string>
     <string name="cryo_live_error_start">ライブを開始できませんでした：%1$s</string>
-    <string name="cryo_live_error_connection">ライブサーバーに接続できませんでした：%1$s</string>
+    <string name="cryo_live_error_connection">ライブサーバーに接続できません：%1$s。終了したライブのキーは使えません。TikTokで新しいキーを取得してください。</string>
     <string name="cryo_live_error_auth">サーバーがストリームキーを拒否しました。TikTok で新しいキーを発行してください。</string>
     <string name="cryo_live_notification_channel">ライブ</string>
     <string name="cryo_live_notification_title">TikTok ライブ</string>
@@ -2842,4 +2842,7 @@
     <string name="cryo_live_chat_limit">チャット：無料のチャットサーバーが今日の上限に達しました。下に無料のEuler Streamキーを入力するか、お待ちください。数分後に再試行します…</string>
     <string name="cryo_live_chat_key_hint">Euler Stream APIキー（任意）</string>
     <string name="cryo_live_chat_key_note">チャットはEuler Streamの署名サーバーを通してTikTokに直接接続します（TikTokには公開チャットAPIがありません）。1日数回の接続は無料で、eulerstream.comの無料キーで上限が増えます。</string>
+    <string name="cryo_live_chat_ended">TikTokがこのライブを終了しました（接続が切れたか、TikTok側でライブが閉じられました）。終了したライブのキーはもう使えません。TikTokで新しいキーを取得し（Restreamを使う場合はそちらも変更）、ライブをやり直してください。</string>
+    <string name="cryo_live_chat_suspended">TikTokがこのライブを終了しました（警告または制限）。TikTokアプリを確認してください。</string>
+    <string name="cryo_live_ended_short">TikTokがライブを終了しました</string>
 </resources>
